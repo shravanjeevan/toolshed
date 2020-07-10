@@ -1,0 +1,16 @@
+version: "3"
+services:
+  db:
+    image: postgres:9.6-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=toolbox
+      - POSTGRES_USER=app_user
+      - POSTGRES_PASSWORD=app_password
+    ports:
+      - 5432:5432
+    volumes:
+      - .backend/db/:/docker-entrypoint-initdb.d/
+  # todo: add backend app and front end app here
+
+
