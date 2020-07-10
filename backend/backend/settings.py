@@ -80,7 +80,8 @@ DATABASES = {
         'NAME': 'toolbox',
         'USER': 'app_user',
         'PASSWORD': 'app_password',
-        'HOST': '0.0.0.0',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
