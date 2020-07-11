@@ -1,7 +1,7 @@
 version: "3"
 services:
   db:
-    image: postgres:9.6-alpine
+    image: postgres:12.3
     restart: always
     environment:
       - POSTGRES_DB=toolbox
@@ -26,6 +26,4 @@ services:
      depends_on:
        - db
      command: python manage.py runserver 0.0.0.0:8000
-  # todo: add backend app and front end app here
-
 
