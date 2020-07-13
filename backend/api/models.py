@@ -31,6 +31,24 @@ class BlogPost(models.Model):
         on_delete=models.DO_NOTHING
     )
 
+class BlogPostComment(models.Model):
+    blog_post_id = models.ForeignKey(
+        'BlogPost',
+        on_delete=models.DO_NOTHING
+    )
+    content = models.CharField(max_length=5000)
+    created_on = models.DateTimeField()
+    created_by = models.ForeignKey(
+        'User',
+        on_delete=models.DO_NOTHING
+    )
+
 class BlogPostVisibility(models.Model):
     visibility_name = models.CharField(max_length=30)
 
+class BlogPostTag(models.Model):
+    tag = models.CharField(max_length=50)
+    blog_post_id = models.ForeignKey(
+        'BlogPost',
+        on_delete=models.DO_NOTHING
+    )
