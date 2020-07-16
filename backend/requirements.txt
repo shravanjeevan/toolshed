@@ -1,4 +1,10 @@
-Django==3.0.7
+asgiref==3.2.10
+astroid==2.4.1
+beautifulsoup4==4.9.1
+bootstrap4==0.1.0
+Django==3.0
+django-bootstrap4==2.1.1
+djangorestframework==3.11.0
 importlib-metadata==1.6.1
 isort==4.3.21
 lazy-object-proxy==1.4.3
