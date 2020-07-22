@@ -10,3 +10,6 @@ class BlogPostViewSet(viewsets.ModelViewSet):
     serializer_class = BlogSerializer
 
 
+class PopularBlogPosts(viewsets.ModelViewSet):
+    queryset = BlogPost.objects.all().order_by('-like_count')[:6]
+    serializer_class = BlogSerializer

@@ -4,6 +4,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'blogs', views.BlogPostViewSet)
+router.register(r'popular-blogs', views.PopularBlogPosts)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

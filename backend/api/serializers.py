@@ -5,6 +5,6 @@ from .models import BlogPost
 class BlogSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = BlogPost
-        fields = ('title', 'content')
+        fields = ('title', 'content', 'like_count')
 
 
