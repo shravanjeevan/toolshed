@@ -1,54 +1,60 @@
 from django.db import models
 
-# Create your models here.
-
 class User(models.Model):
-    first_name = models.CharField(max_length=256)
-    last_name = models.CharField(max_length=256)
-    display_name = models.CharField(max_length=256)
-    email_address = models.EmailField(max_length=256)
-    password = models.CharField(max_length=256)
-    user_group_id = models.ForeignKey(
-        'UserGroup',
-        on_delete=models.DO_NOTHING
-    )
-
-class UserGroup(models.Model):
-    user_group_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=256, null=True, blank=True)
+    last_name = models.CharField(max_length=256, null=True, blank=True)
+    display_name = models.CharField(max_length=256, null=True, blank=True)
+    email_address = models.EmailField(max_length=256, null=True, blank=True)
+    password = models.CharField(max_length=256, null=True, blank=True)
+    user_group = models.CharField(max_length=30, null=True, blank=True)
 
 class BlogPost(models.Model):
-    title = models.CharField(max_length=256)
-    content = models.CharField(max_length=10000)
-    like_count = models.IntegerField()
-    created_on = models.DateTimeField()
+    title = models.CharField(max_length=256, null=True, blank=True)
+    content = models.CharField(max_length=10000, null=True, blank=True)
+    like_count = models.IntegerField(null=True, blank=True)
+    created_on = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(
         'User',
         on_delete=models.DO_NOTHING
     )
-    last_updated = models.DateTimeField()
-    visibility_id = models.ForeignKey(
-        'BlogPostVisibility',
-        on_delete=models.DO_NOTHING
-    )
+    last_updated = models.DateTimeField(null=True, blank=True)
+    visibility = models.CharField(max_length=30, null=True, blank=True)
 
 class BlogPostComment(models.Model):
     blog_post_id = models.ForeignKey(
         'BlogPost',
         on_delete=models.DO_NOTHING
     )
-    content = models.CharField(max_length=5000)
-    created_on = models.DateTimeField()
+    content = models.CharField(max_length=5000, null=True, blank=True)
+    created_on = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(
         'User',
         on_delete=models.DO_NOTHING
     )
 
-class BlogPostVisibility(models.Model):
-    visibility_name = models.CharField(max_length=30)
-
 class BlogPostTag(models.Model):
-    tag = models.CharField(max_length=50)
+    tag = models.CharField(max_length=50, null=True, blank=True)
     blog_post_id = models.ForeignKey(
         'BlogPost',
+        on_delete=models.DO_NOTHING
+    )
+
+class KnowledgeBaseItem(models.Model):
+    tool_id = models.ForeignKey(
+        'Tool',
+        on_delete=models.DO_NOTHING
+    )
+    content_type = models.CharField(max_length=30, null=True, blank=True)
+    title = models.CharField(max_length=256, null=True, blank=True)
+    content = models.CharField(max_length=10000, null=True, blank=True)
+
+class Tool(models.Model):
+    name = models.CharField(max_length=256, null=True, blank=True)
+    category = models.CharField(max_length=150, null=True, blank=True)
+
+class KnowledgeBaseTag(models.Model):
+    tag = models.CharField(max_length=50, null=True, blank=True)
+    blog_post_id = models.ForeignKey(
+        'KnowledgeBaseItem',
         on_delete=models.DO_NOTHING
     )
