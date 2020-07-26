@@ -55,3 +55,16 @@ class ExploreCategories(APIView):
         return Response(data, status=200)
 
 
+class PopularBlogTags(APIView):
+    def get(self, request):
+        with connection.cursor() as cursor:
+            cursor.execute('select tag, count(1) tagcount from '
+                           '(select ab.tag as tag from  '
+                           'api_blogpost_tags abt join api_blogposttag ab '
+                           'on ab.id = abt.blogposttag_id) t '
+                           'group by tag '
+                           'order by tagCount desc limit 10')
+            data = dictfetchall(cursor)
+
+        return Response(data, status=200)
+

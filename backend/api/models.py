@@ -8,6 +8,9 @@ class User(models.Model):
     password = models.CharField(max_length=256, null=True, blank=True)
     user_group = models.CharField(max_length=30, null=True, blank=True)
 
+class BlogPostTag(models.Model):
+    tag = models.CharField(max_length=50, null=True, blank=True)
+
 class BlogPost(models.Model):
     title = models.CharField(max_length=256, null=True, blank=True)
     content = models.CharField(max_length=10000, null=True, blank=True)
@@ -19,6 +22,7 @@ class BlogPost(models.Model):
     )
     last_updated = models.DateTimeField(null=True, blank=True)
     visibility = models.CharField(max_length=30, null=True, blank=True)
+    tags = models.ManyToManyField(BlogPostTag, related_name='blogpost_tag')
 
 class BlogPostComment(models.Model):
     blog_post_id = models.ForeignKey(
@@ -32,12 +36,6 @@ class BlogPostComment(models.Model):
         on_delete=models.DO_NOTHING
     )
 
-class BlogPostTag(models.Model):
-    tag = models.CharField(max_length=50, null=True, blank=True)
-    blog_post_id = models.ForeignKey(
-        'BlogPost',
-        on_delete=models.DO_NOTHING
-    )
 
 class KnowledgeBaseItem(models.Model):
     tool_id = models.ForeignKey(

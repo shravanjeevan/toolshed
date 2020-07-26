@@ -12,5 +12,6 @@ urlpatterns = [
     path('blogs/popular/', views.PopularBlogList.as_view()),
     path('categories/', views.AllCategories.as_view()),
     path('categories/explore', views.ExploreCategories.as_view()),
+    path('tags/popular/', views.PopularBlogTags.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
