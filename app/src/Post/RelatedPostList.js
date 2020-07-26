@@ -26,16 +26,16 @@ class RelatedPostList extends Component {
     render() { 
         return ( 
             <Fragment> 
-            <h3>Related Posts</h3>
+            <h3 class = "related-post-header" >Related Posts</h3>
             
             <div>
             {
                     this.state.related.map((item,index)=>{
-                        return (<div class="card bg-info text-white">
-                                    <div class="card-body">
-                                        <p> {item.title} </p>
+                        return (<div class="card" key={index}>
+                                    {/* <div class="card-body"> */}
+                                        <h4> {item.title} </h4>
                                         <p> {item.type} </p>
-                                    </div>
+                                    {/* </div> */}
                                 </div>
                         )  
                     })

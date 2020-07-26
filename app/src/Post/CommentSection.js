@@ -25,10 +25,12 @@ class CommentSection extends Component {
     render() { 
         return ( 
         <Fragment>
-            <h3>Comments| {this.state.number} </h3>
-            <div>
-                <CommentPost />
-                <CommentCard />
+            <div id="comment-section">
+                <h3> Comments | {this.state.number} </h3>
+                <div >
+                    <CommentPost />
+                    <CommentCard />
+                </div>
             </div>
         </Fragment>
         );

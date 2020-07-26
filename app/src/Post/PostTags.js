@@ -6,7 +6,7 @@ class PostTags extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            tags:['test','tags']
+            tags:[]
         };
     }
     
@@ -38,7 +38,7 @@ class PostTags extends Component {
                 </div>
                     {
                         this.state.tags.map((item,index)=>{
-                            return <button type="button" class="btn btn-success btn-sm" onClick = {this.fetchSearch.bind(this)}> {item} </button>  
+                            return <div key = {index} class = "tags" onClick = {this.fetchSearch.bind(this)}> {item} </div>  
                         })
                     } 
                     

@@ -3,23 +3,29 @@ import PostTags from './PostTags'
 import PostHeader from './PostHeader'
 import RelatedPostList from './RelatedPostList'
 import CommentSection from './CommentSection'
+import PostBody from './PostBody'
+import App from '../App'
+import "./post.css"
+
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 
 const Post = () => (
 
     <div>
+        <div><App /></div>
         <PostHeader />
         <hr />
-        <div class="row">
-            <div class="col-9"> mark </div>
-            <div class="col-3"> 
+        <div className="row">
+            <div className="col-md-8" id="html-part"> <PostBody /> </div>
+            <div className="col-md-3" id="aside"> 
                 <PostTags />
                 <br />
                 <RelatedPostList />
             </div>
         </div>
         <hr />
-        <CommentSection />
+        <div class="commentSection"><CommentSection /></div>
 
     
     </div>

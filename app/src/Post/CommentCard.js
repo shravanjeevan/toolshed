@@ -17,7 +17,7 @@ class CommentCard extends Component {
         var api = 'http://localhost:3000/comment.json';
         axios.get(api)
         .then((response)=>{this.setState({
-            comments:response.data.comments
+            comments:response.data.comments.reverse()
          })
         })
         .catch((error)=>{console.log(error)})
@@ -28,16 +28,23 @@ class CommentCard extends Component {
             <Fragment>
                 {
                     this.state.comments.map((item,index)=>{
-                        return (<div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                        <div class="col-1">
-                                            <p> {item.author} </p>
+                        return (<div key = {index}>
+                                    <div class="row">
+                                        <div class="col-md-8" id="commentCard">
+                                            <div class="col-md-1" id="commentAuthor">
+                                                <img
+                                                  src={item.icon}
+                                                  width="45"
+                                                  height="45"
+                                                  className="profileIcon"
+                                                  alt="profile image"
+                                                />
                                             </div>
-                                            <div class="col-5">
-                                            <p> {item.date} </p>
-                                            <p> {item.content} </p>
-                                            <p> <span class="glyphicon glyphicon-heart-empty"></span> Likes {item.likes} </p>
+                                        
+                                            <div class="col-md-11" id="commentContent">
+                                                <a href="" > {item.author} </a>
+                                                <span class="commentDate"> {item.date} </span>
+                                                <p class="comment"> {item.content} </p>
                                             </div>
                                         </div>
                                     </div>

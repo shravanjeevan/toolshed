@@ -29,16 +29,6 @@ class CommentPost extends Component {
         })
     }
     
-    render() {
-        return (
-            <Fragment>
-                <input value={this.state.input} onChange={this.show.bind(this)} />
-                <button onClick = {this.post.bind(this)}> Post </button>
-                
-            </Fragment>
-        );
-    }
-    
     componentDidMount(){
         this.getData();
     }
@@ -51,6 +41,15 @@ class CommentPost extends Component {
          })
         })
         .catch((error)=>{console.log(error)})
+    }
+    
+    render() {
+        return (
+            <Fragment>
+                <textarea rows="3" class = "commentInput" value={this.state.input} onChange={this.show.bind(this)} />
+                <button class="commentPost" onClick = {this.post.bind(this)}> Post </button>
+            </Fragment>
+        );
     }
 }
  
