@@ -13,5 +13,6 @@ urlpatterns = [
     path('categories/', views.AllCategories.as_view()),
     path('categories/explore', views.ExploreCategories.as_view()),
     path('tags/popular/', views.PopularBlogTags.as_view()),
+    path('blog/<int:pk>', views.BlogsList.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
