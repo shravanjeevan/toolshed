@@ -4,7 +4,7 @@ import PostHeader from './PostHeader'
 import RelatedPostList from './RelatedPostList'
 import CommentSection from './CommentSection'
 import PostBody from './PostBody'
-import App from '../App'
+import AppHeader from '../bundles/app-page/components/AppHeader';
 import "./post.css"
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -13,6 +13,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 const Post = () => (
 
     <div>
+        <div> <AppHeader /> </div>
         <PostHeader />
         <hr />
         <div className="row">
