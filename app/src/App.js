@@ -33,12 +33,12 @@ function App() {
             <Nav.Link href="/login">Sign Up/Login</Nav.Link>
           </Nav>
       </Navbar>
-      {/* <header className="App-header">
+      <header className="App-header">
           <img src={logo} alt="logo" />
           <h1>
             The Toolshed
           </h1>
-        </header> */}
+        </header>
     </div>
   );
 }
