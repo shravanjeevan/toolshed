@@ -1,5 +1,5 @@
 import React from 'react';
-import TagTab from 'bundles/common/components/TagTab';
+import TagTab from '../../common/components/TagTab';
 
 class TagExplorer extends React.Component {
     render() {

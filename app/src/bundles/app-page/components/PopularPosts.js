@@ -1,5 +1,5 @@
 import React from 'react';
-import PostResult from 'bundles/common/components/PostResult';
+import PostResult from '../../common/components/PostResult';
 
 class PopularPosts extends React.Component {
     render() {
