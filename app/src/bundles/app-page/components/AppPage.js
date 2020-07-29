@@ -3,6 +3,7 @@ import AppHeader from './AppHeader';
 import PopularPosts from './PopularPosts';
 import CategoryExplorer from './CategoryExplorer';
 import TagExplorer from './TagExplorer';
+import Post from '../../post-page/components/Post';
 
 import './AppPage.css';
 

@@ -10,7 +10,6 @@ import AppPage from './bundles/app-page/components/AppPage';
 // import reducers from './reducers';
 
 // const store = createStore(reducers, applyMiddleware(thunk));
-import Post from './Post/Post'
 
 ReactDOM.render(
         <AppPage />,

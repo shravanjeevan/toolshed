@@ -4,8 +4,8 @@ import PostHeader from './PostHeader'
 import RelatedPostList from './RelatedPostList'
 import CommentSection from './CommentSection'
 import PostBody from './PostBody'
-import AppHeader from '../bundles/app-page/components/AppHeader';
-import "./post.css"
+import AppHeader from '../../app-page/components/AppHeader';
+import "./Post.css"
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -31,4 +31,4 @@ const Post = () => (
     </div>
 )
 
-export default Post
+export default Post;
