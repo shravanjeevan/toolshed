@@ -1,4 +1,6 @@
 import React from 'react';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+
 import AppHeader from './AppHeader';
 import PopularPosts from './PopularPosts';
 import CategoryExplorer from './CategoryExplorer';

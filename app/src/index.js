@@ -6,12 +6,12 @@ import { BrowserRouter as Router,Route} from 'react-router-dom';
 // import thunk from 'redux-thunk';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
-import AppPage from './bundles/app-page/components/AppPage';
+import App from './bundles/app-page/components/App';
 // import reducers from './reducers';
 
 // const store = createStore(reducers, applyMiddleware(thunk));
 
 ReactDOM.render(
-        <AppPage />,
+        <App />,
     document.querySelector('#root')
 );

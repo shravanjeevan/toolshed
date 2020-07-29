@@ -7,7 +7,7 @@ import PostBody from './PostBody'
 import AppHeader from '../../app-page/components/AppHeader';
 import "./Post.css"
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Router, Route, Link } from "react-router-dom";
 
 
 const Post = () => (

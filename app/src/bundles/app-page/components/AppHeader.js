@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class AppHeader extends React.Component {
     render() {
@@ -26,7 +27,7 @@ class AppHeader extends React.Component {
                     />
                     <div class="input-group-append" id="button-addon4">
                         <button class="btn btn-outline-secondary" type="button">
-                            Search
+                            <Link to="/results">Search</Link>
                         </button>
                     </div>
                     <div class="input-group-append">

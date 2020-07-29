@@ -1,4 +1,7 @@
 import React from 'react';
+import { Route, Link } from 'react-router-dom';
+
+import Post from '../../post-page/components/Post';
 import './PostResult.css';
 
 class PostResult extends React.Component {
@@ -16,7 +19,11 @@ class PostResult extends React.Component {
 
         // Conditionally display blog post elements
         // Knowledge Base Items defaults to only the date - this is the Knowledge Base subtitle
-        let blogPostItemsToShow = <div><span>{post.createdDate}</span></div>;
+        let blogPostItemsToShow = (
+            <div>
+                <span>{post.createdDate}</span>
+            </div>
+        );
 
         // Blog Post Items includes other data points
         if (post.isBlogPost) {
@@ -50,12 +57,12 @@ class PostResult extends React.Component {
                 <div className="card-body">
                     <h5 className="card-title">
                         <div className="row">
-                            <a
-                                href="#"
+                            <Link
+                                to="/post"
                                 className="title-text col-sm-8 text-decoration-none"
                             >
                                 {post.title}
-                            </a>
+                            </Link>
                             <div className="col-sm-4 text-right font-weight-light">
                                 {post.isBlogPost
                                     ? 'Blog Post'
@@ -71,9 +78,9 @@ class PostResult extends React.Component {
                     </h6>
                     <hr />
                     <p className="card-text">
-                        <a href="#" className="text-decoration-none">
+                        <Link to="/post" className="text-decoration-none">
                             <div>{post.body}</div>
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </div>
