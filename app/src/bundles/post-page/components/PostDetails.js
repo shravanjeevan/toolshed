@@ -32,9 +32,9 @@ class PostDetails extends Component {
     render() { 
         let like;
         if (this.state.liked) {
-            like = <span class="glyphicon glyphicon-heart"></span>
+            like = <span class="fas fa-heart"></span>
         } else {
-            like = <span class="glyphicon glyphicon-heart-empty"></span>
+            like = <span class="fas fa-heart"></span>
         }
         
         return ( 
@@ -66,9 +66,9 @@ class PostDetails extends Component {
                         <span onClick = {this.likeit.bind(this)}> {like} </span>
                         <span class = "postInteract">Like this post  </span>
                         <span class = "postInteract">
-                        <span class="glyphicon glyphicon-share" data-toggle="modal" data-target="#myModal">Share </span>
+                        <span class="fas fa-share" data-toggle="modal" data-target="#myModal">Share </span>
                         </span>
-                        <span class="glyphicon glyphicon-flag">Flag </span>
+                        <span class="fas fa-flag">Flag </span>
                     </div>
                 </div>
             </div>
