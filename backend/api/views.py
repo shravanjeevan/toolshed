@@ -1,8 +1,10 @@
 from django.db import connection
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import json
 
 from .models import BlogPost
+from .models import TestBlogPost
 from .serializers import BlogSerializer
 
 
@@ -67,4 +69,23 @@ class PopularBlogTags(APIView):
             data = dictfetchall(cursor)
 
         return Response(data, status=200)
+
+class TestBlog(APIView):
+    def post(self, request):
+        data = request.data
+        print(data)
+        diction = json.load(data)
+        print(diction.html)
+        # print(data.test)
+
+        # test = TestBlogPost(content=data)
+        # test.save()
+        return Response(status=201)
+
+    def get(self, request):
+
+        if TestBlogPost.objects.reverse().count() == 0:
+            return Response(status=200, data=[])
+        return Response(status=200, data=TestBlogPost.objects.reverse()[0])
+
 

@@ -56,3 +56,6 @@ class KnowledgeBaseTag(models.Model):
         'KnowledgeBaseItem',
         on_delete=models.DO_NOTHING
     )
+
+class TestBlogPost(models.Model):
+    content = models.CharField(max_length=160000, null=True, blank=True)

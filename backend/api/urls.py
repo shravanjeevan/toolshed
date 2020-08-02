@@ -8,6 +8,7 @@ router = routers.DefaultRouter()
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
+    path('test/', views.TestBlog.as_view()),
     path('blogs/', views.BlogsList.as_view()),
     path('blogs/popular/', views.PopularBlogList.as_view()),
     path('categories/', views.AllCategories.as_view()),
