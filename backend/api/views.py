@@ -1,86 +1,88 @@
 from django.db import connection
+from elasticsearch import Elasticsearch
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import datetime
-import pytz
-import requests
-import logging
 
-
-# import requests
-
-from .models import BlogPost
+from .models import BlogPost as BlogPostModel
 from .models import User
 from .serializers import BlogSerializer
 
+es = Elasticsearch(["http://localhost:9200"])
+# es = Elasticsearch(["http://elastic:9200"])
 
 
-def elastic_index_builder(request):
-    data = """"{
-        "title": "Adding a password to your Zoom room",
-        "content": "....",
-        "type": "req",
-        "created_by": "request.data.",
-        "tags": [
-            "video",
-            "communication"
-        ],
-        "like_count": "50"
-    }"""
+def article_index_payload_builder(title, content, type, author, tags, likes, created_date):
+    data = {
+        'title': title,
+        'content': content,
+        'type': type,
+        'author': author,
+        'created_date': created_date,
+        'tags': tags,
+        'like_count': likes
+    }
+    return data
 
-#     {
-#     "title": "Cloud Security 17",
-#     "content": "cloud sec best practice",
-#     "created_by": 1
-# }
+
+# the method called when creating a brand new blogpost
+class BlogPost(APIView):
+    def post(self, request):
+        if does_blog_post_exist(request.user, request.title):
+            data = {'message': "You already have a blogpost with the same title. Please choose another title."}
+            return Response(data=data, status=403)
+        else:
+            #   create a blogbost entry in the db
+            #   create a blogpost entry in elasticsearch
+            user_id = request.user_id
+            user = User.objects.get(id=user_id)
+
+            blogpost_db = BlogPostModel(title=request.title,
+                                    content=request.content,
+                                    type='blog',
+                                    author=user,
+                                    tags=request.tags,
+                                    likes=0)
+            blogpost_db.save()
+            blogpost_es = article_index_payload_builder(request.blogpost_data)
+            es.index(index='knowledge_base',body=blogpost_es)
+
+
+
+
 
 class BlogsList(APIView):
     def get(self, request):
-        blogs = BlogPost.objects.all()
+        blogs = BlogPostModel.objects.all()
         serializer = BlogSerializer(blogs, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        # data = json.loads(request.data)
-        data = request.data
 
-        print("title: " + str(request.data["title"]))
-        tz_au = pytz.timezone('Australia/Sydney')
-        timenow = datetime.datetime.now(tz_au)
+        if does_blog_post_exist(request.user, request.title):
+            data = {'message': "You already have a blogpost with the same title. Please choose another title."}
+            return Response(data=data, status=403)
+        else:
+            #   create a blogbost entry in the db
+            #   create a blogpost entry in elasticsearch
+            user_id = request.user_id
+            user = User.objects.get(id=user_id)
 
-        elastic_data = {}
-        elastic_data["title"] = data["title"]
-        elastic_data["content"] = data["content"]
-
-        user = User.objects.get(id=data["created_by"])
-        elastic_data["created_by"] = data["created_by"]
-        elastic_data["display_name"] =  user.display_name
-        elastic_data["first_name"] =  user.first_name
-        elastic_data["last_name"] =  user.last_name
-
-        # create a blogpost object and save it to the db
-        new_blog = BlogPost(
-            title=data["title"],
-            content=data["content"],
-            like_count=0,
-            created_on=timenow,
-            created_by = User.objects.get(id=data["created_by"])
-        )
-        new_blog.save()
-
-        # save it to elastic search
-        res = requests.post("http://localhost:9200", elastic_data)
-        if res.status_code == 200:
-            logging.log('ERROR', "There was a problem indexing the blogpost to elasticsearch"
-                                 "Payload: {}", res.json())
+            blogpost_db = BlogPostModel(title=request.title,
+                                        content=request.content,
+                                        type='blog',
+                                        author=user,
+                                        tags=request.tags,
+                                        likes=0)
+            blogpost_db.save()
+            blogpost_es = article_index_payload_builder(request.blogpost_data)
+            es.index(index='knowledge_base',body=blogpost_es)
 
         return Response(status=200)
 
 
-
 class PopularBlogList(APIView):
     def get(self, request):
-        blogs = BlogPost.objects.all().order_by('-like_count')[:3]
+        blogs = BlogPostModel.objects.all().order_by('-like_count')[:3]
         serializer = BlogSerializer(blogs, many=True)
         return Response(serializer.data)
 
@@ -92,6 +94,7 @@ def dictfetchall(cursor):
         dict(zip(columns, row))
         for row in cursor.fetchall()
         ]
+
 
 class AllCategories(APIView):
     def get(self, request):
@@ -106,16 +109,15 @@ class AllCategories(APIView):
 
         return Response(response_json, status=200)
 
-
+# GET: categories/explore
 class ExploreCategories(APIView):
-
     def get(self, request):
         with connection.cursor() as cursor:
             cursor.execute('SELECT category, '
-                            'COUNT(1) as publishedCount '
-                            'from API_TOOL GROUP BY '
-                            'CATEGORY ORDER BY publishedCount DESC '
-                            'LIMIT 6')
+                           'COUNT(1) as publishedCount '
+                           'from API_TOOL GROUP BY '
+                           'CATEGORY ORDER BY publishedCount DESC '
+                           'LIMIT 6')
             data = dictfetchall(cursor)
 
         return Response(data, status=200)
@@ -134,3 +136,12 @@ class PopularBlogTags(APIView):
 
         return Response(data, status=200)
 
+
+def does_blog_post_exist(author, title):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) FROM api_blogpost WHERE created_by = %s AND title = %s", [author, title])
+        data = dictfetchall(cursor)
+        if data.count() > 0:
+            return True
+        else:
+            return False
