@@ -1,13 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
 
 import AppHeader from './AppHeader';
 import PopularPosts from './PopularPosts';
 import CategoryExplorer from './CategoryExplorer';
 import TagExplorer from './TagExplorer';
-import Post from '../../post-page/components/Post';
-import Navbar1 from "../../Global_Components/navbar"
-import '../../../App.css'
+import Navbar1 from "../../common/components/navbar"
 import './AppPage.css';
 
 class AppPage extends React.Component {

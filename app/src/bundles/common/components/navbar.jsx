@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Navbar,Nav,NavDropdown,Container, Row, Col} from 'react-bootstrap'
+import {Navbar,Nav,NavDropdown} from 'react-bootstrap'
 import SearchBar from "./searchbar.jsx"
 import logo from './logo.png';
 

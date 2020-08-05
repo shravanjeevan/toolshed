@@ -1,7 +1,7 @@
 import React from 'react';
 import PostResult from '../../common/components/PostResult';
 import Searchterm from '../../common/components/SearchTerm';
-import Searchbar from "../../Global_Components/searchbar"
+import Searchbar from '../../common/components/searchbar';
 
 class ResultsList extends React.Component {
     render() {

@@ -1,3 +1,9 @@
+## To run the front-end on localhost port
+1. go to /app directory
+2. npm install (let's just use npm rather than yarn)
+3. npm start
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

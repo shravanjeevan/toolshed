@@ -1,7 +1,6 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import Post from '../../post-page/components/Post';
 import './PostResult.css';
 
 class PostResult extends React.Component {

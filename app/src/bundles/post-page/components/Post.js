@@ -1,15 +1,11 @@
 import React from 'react';
-import PostTags from './PostTags'
-import PostHeader from './PostHeader'
-import RelatedPostList from './RelatedPostList'
-import CommentSection from './CommentSection'
-import PostBody from './PostBody'
-import AppHeader from '../../app-page/components/AppHeader';
-import Navbar1 from "../../Global_Components/navbar"
-import "./Post.css"
-
-import { Router, Route, Link } from "react-router-dom";
-
+import PostTags from './PostTags';
+import PostHeader from './PostHeader';
+import RelatedPostList from './RelatedPostList';
+import CommentSection from './CommentSection';
+import PostBody from './PostBody';
+import Navbar1 from '../../common/components/navbar';
+import './Post.css';
 
 const Post = () => (
 

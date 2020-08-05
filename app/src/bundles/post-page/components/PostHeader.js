@@ -48,7 +48,7 @@ class PostHeader extends Component {
     }
     
     render() {
-        let details = this.state.type == "BlogPost" ? <PostDetails 
+        let details = this.state.type === "BlogPost" ? <PostDetails 
                                                         title = {this.state.title}
                                                         type = {this.state.type}
                                                         name = {this.state.name}

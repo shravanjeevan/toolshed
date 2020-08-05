@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import SearchBar from '../../Global_Components/searchbar'
+import SearchBar from '../../common/components/searchbar'
 
 
 class AppHeader extends React.Component {

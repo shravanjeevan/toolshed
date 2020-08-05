@@ -37,7 +37,7 @@ class CommentCard extends Component {
                                                   width="45"
                                                   height="45"
                                                   className="profileIcon"
-                                                  alt="profile image"
+                                                  alt="profile icon"
                                                 />
                                             </div>
                                         
