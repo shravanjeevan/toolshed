@@ -2,53 +2,37 @@ from django.db import connection
 from elasticsearch import Elasticsearch
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import datetime
 
 from .models import BlogPost as BlogPostModel
+from .models import BlogPostTag
 from .models import User
 from .serializers import BlogSerializer
 
-es = Elasticsearch(["http://localhost:9200"])
-# es = Elasticsearch(["http://elastic:9200"])
+# es = Elasticsearch(["http://localhost:9200"])
+es = Elasticsearch(["http://elastic:9200"])
 
 
-def article_index_payload_builder(title, content, type, author, tags, likes, created_date):
+def article_index_payload_builder(blogpost_data, author_first_name, created_date):
     data = {
-        'title': title,
-        'content': content,
-        'type': type,
-        'author': author,
-        'created_date': created_date,
-        'tags': tags,
-        'like_count': likes
+        "title": blogpost_data["title"],
+        "content": blogpost_data["content"],
+        "type": "blog",
+        "author": author_first_name,
+        "created_date": created_date,
+        "tags": blogpost_data["tags"],
+        "like_count": 0
     }
     return data
 
-
-# the method called when creating a brand new blogpost
-class BlogPost(APIView):
-    def post(self, request):
-        if does_blog_post_exist(request.user, request.title):
-            data = {'message': "You already have a blogpost with the same title. Please choose another title."}
-            return Response(data=data, status=403)
-        else:
-            #   create a blogbost entry in the db
-            #   create a blogpost entry in elasticsearch
-            user_id = request.user_id
-            user = User.objects.get(id=user_id)
-
-            blogpost_db = BlogPostModel(title=request.title,
-                                    content=request.content,
-                                    type='blog',
-                                    author=user,
-                                    tags=request.tags,
-                                    likes=0)
-            blogpost_db.save()
-            blogpost_es = article_index_payload_builder(request.blogpost_data)
-            es.index(index='knowledge_base',body=blogpost_es)
-
-
-
-
+"""
+ {
+     "title": "Pavan first blogpost",
+     "content": "Content for the blogpost blah blah blah blach",
+     "author": "1",
+     "tags": ["happiness", "joy"]
+ }
+"""
 
 class BlogsList(APIView):
     def get(self, request):
@@ -56,25 +40,32 @@ class BlogsList(APIView):
         serializer = BlogSerializer(blogs, many=True)
         return Response(serializer.data)
 
-    def post(self, request):
 
-        if does_blog_post_exist(request.user, request.title):
+    def post(self, request):
+        blog_data = request.data
+
+        print(request.data)
+        print(blog_data["author"])
+
+        if does_blog_post_exist(blog_data["author"], blog_data["title"]):
+
             data = {'message': "You already have a blogpost with the same title. Please choose another title."}
             return Response(data=data, status=403)
         else:
-            #   create a blogbost entry in the db
-            #   create a blogpost entry in elasticsearch
-            user_id = request.user_id
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(id=blog_data["author"])
 
-            blogpost_db = BlogPostModel(title=request.title,
-                                        content=request.content,
-                                        type='blog',
-                                        author=user,
-                                        tags=request.tags,
-                                        likes=0)
+            blogpost_db = BlogPostModel(title=blog_data["title"],
+                                        content=blog_data["content"],
+                                        created_by=user,
+                                        like_count=0,
+                                        visibility="visible")
+
             blogpost_db.save()
-            blogpost_es = article_index_payload_builder(request.blogpost_data)
+            # Save tags
+            create_blog_post_tag(blog_data["tags"])
+
+            # Index in elasticsearch
+            blogpost_es = article_index_payload_builder(blog_data, user.first_name, str(datetime.datetime))
             es.index(index='knowledge_base',body=blogpost_es)
 
         return Response(status=200)
@@ -138,10 +129,20 @@ class PopularBlogTags(APIView):
 
 
 def does_blog_post_exist(author, title):
+    print("checking if this author and title already exist")
     with connection.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM api_blogpost WHERE created_by = %s AND title = %s", [author, title])
+        cursor.execute("SELECT COUNT(*) FROM api_blogpost WHERE created_by_id = %s AND title = %s", [author, title])
         data = dictfetchall(cursor)
-        if data.count() > 0:
+        print(data)
+        if len(data) > 0:
             return True
         else:
             return False
+
+def create_blog_post_tag(tags):
+    existing_tags = BlogPostTag.objects.all()
+    for i in tags:
+        if existing_tags.filter(tag=i).exists():
+            continue
+        tag = BlogPostTag(tag=i)
+        tag.save()

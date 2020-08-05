@@ -15,12 +15,12 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=256, null=True, blank=True)
     content = models.CharField(max_length=10000, null=True, blank=True)
     like_count = models.IntegerField(null=True, blank=True)
-    created_on = models.DateTimeField(null=True, blank=True)
+    created_on = models.DateTimeField(auto_now=True, null=True, blank=True)
     created_by = models.ForeignKey(
         'User',
         on_delete=models.DO_NOTHING
     )
-    last_updated = models.DateTimeField(null=True, blank=True)
+    last_updated = models.DateTimeField(auto_now=True, null=True, blank=True)
     visibility = models.CharField(max_length=30, null=True, blank=True)
     tags = models.ManyToManyField(BlogPostTag, related_name='blogpost_tag')
 
