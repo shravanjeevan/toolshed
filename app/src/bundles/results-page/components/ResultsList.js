@@ -1,8 +1,16 @@
 import React from 'react';
 import PostResult from '../../common/components/PostResult';
+import Searchterm from '../../common/components/SearchTerm';
+import Searchbar from "../../Global_Components/searchbar"
 
 class ResultsList extends React.Component {
     render() {
+        var searchitem = [
+            {
+                searchterm: "Video Conferencing",
+                filters: ["posted within last 5 days"],
+            }
+        ]
         var results = [
             {
                 id: 1,
@@ -85,9 +93,19 @@ class ResultsList extends React.Component {
             );
         });
 
+        var searchToShow = searchitem.map((term)=>{
+            return (
+                <div className="my-4">
+                    <Searchterm term = {term} />
+                </div>
+            )
+        })
+
         return (
             <div className="container">
                 <h2>Results</h2>
+                <Searchbar />
+                <div className="mt-4">{searchToShow}</div>
                 <div className="mt-4">{postsToShow}</div>
             </div>
         );

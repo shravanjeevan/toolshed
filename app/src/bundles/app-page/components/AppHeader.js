@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SearchBar from '../../Global_Components/searchbar'
+
 
 class AppHeader extends React.Component {
     render() {
@@ -8,15 +10,22 @@ class AppHeader extends React.Component {
                 <h1 class="display-4 text-center">The Toolshed</h1>
                 <div class="lead text-center">
                     <p>
-                        This is a simple hero unit, a simple jumbotron-style
-                        component for calling extra attention to featured
-                        content or information.
+                        Your one stop shop for finding information about online remote-learning tools.
                     </p>
-                    <p>Lots of interesting information here.</p>
+                    <p>Have a question? Search away!</p>
                 </div>
                 <hr class="my-4" />
+                <SearchBar />
+                
+            </div>
+        );
+    }
+}
 
-                {/* TODO: Placeholder search bar, replace with Component */}
+export default AppHeader;
+
+
+{/* TODO: Placeholder search bar, replace with Component 
                 <div class="input-group w-50 mx-auto">
                     <input
                         type="text"
@@ -60,9 +69,4 @@ class AppHeader extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
-        );
-    }
-}
-
-export default AppHeader;
+                */}

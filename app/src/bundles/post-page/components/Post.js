@@ -5,6 +5,7 @@ import RelatedPostList from './RelatedPostList'
 import CommentSection from './CommentSection'
 import PostBody from './PostBody'
 import AppHeader from '../../app-page/components/AppHeader';
+import Navbar1 from "../../Global_Components/navbar"
 import "./Post.css"
 
 import { Router, Route, Link } from "react-router-dom";
@@ -13,7 +14,7 @@ import { Router, Route, Link } from "react-router-dom";
 const Post = () => (
 
     <div>
-        <div> <AppHeader /> </div>
+        <div> <Navbar1 /> </div>
         <PostHeader />
         <hr />
         <div className="row">

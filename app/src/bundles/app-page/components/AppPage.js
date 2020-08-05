@@ -6,13 +6,15 @@ import PopularPosts from './PopularPosts';
 import CategoryExplorer from './CategoryExplorer';
 import TagExplorer from './TagExplorer';
 import Post from '../../post-page/components/Post';
-
+import Navbar1 from "../../Global_Components/navbar"
+import '../../../App.css'
 import './AppPage.css';
 
 class AppPage extends React.Component {
     render() {
         return (
             <div className="page">
+                <Navbar1></Navbar1>
                 <AppHeader />
                 <div className="row">
                     <div className="col-lg">
