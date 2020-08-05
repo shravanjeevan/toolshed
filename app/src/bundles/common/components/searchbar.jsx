@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import { Form,FormControl, Container, Button} from 'react-bootstrap'
 import styled from "styled-components"
 
 
 class SearchBar extends Component {
   render() {
+    let query = 'sometext';
+    let searchPath = `/results?query=${query}`;
     return (
       <React.Fragment>
         <div class="input-group mx-auto" style={{
@@ -14,7 +17,11 @@ class SearchBar extends Component {
                 <FormControl className="topnav input" type="text" placeholder="Search"/>
             </Form>
             <div class="input-group-append" >
-              <Button className="button" href="/results"> Search </Button>
+              <Link to={searchPath}>
+                <Button type="button" className="button">
+                    Search
+                </Button>
+              </Link>
             </div>
             <div class="input-group-append">
                         <button
@@ -27,20 +34,20 @@ class SearchBar extends Component {
                             Filters
                         </button>
                         <div class="dropdown-menu">
-                            <a class="button" href="#">
+                            <a class="button">
                                 Knowledge Base Items
                             </a>
-                            <a class="button" href="#">
+                            <a class="button">
                                 Blog Post Items
                             </a>
-                            <a class="button" href="#">
+                            <a class="button">
                                 New Posts
                             </a>
                             <div
                                 role="separator"
                                 class="dropdown-divider"
                             ></div>
-                            <a class="button" href="#">
+                            <a class="button">
                                 Popular Posts
                             </a>
                         </div>

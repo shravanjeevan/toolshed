@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-
+import { Link } from 'react-router-dom';
 
 class PostDetails extends Component {
     constructor(props) {
@@ -57,7 +57,7 @@ class PostDetails extends Component {
                         <u
                             onClick = {this.openProfile.bind(this)}
                         >
-                            <a href="">{this.props.name}</a>
+                            <Link to="/user/:id">{this.props.name}</Link>
                         </u>
                         <div class = "postdate"> {this.props.date} </div>
                         <span> {this.state.likes} Likes </span> 

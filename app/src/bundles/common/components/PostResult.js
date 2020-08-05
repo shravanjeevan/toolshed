@@ -9,10 +9,11 @@ class PostResult extends React.Component {
 
         // List of tags
         let tagsToShow = post.tags.map((tag) => {
+            let path = `/results?tag=${tag}`;
             return (
-                <a href="#" className="mr-2 badge badge-secondary">
+                <Link to={path} className="mr-2 badge badge-secondary">
                     {tag}
-                </a>
+                </Link>
             );
         });
 
@@ -33,12 +34,12 @@ class PostResult extends React.Component {
                         <span>
                             {' '}
                             by{' '}
-                            <a
+                            <Link
+                                to="/user/:id"
                                 className="text-primary font-weight-normal"
-                                href="#"
                             >
                                 {post.author}
-                            </a>
+                            </Link>
                         </span>
                     </div>
                     <div className="col-sm text-right text-muted">

@@ -49,20 +49,20 @@ export default AppHeader;
                             Filters
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item">
                                 Filter 1
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item">
                                 Filter 2
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item">
                                 Filter 3
                             </a>
                             <div
                                 role="separator"
                                 class="dropdown-divider"
                             ></div>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item">
                                 Filter 4
                             </a>
                         </div>

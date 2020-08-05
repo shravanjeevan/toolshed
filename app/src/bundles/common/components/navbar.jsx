@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import {Navbar,Nav,NavDropdown} from 'react-bootstrap'
 import SearchBar from "./searchbar.jsx"
 import logo from './logo.png';
@@ -9,15 +10,18 @@ class NavBar1 extends Component {
       <React.Fragment>
        <Navbar className="topnav">
           <Nav className="mr-auto" activeKey="/home">
-            <Navbar.Brand bsPrefix="topnav a" href="/">
-                <img
-                src={logo}
-                width="45"
-                height="30"
-                className="d-inline-block align-top"
-                alt="React Bootstrap logo"
-                />
-            </Navbar.Brand>    
+            <Link to="/">
+            
+              <Navbar.Brand bsPrefix="topnav a">
+                  <img
+                  src={logo}
+                  width="45"
+                  height="30"
+                  className="d-inline-block align-top"
+                  alt="React Bootstrap logo"
+                  />
+              </Navbar.Brand>
+            </Link>
             <Navbar.Brand bsPrefix="topnav a" href="/">The ToolShed</Navbar.Brand>
             <NavDropdown bsPrefix="topnav a" title="Knowledge Base" id="nav-dropdown">
                 <NavDropdown.Item className="topnav a" href="/knowledge/tools">Tools</NavDropdown.Item>

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class CommentCard extends Component {
@@ -42,7 +43,7 @@ class CommentCard extends Component {
                                             </div>
                                         
                                             <div class="col-md-11" id="commentContent">
-                                                <a href="" > {item.author} </a>
+                                                <Link to="/user/:id"> {item.author} </Link>
                                                 <span class="commentDate"> {item.date} </span>
                                                 <p class="comment"> {item.content} </p>
                                             </div>
