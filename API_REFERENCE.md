@@ -1,20 +1,29 @@
 # API Reference
 
+### Summary of endpoints
 ```
-/posts/popular
+GET /posts
+GET /posts/popular
+GET /posts/related
+POST /posts
+
+GET /posts/:post_id
+PUT /posts/:post_id
+DELETE /posts/:post_id
+
+GET /posts/post_id/comments
+POST /posts/:post_id/comments
+DELETE /posts/:post_id/comments/:comment_id
+
+GET /categories/popular
+GET /categories
+GET /categories/:category_name
+GET /tags/popular
+
+POST /login
+POST /signup
 
 ```
-
-**`GET /posts/popular`**
-
-**Description**: Fetches the top 6 most popular posts, ordered by likeCount.
-
-**Usage**: App main page's popular posts component.
-
-**Query Parameters:** None
-
-**Sample Response:**
-
 
 
 
@@ -249,7 +258,7 @@
 ```
 
 
-### **`GET /posts/:post_id`**
+### **`GET /posts/:post_id/comments`**
 
 **Description**: Comments for a blog post (*there will only be comments for blog posts, not knowledge items*)
 
@@ -281,6 +290,34 @@
 ]
 ```
 
+
+### **`POST /posts/:post_id/comments`**
+
+**Description**: Create a comment under a post.
+
+**Usage**: Comment submit button.
+
+**Query Parameters**: None
+
+**Sample Response:**
+```
+```
+
+
+### **`DELETE /posts/:post_id/comments/:comment_id`**
+
+**Description**: Delete a specific comment.
+
+**Usage**: 
+
+**Query Parameters**: None
+
+**Sample Response:**
+```
+```
+
+
+
 ### **`GET /posts/related`**
 
 **Description**: Fetches top 3 related posts based on the current post (excluding itself). (*not sure what the best way to implement this is. We could pass in the post id as arg and in the backend we can extract some data from that post and do a normal GET /posts call. Alternatively we don't even need this endpoint and just call the normal GET /posts and pass into query param stuff in the current post.*)
@@ -308,7 +345,7 @@
 
 ### **`POST /posts`**
 
-**Description**: Creates a blog post (or knowledge item). Yuhang might have a better idea for this.
+**Description**: Create a blog post (or knowledge item). Yuhang might have a better idea for this.
 
 **Usage**: used for the route /posts/create.
 
@@ -318,6 +355,16 @@
 **Sample Response:**
 ```
 ```
+
+
+### **`PUT /posts/:post_id`**
+
+**Description**: Edit a blog post (or knowledge item).
+
+
+### **`DELETE /posts/:post_id`**
+
+**Description**: Delete a blog post (or knowledge item).
 
 
 
