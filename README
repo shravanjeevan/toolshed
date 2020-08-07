@@ -152,10 +152,17 @@ curl -X PUT "localhost:9200/tools/_doc/1?pretty" -H 'Content-Type: application/j
 ```
 
 
-## Elasticsearching
+## Elasticsearch
 
+### Elastic Toolshed
+We're going to use a single ES index to store blog posts and knowledge base items.
 
+Facts:
+```
+index: knowledge_base
+```
 
+### Elastic Examples
 ```
 curl -X GET "localhost:9200/tools/_doc/1?pretty"
 ```
@@ -190,4 +197,23 @@ curl -X GET "localhost:9200/tools/_search?pretty" -H 'Content-Type: application/
 }
 '
 ```
+
+
+
+
+POST: blogs/
+
+request.data:
+
+{
+    user: '',
+    title: '',
+    content: '',
+    tags: [
+        'communication',
+        'cool'
+    ]
+}
+
+request.data.content -> JSON.load()
 

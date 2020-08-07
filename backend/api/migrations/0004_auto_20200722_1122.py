@@ -9,6 +9,10 @@ def add_blogposts(apps, schema_editor):
                 last_name='Data Migration Last Name')
     user.save()
 
+    user = User(first_name='Pav',
+                last_name='R')
+    user.save()
+
     for i in range(10):
         title = "Cloud Security 1" + str(i)
         blogpost = BlogPost(title=title, created_by=user)

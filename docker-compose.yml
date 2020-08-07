@@ -29,3 +29,14 @@ services:
             && python manage.py makemigrations
             && python manage.py migrate
             && python manage.py runserver 0.0.0.0:8000"
+
+  elastic:
+    image: elasticsearch:7.8.0
+    environment:
+    - discovery.type=single-node
+    ports:
+      - 9200:9200
+      - 9300:9300
+    depends_on:
+      - db
+
