@@ -61,14 +61,26 @@ class BlogsList(APIView):
                                         visibility="visible")
 
             blogpost_db.save()
+
             # Save tags
-            create_blog_post_tag(blog_data["tags"])
+
+            add_tags(blogpost_db, blog_data["tags"])
 
             # Index in elasticsearch
             blogpost_es = article_index_payload_builder(blog_data, user.first_name, str(datetime.datetime))
             es.index(index='knowledge_base',body=blogpost_es)
 
         return Response(status=200)
+
+def add_tags(blogpostModel, tags):
+    existing_tags = BlogPostTag.objects.all()
+    for i in tags:
+        if existing_tags.filter(tag=i).exists():
+            continue
+        tag = BlogPostTag(tag=i)
+        tag.save()
+        blogpostModel.tags.add(tag)
+
 
 
 class PopularBlogList(APIView):
@@ -134,7 +146,7 @@ def does_blog_post_exist(author, title):
         cursor.execute("SELECT COUNT(*) FROM api_blogpost WHERE created_by_id = %s AND title = %s", [author, title])
         data = dictfetchall(cursor)
         print(data)
-        if len(data) > 0:
+        if int(data[0]["count"]) > 0:
             return True
         else:
             return False
