@@ -1,0 +1,131 @@
+/* body{
+    background-color: #f6f6f6;  
+  } */
+  
+#post-header{
+    margin-left: 26px;
+}
+
+#details{
+    margin-top:  40px;
+}
+
+.postInteract{
+    margin-right: 10px;
+}
+
+.postDate{
+    margin-top: 14px;
+}
+
+.profileIcon{
+    text-align:center;
+    vertical-align:middle;
+}
+
+#html-part {
+    margin-left: 26px;
+}
+
+#aside {
+    position: relative;
+    left:50px;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.404);
+    transition: 0.2s;
+    width: 90%;
+    border-radius: 12px;
+    margin: 8px 0px;
+    padding: 2px 16px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transform: scale(1.02);
+    cursor:pointer;
+}
+
+.related-post-header{
+    margin-top:60px;
+    clear:both;
+}
+
+#commentCard{
+    margin-top: 30px;
+}
+
+#commentContent {
+    border-bottom-style:solid;
+    border-width:1px;
+    border-color:rgba(128, 128, 128, 0.486);
+}
+
+#comment-section {
+    margin: 2px 25px;
+}
+
+#commentAuthor {
+    text-align:center;
+    vertical-align:middle;
+}
+
+.commentDate{
+    margin-left:20px;
+}
+
+.comment{
+    margin-top: 12px;
+}
+
+.commentPost{
+    margin-left: 16px;
+    padding: 20px 32px;
+    font-size: 22px;
+    text-align: center;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    position: relative;
+    bottom:27px;
+}
+
+.commentPost:hover {
+    background-color: #008bbad3;
+}
+
+.commentInput {
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 3px;
+    border:1px solid rgba(169, 170, 170, 0.397);
+    width: 30%;
+    background-color: rgba(169, 170, 170, 0.164);
+    resize: none;
+}
+
+.commentInput:hover{
+    border:1px solid rgb(50, 177, 219);
+    background-color: white;
+}
+
+.commentInput:focus {
+    border:1px solid rgb(50, 177, 219);
+    background-color: white;
+    outline: none;
+}
+
+.tags{
+    margin: 6px 8px 5px 0px;
+    padding: 3px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    float:left;
+}
+
+.tags:hover{
+    background-color:#4CAF50;
+    color: white;
+    cursor:pointer;
+}
