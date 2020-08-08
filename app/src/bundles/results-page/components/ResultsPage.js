@@ -1,12 +1,11 @@
 import React from 'react';
-import Navbar1 from '../../common/components/navbar';
 import ResultsList from './ResultsList';
+import QueryString from 'query-string';
 
 class ResultsPage extends React.Component {
     render() {
         return (
             <div>
-                <Navbar1 />
                 <ResultsList />
             </div>
         );

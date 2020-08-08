@@ -9,13 +9,15 @@ class PostResult extends React.Component {
 
         // List of tags
         let tagsToShow = post.tags.map((tag) => {
-            let path = `/results?tag=${tag}`;
+            let path = `/search?tag=${tag}`;
             return (
                 <Link to={path} className="mr-2 badge badge-secondary">
                     {tag}
                 </Link>
             );
         });
+
+        let linkToPost = `/posts/${post.id}`;
 
         // Conditionally display blog post elements
         // Knowledge Base Items defaults to only the date - this is the Knowledge Base subtitle
@@ -58,7 +60,7 @@ class PostResult extends React.Component {
                     <h5 className="card-title">
                         <div className="row">
                             <Link
-                                to="/post"
+                                to={linkToPost}
                                 className="title-text col-sm-8 text-decoration-none"
                             >
                                 {post.title}
@@ -78,7 +80,7 @@ class PostResult extends React.Component {
                     </h6>
                     <hr />
                     <p className="card-text">
-                        <Link to="/post" className="text-decoration-none">
+                        <Link to={linkToPost} className="text-decoration-none">
                             <div>{post.body}</div>
                         </Link>
                     </p>

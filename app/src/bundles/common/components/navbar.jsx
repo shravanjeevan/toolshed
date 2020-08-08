@@ -24,8 +24,8 @@ class NavBar1 extends Component {
             </Link>
             <Navbar.Brand bsPrefix="topnav a" href="/">The ToolShed</Navbar.Brand>
             <NavDropdown bsPrefix="topnav a" title="Knowledge Base" id="nav-dropdown">
-                <NavDropdown.Item className="topnav a" href="/knowledge/tools">Tools</NavDropdown.Item>
-                <NavDropdown.Item className="topnav a" href="/knowledge/categories">Categories</NavDropdown.Item>
+                <NavDropdown.Item className="topnav a" href="/tools">Tools</NavDropdown.Item>
+                <NavDropdown.Item className="topnav a" href="/categories">Categories</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link bsPrefix="topnav a" href="/blogs">Blogs</Nav.Link>
           </Nav>

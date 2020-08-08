@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 
+import TagTab from '../../common/components/TagTab';
+
 class PostTags extends Component {
 
     constructor(props) {
@@ -38,7 +40,8 @@ class PostTags extends Component {
                 </div>
                     {
                         this.state.tags.map((item,index)=>{
-                            return <div key = {index} class = "tags" onClick = {this.fetchSearch.bind(this)}> {item} </div>  
+                            // return <div key = {index} class = "tags" onClick = {this.fetchSearch.bind(this)}> {item} </div>  
+                            return <span class="mr-2 mb-2"><TagTab tagName={item}/></span>
                         })
                     } 
                     

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PostResult from '../../common/components/PostResult';
 import {Button}  from 'react-bootstrap'
 
@@ -89,7 +90,7 @@ class BlogsList extends React.Component {
 
         return (
             <div className="container">
-                <div><h2>Blogs <Button className="button" href="/create"> Create Blog </Button></h2> </div>
+                <div><h2>Blogs <Link className="button" to="posts/create"> Create Blog </Link></h2> </div>
                 <div className="mt-4">{postsToShow}</div>
             </div>
         );
