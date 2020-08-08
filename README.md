@@ -14,7 +14,7 @@ $ docker-compose up --force-recreate
 
 To rebuld an individual docker image from scratch, do this:
 ```bash
-$ docker compose build --no-cache <ui|backend>
+$ docker-compose build --no-cache <ui|backend>
 ```
 
 ## Running a database migration
