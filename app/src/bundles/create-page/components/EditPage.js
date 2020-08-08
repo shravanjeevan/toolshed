@@ -5,7 +5,6 @@ import CreateTags from './CreateTags'
 import PublishPost from './PublishPost'
 import axios from 'axios';
 import draftToHtml from 'draftjs-to-html';
-import Navbar1 from '../../common/components/navbar';
 
 class CreatePage extends Component {
     constructor(props) {
@@ -76,7 +75,6 @@ class CreatePage extends Component {
         
         return ( 
             <div>
-                <Navbar1 />
                 <h2 class='my-3'>Create Blog Post</h2>
                 <hr />
                 <div>

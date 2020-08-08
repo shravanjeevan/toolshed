@@ -35,7 +35,7 @@ export default AppHeader;
                     />
                     <div class="input-group-append" id="button-addon4">
                         <button class="btn btn-outline-secondary" type="button">
-                            <Link to="/results">Search</Link>
+                            <Link to="/search">Search</Link>
                         </button>
                     </div>
                     <div class="input-group-append">

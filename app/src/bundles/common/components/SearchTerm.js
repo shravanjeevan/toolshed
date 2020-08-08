@@ -6,6 +6,7 @@ import './PostResult.css';
 
 class SearchResult extends React.Component {
     render() {
+
         let { term } = this.props;
 
         // List of filters

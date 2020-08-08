@@ -7,7 +7,7 @@ import styled from "styled-components"
 class SearchBar extends Component {
   render() {
     let query = 'sometext';
-    let searchPath = `/results?query=${query}`;
+    let searchPath = `/search?query=${query}`;
     return (
       <React.Fragment>
         <div class="input-group mx-auto" style={{
@@ -17,9 +17,9 @@ class SearchBar extends Component {
                 <FormControl className="topnav input" type="text" placeholder="Search"/>
             </Form>
             <div class="input-group-append" >
-                <a type="button" className="button" href={searchPath}>
+                <Link type="button" className="button" to={searchPath}>
                     Search
-                </a>
+                </Link>
             </div>
             <div class="input-group-append">
                         <button
