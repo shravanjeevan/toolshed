@@ -6,10 +6,10 @@
 ## Starting up the app
 ```bash
 $ docker-compose up
-
-# if you need to build fresh images, do this:
+```
+## If you need to build fresh images, do this:
+```bash
 $ docker-compose up --build
-
 ```
 
 ## Running a database migration
@@ -23,37 +23,41 @@ $ docker-compose exec backend python manage.py makemigrations
 $ docker-compose exec backend python manage.py migrate
 ```
 
-## Connecting to the database as a human
+# Connecting to the database as a human
 
-
-```
+```bash
 $ docker-compose up
+```
 
-# See that it's running:
+## See that it's running:
+```bash
 $ docker ps
+```
 
-
-# You;ll be prompted for the password
+## You'll be prompted for the password
+```bash
 $ psql -h 0.0.0.0 -p5432 -U app_user toolbox
 ```
 
 ## Accessing the Django admin panel
 **Username:** admin
+
 **Password:** password
 
-### Creating a superuser account
+## Creating a superuser account
 ```bash
 $ python manage.py createsuperuser
-
 ```
 ___
 
 ## API Endpoints
 
 ### App Home Page
+```
 **GET /categories/explore**
 ```
 
+```
 HTTP 200 OK
 Allow: GET, HEAD, OPTIONS
 Content-Type: application/json
@@ -120,15 +124,14 @@ Vary: Accept
 
 
 ## Starting an elasticsearch
-```
+```bash
 $ docker network create toolnet
 
 $ docker run -d --name elasticsearch --net toolnet -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:7.8.0
-
 ```
 
 Index a document into the customer index:
-```
+```bash
 curl -X PUT "localhost:9200/customer/_doc/1?pretty" -H 'Content-Type: application/json' -d'
 {
   "name": "John Doe"
@@ -136,7 +139,7 @@ curl -X PUT "localhost:9200/customer/_doc/1?pretty" -H 'Content-Type: applicatio
 ```
 
 An example for inserting a knowledge base entry:
-```
+```bash
 curl -X PUT "localhost:9200/tools/_doc/1?pretty" -H 'Content-Type: application/json' -d'
 {
     "title": "Adding a password to your Zoom room",
@@ -157,18 +160,18 @@ curl -X PUT "localhost:9200/tools/_doc/1?pretty" -H 'Content-Type: application/j
 ### Elastic Toolshed
 We're going to use a single ES index to store blog posts and knowledge base items.
 
-Facts:
-```
+### Facts:
+```bash
 index: knowledge_base
 ```
 
 ### Elastic Examples
-```
+```bash
 curl -X GET "localhost:9200/tools/_doc/1?pretty"
 ```
 
 Querying
-```
+```bash
 curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": { "match_all": {} },
@@ -181,7 +184,7 @@ curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/j
 
 
 A fuzzy string search
-```
+```bash
 curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": { "match": { "address": "mill lane" } }
@@ -190,7 +193,7 @@ curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/j
 ```
 
 Another fuzzy string search of the tool index:
-```
+```bash
 curl -X GET "localhost:9200/tools/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": { "match": { "title": "password" } }
@@ -203,7 +206,7 @@ curl -X GET "localhost:9200/tools/_search?pretty" -H 'Content-Type: application/
 
 POST: blogs/
 
-request.data:
+```request.data:
 
 {
     user: '',
@@ -216,4 +219,4 @@ request.data:
 }
 
 request.data.content -> JSON.load()
-
+```
