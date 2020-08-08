@@ -1,9 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component} from 'react';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import axios from 'axios';
 
 class RichEditor extends Component {
   constructor(props) {
@@ -17,43 +15,32 @@ class RichEditor extends Component {
     this.setState({
       editorState,
     })
+    this.props.update(convertToRaw(this.state.editorState.getCurrentContent()))
   }
-  
-  post(tmp){
-    var api = 'http://localhost:3000/blogs/create'
-    
-    axios.post(api, tmp)
-    .then((response)=>{
-        console.log(tmp)
-    })
-    
-    this.setState({
-      editorState: EditorState.createEmpty()
-    })
-}
 
-// code reference: https://blog.csdn.net/qq_20337865/article/details/84566229
-// to preview pic locally as base64
-imageUploadCallBack = file => new Promise(
-  (resolve, reject) => {
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    let img = new Image();
-    reader.onload = function (e) {
-      img.src = this.result
-      resolve({
-        data: {
-          link: img.src
-        }
-      })
+  // code reference: https://blog.csdn.net/qq_20337865/article/details/84566229
+  // to preview pic locally as base64
+  imageUploadCallBack = file => new Promise(
+    (resolve, reject) => {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      let img = new Image();
+      reader.onload = function (e) {
+        img.src = this.result
+        resolve({
+          data: {
+            link: img.src
+          }
+        })
+      }
     }
-  }
-)
+  )
 
 
   render() {
     const { editorState } = this.state;
-    let tmp = btoa(draftToHtml(convertToRaw(editorState.getCurrentContent())))
+    // let tmp = btoa(draftToHtml(convertToRaw(editorState.getCurrentContent())))
+    
     return (
       <div>
         {/* 3rd party library for rich text editor */}
@@ -84,6 +71,7 @@ imageUploadCallBack = file => new Promise(
           />
           
         </div>
+        
         {/* <textarea
           disabled
           value = {tmp}
@@ -91,7 +79,7 @@ imageUploadCallBack = file => new Promise(
         <pre><div dangerouslySetInnerHTML = {{__html:atob(tmp)}} ></div></pre>
         <p>{atob(tmp)}</p> */}
         <br />
-        <button type="button" class="btn btn-primary btn-lg" onClick = {this.post.bind(this, tmp)}> Publish </button>
+        
       </div>
     );
   }
