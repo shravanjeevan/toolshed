@@ -25,6 +25,12 @@ def article_index_payload_builder(blogpost_data, author_first_name, created_date
     }
     return data
 
+class Blogs(APIView):
+    def get(self, request, pk):
+        blog = BlogPostModel.objects.get(id=pk)
+        serializer = BlogSerializer(blog, many=False)
+        return Response(serializer.data)
+
 """
  {
      "title": "Pavan first blogpost",
@@ -158,3 +164,22 @@ def create_blog_post_tag(tags):
             continue
         tag = BlogPostTag(tag=i)
         tag.save()
+
+#  todo: search not working yet
+class Search(APIView):
+    def get(self, request):
+        query = request.GET.get('query')
+        print(query)
+        resp = es.search(body={"query": {"match": {"message": {"query": query}}}})
+        print(resp)
+
+        # {
+        #     "query": {
+        #         "match": {
+        #             "message": {
+        #                 "query": "this is a test"
+        #             }
+        #         }
+        #     }
+        # }
+        return Response(data=request.GET.get('query'), status=200)
