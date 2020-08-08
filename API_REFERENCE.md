@@ -45,11 +45,12 @@ POST /signup
         "title": 'This is a Knowledge Base Post',
         "type": 'knowledge_base_item',
         "tags": ["Videoconferencing", "Zoom", "Security", "Kebabs", "Apple", "Banana"],
-        "createdDate": "15 July 2020",
-        "author": "1234a",
+        "createdOn": "15 July 2020",
+        "authorId": "1234a",
+        "authorDisplayName": "Jacky Lee",
         "likeCount": 10,
         "commentCount": 31,
-        "body":
+        "content":
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
     },
     {
@@ -57,11 +58,12 @@ POST /signup
         "title": 'This is a Blog Post',
         "type": 'blog_post',
         "tags": ["Shoes", "Pizza", "Baking"],
-        "createdDate": "15 July 2020",
-        "author": "1234a",
+        "createdOn": "15 July 2020",
+        "authorId": "1234a",
+        "authorDisplayName": "Jacky Lee",
         "likeCount": 5,
         "commentCount": 3,
-        "body":
+        "content":
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
     }
 ]
@@ -108,19 +110,19 @@ POST /signup
 [
     {
         "tag": "security",
-        "tagcount": 4
+        "tagCount": 4
     },
     {
         "tag": "cloud",
-        "tagcount": 4
+        "tagCount": 4
     },
     {
         "tag": "aws",
-        "tagcount": 3
+        "tagCount": 3
     },
     {
         "tag": "azure",
-        "tagcount": 2
+        "tagCount": 2
     }
 ]
 ```
@@ -139,11 +141,11 @@ POST /signup
 [
     {
         "category": "Videoconferencing",
-        "publishedcount": 1
+        "publishedCount": 1
     },
     {
         "category": "MOOC",
-        "publishedcount": 2
+        "publishedCount": 2
     }
 ]
 ```
@@ -213,7 +215,7 @@ POST /signup
         "title": "This is a Blog Post",
         "type": "blog_post",
         "tags": ["Videoconferencing", "Zoom"],
-        "createdDate": "15 July 2020",
+        "createdOn": "15 July 2020",
         "author": "1234a",
         "likeCount": 10,
         "commentCount": 31,
@@ -225,7 +227,7 @@ POST /signup
         "title": "This is a Knowledge Base Item",
         "type": "knowledge_base_item",
         "tags": ["Shoes", "Pizza", "Baking"],
-        "createdDate": "15 July 2020",
+        "createdOn": "15 July 2020",
         "author": "1234a",
         "likeCount": 10,
         "commentCount": 31,
@@ -250,7 +252,7 @@ POST /signup
         title: 'This is a Blog Post',
         type: 'blog_post',
         tags: ['Videoconferencing', 'Zoom'],
-        createdDate: '15 July 2020',
+        createdOn: '15 July 2020',
         "author": "1234a",
         likeCount: 10,
         commentCount: 31,
@@ -274,13 +276,13 @@ POST /signup
     {
         "id": 123,
         "author": "1234a",
-        "createdDate": "20 July 2020",
+        "createdOn": "20 July 2020",
         "body": "comment body..."
     },
     {
         "id": 125,
         "author": "1234a",
-        "createdDate": "20 July 2020",
+        "createdOn": "20 July 2020",
         "body": "comment body..."
     }
 ]

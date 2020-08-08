@@ -13,11 +13,6 @@ def add_blogposts(apps, schema_editor):
                 last_name='R')
     user.save()
 
-    for i in range(10):
-        title = "Cloud Security 1" + str(i)
-        blogpost = BlogPost(title=title, created_by=user)
-        blogpost.save()
-
 
 class Migration(migrations.Migration):
 

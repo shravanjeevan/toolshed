@@ -9,7 +9,7 @@ from .models import BlogPostTag
 from .models import User
 from .serializers import BlogSerializer
 
-# es = Elasticsearch(["http://localhost:9200"])
+
 es = Elasticsearch(["http://elastic:9200"])
 
 
@@ -19,23 +19,33 @@ def article_index_payload_builder(blogpost_data, author_first_name, created_date
         "content": blogpost_data["content"],
         "type": "blog",
         "author": author_first_name,
-        "created_date": created_date,
+        "createdDate": created_date,
         "tags": blogpost_data["tags"],
-        "like_count": 0
+        "likeCount": 0
     }
     return data
 
 class Blogs(APIView):
     def get(self, request, pk):
-        blog = BlogPostModel.objects.get(id=pk)
-        serializer = BlogSerializer(blog, many=False)
-        return Response(serializer.data)
+        blogs = BlogPostModel.objects.get(id=pk)
+
+        values = blogs.__dict__
+        values["tags"] = []
+        values["createdByDisplayName"] = blogs.createdBy.first_name + ' ' + blogs.createdBy.last_name
+        values["type"] = "blog_post"
+
+        for tag in blogs.tags.all():
+            values["tags"].append(tag.tag)
+
+        del values['_state']
+
+        return Response(status=200, data=values)
 
 """
  {
      "title": "Pavan first blogpost",
      "content": "Content for the blogpost blah blah blah blach",
-     "author": "1",
+     "authorId": "1",
      "tags": ["happiness", "joy"]
  }
 """
@@ -43,27 +53,33 @@ class Blogs(APIView):
 class BlogsList(APIView):
     def get(self, request):
         blogs = BlogPostModel.objects.all()
-        serializer = BlogSerializer(blogs, many=True)
-        return Response(serializer.data)
 
+        values = list(blogs.values())
+
+        for idx, blog in enumerate(blogs):
+            values[idx]["tags"] = []
+            values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
+            values[idx]["type"] = "blog_post"
+            for tagId in blog.tags.all():
+                values[idx]["tags"].append(tagId.tag)
+
+
+        return Response(status=200, data=values)
 
     def post(self, request):
         blog_data = request.data
 
-        print(request.data)
-        print(blog_data["author"])
-
-        if does_blog_post_exist(blog_data["author"], blog_data["title"]):
+        if does_blog_post_exist(blog_data["authorId"], blog_data["title"]):
 
             data = {'message': "You already have a blogpost with the same title. Please choose another title."}
             return Response(data=data, status=403)
         else:
-            user = User.objects.get(id=blog_data["author"])
+            user = User.objects.get(id=blog_data["authorId"])
 
             blogpost_db = BlogPostModel(title=blog_data["title"],
                                         content=blog_data["content"],
-                                        created_by=user,
-                                        like_count=0,
+                                        createdBy=user,
+                                        likeCount=0,
                                         visibility="visible")
 
             blogpost_db.save()
@@ -91,7 +107,7 @@ def add_tags(blogpostModel, tags):
 
 class PopularBlogList(APIView):
     def get(self, request):
-        blogs = BlogPostModel.objects.all().order_by('-like_count')[:3]
+        blogs = BlogPostModel.objects.all().order_by('-likeCount')[:3]
         serializer = BlogSerializer(blogs, many=True)
         return Response(serializer.data)
 
@@ -123,9 +139,9 @@ class ExploreCategories(APIView):
     def get(self, request):
         with connection.cursor() as cursor:
             cursor.execute('SELECT category, '
-                           'COUNT(1) as publishedCount '
+                           'COUNT(1) as "publishedCount" '
                            'from API_TOOL GROUP BY '
-                           'CATEGORY ORDER BY publishedCount DESC '
+                           'CATEGORY ORDER BY "publishedCount" DESC '
                            'LIMIT 6')
             data = dictfetchall(cursor)
 
@@ -135,21 +151,20 @@ class ExploreCategories(APIView):
 class PopularBlogTags(APIView):
     def get(self, request):
         with connection.cursor() as cursor:
-            cursor.execute('select tag, count(1) tagcount from '
+            cursor.execute('select tag, count(1) "tagCount" from '
                            '(select ab.tag as tag from  '
                            'api_blogpost_tags abt join api_blogposttag ab '
                            'on ab.id = abt.blogposttag_id) t '
                            'group by tag '
-                           'order by tagCount desc limit 10')
+                           'order by "tagCount" desc limit 10')
             data = dictfetchall(cursor)
 
         return Response(data, status=200)
 
 
 def does_blog_post_exist(author, title):
-    print("checking if this author and title already exist")
     with connection.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM api_blogpost WHERE created_by_id = %s AND title = %s", [author, title])
+        cursor.execute("SELECT COUNT(*) FROM api_blogpost WHERE api_blogpost.\"createdBy_id\" = %s AND title = %s", [author, title])
         data = dictfetchall(cursor)
         print(data)
         if int(data[0]["count"]) > 0:
