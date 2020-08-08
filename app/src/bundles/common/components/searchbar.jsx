@@ -17,11 +17,9 @@ class SearchBar extends Component {
                 <FormControl className="topnav input" type="text" placeholder="Search"/>
             </Form>
             <div class="input-group-append" >
-              <Link to={searchPath}>
-                <Button type="button" className="button">
+                <a type="button" className="button" href={searchPath}>
                     Search
-                </Button>
-              </Link>
+                </a>
             </div>
             <div class="input-group-append">
                         <button
@@ -34,20 +32,20 @@ class SearchBar extends Component {
                             Filters
                         </button>
                         <div class="dropdown-menu">
-                            <a class="button">
+                            <a class="button" href="#">
                                 Knowledge Base Items
                             </a>
-                            <a class="button">
+                            <a class="button" href="#">
                                 Blog Post Items
                             </a>
-                            <a class="button">
+                            <a class="button" href="#">
                                 New Posts
                             </a>
                             <div
                                 role="separator"
                                 class="dropdown-divider"
                             ></div>
-                            <a class="button">
+                            <a class="button" href="#">
                                 Popular Posts
                             </a>
                         </div>
