@@ -6,7 +6,6 @@ import Post from '../../post-page/components/Post';
 import ResultsPage from '../../results-page/components/ResultsPage';
 import CreatePage from '../../create-page/components/CreatePage';
 import CategoriesPage from '../../categories/components/categories';
-import ToolsPage from '../../tools/components/tools';
 import BlogsPage from '../../blogs/components/BlogsPage';
 
 class App extends React.Component {
@@ -20,7 +19,6 @@ class App extends React.Component {
                     <Route path="/create" exact component={CreatePage}/>
                     <Route path="/blogs" exact component={BlogsPage}/>
                     <Route path="/knowledge/categories" exact component={CategoriesPage}/>
-                    <Route path="/knowledge/tools" exact component={ToolsPage}/>
                 </BrowserRouter>
             </div>
         );
