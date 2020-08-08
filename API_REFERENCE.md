@@ -2,6 +2,8 @@
 
 ### Summary of endpoints
 ```
+GET /search
+
 GET /posts
 GET /posts/popular
 GET /posts/related
@@ -44,10 +46,7 @@ POST /signup
         "type": 'knowledge_base_item',
         "tags": ["Videoconferencing", "Zoom", "Security", "Kebabs", "Apple", "Banana"],
         "createdDate": "15 July 2020",
-        "author": {
-            "id": 1,
-            "displayName": "Name"
-        },
+        "author": "1234a",
         "likeCount": 10,
         "commentCount": 31,
         "body":
@@ -59,10 +58,7 @@ POST /signup
         "type": 'blog_post',
         "tags": ["Shoes", "Pizza", "Baking"],
         "createdDate": "15 July 2020",
-        "author": {
-            "id": 2,
-            "displayName": "Name"
-        },
+        "author": "1234a",
         "likeCount": 5,
         "commentCount": 3,
         "body":
@@ -181,9 +177,24 @@ POST /signup
 
 ### **`GET /posts`**
 
+**Description**: Fetches all posts.
+
+**Usage**: Not sure
+
+**Query Parameters**: None
+
+**Sample Response**:
+```
+```
+
+
+
+
+### **`GET /search`**
+
 **Description**: Fetches a list of posts (both blog posts and knowledge base items). Ordered by relevance/popularity.
 
-**Usage**: /search page. (relabelled from /results)
+**Usage**: /search page and the search component. (relabelled from /results)
 
 **Query Parameters**:
 - query | string | required | text-based search parameter, whatever the user enters.
@@ -203,10 +214,7 @@ POST /signup
         "type": "blog_post",
         "tags": ["Videoconferencing", "Zoom"],
         "createdDate": "15 July 2020",
-        "author": {
-            "id": 1234,
-            "displayName": "Name"
-        },
+        "author": "1234a",
         "likeCount": 10,
         "commentCount": 31,
         "body":
@@ -218,10 +226,7 @@ POST /signup
         "type": "knowledge_base_item",
         "tags": ["Shoes", "Pizza", "Baking"],
         "createdDate": "15 July 2020",
-        "author": {
-            "id": 1234,
-            "displayName": "Name"            
-        },
+        "author": "1234a",
         "likeCount": 10,
         "commentCount": 31,
         "body":
@@ -246,10 +251,7 @@ POST /signup
         type: 'blog_post',
         tags: ['Videoconferencing', 'Zoom'],
         createdDate: '15 July 2020',
-        author: {
-            id: 1234,
-            displayName: 'Name'
-        },
+        "author": "1234a",
         likeCount: 10,
         commentCount: 31,
         body:
@@ -271,19 +273,13 @@ POST /signup
 [
     {
         "id": 123,
-        "author": {
-            "id": 123,
-            "displayName": "Pete"
-        },
+        "author": "1234a",
         "createdDate": "20 July 2020",
         "body": "comment body..."
     },
     {
         "id": 125,
-        "author": {
-            "id": 124,
-            "displayName": "Nancy"
-        },
+        "author": "1234a",
         "createdDate": "20 July 2020",
         "body": "comment body..."
     }
