@@ -9,7 +9,12 @@ $ docker-compose up
 ```
 ## If you need to build fresh images, do this:
 ```bash
-$ docker-compose up --build
+$ docker-compose up --force-recreate
+```
+
+To rebuld an individual docker image from scratch, do this:
+```bash
+$ docker-compose build --no-cache <ui|backend>
 ```
 
 ## Running a database migration
