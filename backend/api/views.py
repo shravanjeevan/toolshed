@@ -27,9 +27,19 @@ def article_index_payload_builder(blogpost_data, author_first_name, created_date
 
 class Blogs(APIView):
     def get(self, request, pk):
-        blog = BlogPostModel.objects.get(id=pk)
-        serializer = BlogSerializer(blog, many=False)
-        return Response(serializer.data)
+        blogs = BlogPostModel.objects.get(id=pk)
+
+        values = blogs.__dict__
+        values["tags"] = []
+        values["createdByDisplayName"] = blogs.createdBy.first_name + ' ' + blogs.createdBy.last_name
+        values["type"] = "blog_post"
+
+        for tag in blogs.tags.all():
+            values["tags"].append(tag.tag)
+
+        del values['_state']
+
+        return Response(status=200, data=values)
 
 """
  {
