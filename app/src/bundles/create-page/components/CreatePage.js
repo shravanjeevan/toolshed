@@ -64,9 +64,9 @@ class CreatePage extends Component {
                 <h2 class='my-3'>Create Blog Post</h2>
                 <hr />
                 <div>
-                    <CreateTags update={this.updateTags}/>
-                    <CreateTitle update={this.updateTitle}/>
-                    <CreateContent update={this.updateContent}/>
+                    <CreateTags update={this.updateTags} tags={this.state.tags}/>
+                    <CreateTitle update={this.updateTitle} title={this.state.title}/>
+                    <CreateContent update={this.updateContent} content={this.state.content}/>
                     <PublishPost submit={this.publish}/>
                 </div>
             </div>

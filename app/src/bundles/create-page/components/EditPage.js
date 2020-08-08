@@ -16,9 +16,10 @@ class CreatePage extends Component {
         this.publish=this.publish.bind(this)
         this.state = { 
             tags:[],
-            title:'',
-            content:'',
+            title:'demo',
+            content:'PHA+SGV5IHRoaXMgPHN0cm9uZz5lZGl0b3I8L3N0cm9uZz4gcm9ja3M8L3A+',
         }
+        
     }
     
     updateTags(tags) {
@@ -28,6 +29,7 @@ class CreatePage extends Component {
     }
     
     updateTitle(title) {
+    
         this.setState({
             title:title
         })
@@ -40,14 +42,14 @@ class CreatePage extends Component {
     }
     
     publish(version){
-        let api = 'http://localhost:3000/blogs/create'
+        let api = 'http://localhost:3000/blogs/edit'
         let data = {
             tags:this.state.tags,
             title:this.state.title,
             content: btoa(draftToHtml(this.state.content)),
             stage:version
         }
-        axios.post(api, data)
+        axios.put(api, data)
         .then((response)=>{
             console.log(JSON.stringfy(response))
         })
@@ -59,7 +61,7 @@ class CreatePage extends Component {
     }
     
     getData=()=>{
-        var api = 'http://localhost:3000/blog/draft'
+        var api = 'http://localhost:3000/draft.json'
         axios.get(api)
         .then((response)=>{this.setState({
             tags:response.data.tags,
@@ -71,6 +73,7 @@ class CreatePage extends Component {
     }
     
     render() { 
+        
         return ( 
             <div>
                 <Navbar1 />
@@ -82,6 +85,9 @@ class CreatePage extends Component {
                     <CreateContent update={this.updateContent} content={this.state.content}/>
                     <PublishPost submit={this.publish}/>
                 </div>
+                
+                {console.log(this.state.title)}
+                {/* {this.state.title} */}
             </div>
         );
     }

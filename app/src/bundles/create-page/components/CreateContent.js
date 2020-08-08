@@ -11,7 +11,7 @@ class CreateContent extends Component {
             <div class="container"> 
                 <div class="row">
                     <div class="col-1"> <h4> Content </h4> </div>
-                    <div class="col-auto"> <RichEditor update={this.props.update}/> </div>
+                    <div class="col-auto"> <RichEditor update={this.props.update} content={this.props.content}/> </div>
                 </div>
             </div>
         );

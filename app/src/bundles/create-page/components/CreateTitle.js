@@ -4,8 +4,9 @@ class CreateTitle extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            input:''
+            input:this.props.title
         }
+        {console.log(this.props.title)}
     }
     
     show(e){
@@ -14,6 +15,11 @@ class CreateTitle extends Component {
         })
         this.props.update(this.state.input)
     }
+    
+    
+    componentWillReceiveProps(nextProps) {
+        this.setState({input: nextProps.data});
+     }
     
     render() { 
         return ( 
@@ -25,7 +31,7 @@ class CreateTitle extends Component {
                         type="text" 
                         placeholder='Enter your title...'
                         class='w-100' 
-                        value={this.state.input} 
+                        value={this.state.input}
                         onChange={this.show.bind(this)} 
                     />
                     </div>

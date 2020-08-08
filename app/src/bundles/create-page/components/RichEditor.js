@@ -1,14 +1,37 @@
 import React, { Component} from 'react';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
+import draftToHtml from 'draftjs-to-html';
 
 class RichEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
+      html:this.props.content
     }
+  }
+  
+  componentDidMount(){
+    this.draft();
+  }
+  
+  draft=()=>{
+    const html = atob(this.props.content)
+    console.log('html')
+    console.log(html)
+    const contentBlock = htmlToDraft(html);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+      const editorState = EditorState.createWithContent(contentState);
+      this.setState ({
+        editorState:editorState
+      });
+    }
+    
   }
 
   onEditorStateChange = (editorState) => {
@@ -69,6 +92,10 @@ class RichEditor extends Component {
             }}
             onEditorStateChange={this.onEditorStateChange}
           />
+        {/* <textarea
+          disabled
+          value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+        /> */}
           
         </div>
         
@@ -79,6 +106,8 @@ class RichEditor extends Component {
         <pre><div dangerouslySetInnerHTML = {{__html:atob(tmp)}} ></div></pre>
         <p>{atob(tmp)}</p> */}
         <br />
+        {/* <div> {this.state.content} </div>
+        <div>{atob(this.props.content)}</div> */}
         
       </div>
     );

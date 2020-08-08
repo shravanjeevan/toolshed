@@ -5,7 +5,6 @@ class CreateTags extends Component {
         super(props);
         this.state = { 
             input:'',
-            tags:[]
         }
     }
     
@@ -16,27 +15,22 @@ class CreateTags extends Component {
         })
     }
     
-    
-    
     // add tags
     addTags() {
         let split = this.state.input.split(',')
-        let list = this.state.tags
+        let list = this.props.tags
         list.push.apply(list,split)
         this.setState({
-            tags:list,
             input:''
         })
-        this.props.update(this.state.tags)
+        this.props.update(list)
     }
     
     // remove tags added
     remove(index) {
-        let list = this.state.tags
-        list.splice(index, 1)
-        this.setState({
-            tags:list
-        })
+        let list = this.props.tags
+        list.splice(index,1)
+        this.props.update(list)
     }
     
     render() { 
@@ -68,7 +62,7 @@ class CreateTags extends Component {
                     {/* show added tags */}
                     <div class='col-4'>
                         {
-                            this.state.tags.map((item, index) => {
+                            this.props.tags.map((item, index) => {
                                 return(
                                     <button 
                                     key = {index+item}
