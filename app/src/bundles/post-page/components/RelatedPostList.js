@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class RelatedPostList extends Component {
@@ -31,12 +32,12 @@ class RelatedPostList extends Component {
             <div>
             {
                     this.state.related.map((item,index)=>{
-                        return (<div class="card" key={index}>
+                        return (<Link className="card" key={index} to={`/posts/${item.title}`}>
                                     {/* <div class="card-body"> */}
                                         <h4> {item.title} </h4>
                                         <p> {item.type} </p>
                                     {/* </div> */}
-                                </div>
+                                </Link>
                         )  
                     })
                 }

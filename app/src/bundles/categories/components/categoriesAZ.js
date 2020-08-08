@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button}  from 'react-bootstrap'
-import {withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 class Category extends React.Component {
     render() {
@@ -18,9 +18,9 @@ class Category extends React.Component {
 
         var categoriesToShow = categories_sort.map((categoryName) => {
             return (
-                <a className="btn btn-primary p-3 mr-4 mb-4 rounded-pill" type="button" href="/knowledge/tools">
+                <Link className="btn btn-primary p-3 mr-4 mb-4 rounded-pill" type="button" to={`/categories/${categoryName}`}>
                     {categoryName}
-                </a>
+                </Link>
             );
         });
 

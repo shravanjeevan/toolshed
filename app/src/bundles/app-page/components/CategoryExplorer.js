@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {Button}  from 'react-bootstrap'
 
 class CategoryExplorer extends React.Component {
@@ -6,7 +7,7 @@ class CategoryExplorer extends React.Component {
         return (<div><h2>Popular Categories</h2></div>)
     }
     renderHomepage() {
-        return(<div><h2>Explore Categories <Button className="button" href="/knowledge/categories"> All Categories </Button></h2> </div>)
+        return(<div><h2>Explore Categories <Link className="button" to="/categories"> All Categories </Link></h2> </div>)
     }
     toRender() {
         if (window.location.pathname == '/') {
@@ -25,9 +26,9 @@ class CategoryExplorer extends React.Component {
 
         var categoriesToShow = categories.map((categoryName) => {
             return (
-                <a className="btn btn-primary p-3 mr-4 mb-4 rounded-pill" type="button" href="/knowledge/tools">
+                <Link className="btn btn-primary p-3 mr-4 mb-4 rounded-pill" type="button" to={`/categories/${categoryName}`}>
                     {categoryName}
-                </a>
+                </Link>
             );
         });
 
