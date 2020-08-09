@@ -39,6 +39,8 @@ class Blogs(APIView):
         values["tags"] = []
         values["createdByDisplayName"] = blogs.createdBy.first_name + ' ' + blogs.createdBy.last_name
         values["type"] = "blog_post"
+        values["createdById"] = blogs.createdBy.id
+        del values["createdBy_id"]
 
         for tag in blogs.tags.all():
             values["tags"].append(tag.tag)
@@ -74,7 +76,6 @@ def blogmodelToDict(blogs):
         values[idx]["tags"] = []
         values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
         values[idx]["type"] = "blog_post"
-        print(blog.tags.all())
         for tagId in blog.tags.all():
             values[idx]["tags"].append(tagId.tag)
 
@@ -101,6 +102,8 @@ class BlogsList(APIView):
             values[idx]["tags"] = []
             values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
             values[idx]["type"] = "blog_post"
+            values[idx]["createdById"] = blog.createdBy.id
+            del values[idx]["createdBy_id"]
 
             for tagId in blog.tags.all():
                 values[idx]["tags"].append(tagId.tag)
@@ -148,8 +151,19 @@ def add_tags(blogpostModel, tags):
 class PopularBlogList(APIView):
     def get(self, request):
         blogs = BlogPostModel.objects.all().order_by('-likeCount')[:3]
-        serializer = BlogSerializer(blogs, many=True)
-        return Response(serializer.data)
+
+        values = list(blogs.values())
+
+        for idx, blog in enumerate(blogs):
+            values[idx]["tags"] = []
+            values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
+            values[idx]["type"] = "blog_post"
+            values[idx]["createdById"] = blog.createdBy.id
+            del values[idx]["createdBy_id"]
+
+            for tagId in blog.tags.all():
+                values[idx]["tags"].append(tagId.tag)
+        return Response(status=200, data=values)
 
 
 def dictfetchall(cursor):
