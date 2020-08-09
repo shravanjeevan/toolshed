@@ -17,6 +17,13 @@ To rebuld an individual docker image from scratch, do this:
 $ docker-compose build --no-cache <ui|backend>
 ```
 
+### Adding Sample Data to the DB
+Once the app is running and responsibe to search (it can take up to a minute due to elasticsearch),
+we can load test data like so:
+```bash
+$ sh backend/data/create-blogs.sh
+```
+
 ## Running a database migration
 
 A database migration will happen as soon as the app starts up using docker-compose.
