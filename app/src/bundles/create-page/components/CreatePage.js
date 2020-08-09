@@ -5,7 +5,6 @@ import CreateTags from './CreateTags'
 import PublishPost from './PublishPost'
 import axios from 'axios';
 import draftToHtml from 'draftjs-to-html';
-import Navbar1 from '../../common/components/navbar';
 import './CreatePage.css'
 
 
@@ -60,7 +59,6 @@ class CreatePage extends Component {
     render() { 
         return ( 
             <div>
-                <Navbar1 />
                 <h2 class='my-3'>Create Blog Post</h2>
                 <hr />
                 <div>
