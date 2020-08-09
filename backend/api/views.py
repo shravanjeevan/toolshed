@@ -4,12 +4,15 @@ from django.db import connection
 from elasticsearch import Elasticsearch
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import viewsets, permissions, generics
+
+from knox.models import AuthToken
 
 from .models import BlogPost as BlogPostModel
 from .models import BlogPostTag
 from .models import UserInfo
 from .models import Tool
-from .serializers import BlogSerializer
+from .serializers import BlogSerializer, CreateUserSerializer, UserSerializer
 
 es = Elasticsearch(["http://elastic:9200"])
 
@@ -45,28 +48,28 @@ class Blogs(APIView):
         return Response(status=200, data=values)
 
 
-"""
- {
-     "title": "Pavan first blogpost",
-     "content": "Content for the blogpost blah blah blah blach",
-     "authorId": "1",
-     "tags": ["happiness", "joy"]
- }
-"""
+    """
+    {
+        "title": "Pavan first blogpost",
+        "content": "Content for the blogpost blah blah blah blach",
+        "authorId": "1",
+        "tags": ["happiness", "joy"]
+    }
+    """
 
 
-def blogmodelToDict(blogs):
-    values = list(blogs.values())
+    def blogmodelToDict(blogs):
+        values = list(blogs.values())
 
-    for idx, blog in enumerate(blogs):
-        values[idx]["tags"] = []
-        values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
-        values[idx]["type"] = "blog_post"
-        print(blog.tags.all())
-        for tagId in blog.tags.all():
-            values[idx]["tags"].append(tagId.tag)
+        for idx, blog in enumerate(blogs):
+            values[idx]["tags"] = []
+            values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
+            values[idx]["type"] = "blog_post"
+            print(blog.tags.all())
+            for tagId in blog.tags.all():
+                values[idx]["tags"].append(tagId.tag)
 
-    return values
+        return values
 
 
 class BlogsList(APIView):
@@ -116,11 +119,11 @@ class BlogsList(APIView):
         return Response(status=200, data={"message": "Successfully add a new blog post"})
 
 
-def add_tags(blogpostModel, tags):
-    for i in tags:
-        tag = BlogPostTag(tag=i)
-        tag.save()
-        blogpostModel.tags.add(tag)
+    def add_tags(blogpostModel, tags):
+        for i in tags:
+            tag = BlogPostTag(tag=i)
+            tag.save()
+            blogpostModel.tags.add(tag)
 
 
 class PopularBlogList(APIView):
@@ -130,13 +133,13 @@ class PopularBlogList(APIView):
         return Response(serializer.data)
 
 
-def dictfetchall(cursor):
-    "Return all rows from a cursor as a dict"
-    columns = [col[0] for col in cursor.description]
-    return [
-        dict(zip(columns, row))
-        for row in cursor.fetchall()
-        ]
+    def dictfetchall(cursor):
+        "Return all rows from a cursor as a dict"
+        columns = [col[0] for col in cursor.description]
+        return [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+            ]
 
 
 class AllCategories(APIView):
@@ -239,3 +242,16 @@ class Tools(APIView):
             value = {"id": t.id, "name": t.name, "category": t.category}
             values.append(value)
         return Response(status=200, data=values)
+
+
+class RegistrationAPI(generics.GenericAPIView):
+    serializer_class = CreateUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
+        })
