@@ -30,7 +30,10 @@ def article_index_payload_builder(blogpost_db_id, blogpost_data, author_first_na
 
 class Blogs(APIView):
     def get(self, request, pk):
-        blogs = BlogPostModel.objects.get(id=pk)
+        try:
+            blogs = BlogPostModel.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
 
         values = blogs.__dict__
         values["tags"] = []
@@ -44,15 +47,24 @@ class Blogs(APIView):
 
         return Response(status=200, data=values)
 
+    def delete(self, request, pk):
+        try:
+            blog = BlogPostModel.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "The post you're trying to delete "
+                                                         "may have already been deleted. "
+                                                         "Can't find it here."})
+        blog.delete()
 
-"""
- {
-     "title": "Pavan first blogpost",
-     "content": "Content for the blogpost blah blah blah blach",
-     "authorId": "1",
-     "tags": ["happiness", "joy"]
- }
-"""
+        es.delete_by_query(index='knowledge_base', body=
+        {
+            "query": {
+                "match": {
+                    "id": pk,
+                }
+            }
+        })
+        return Response(status=200, data={"message": "Post deleted"})
 
 
 def blogmodelToDict(blogs):
@@ -67,6 +79,16 @@ def blogmodelToDict(blogs):
             values[idx]["tags"].append(tagId.tag)
 
     return values
+
+
+"""
+ {
+     "title": "Pavan first blogpost",
+     "content": "Content for the blogpost blah blah blah blach",
+     "authorId": "1",
+     "tags": ["happiness", "joy"]
+ }
+"""
 
 
 class BlogsList(APIView):
