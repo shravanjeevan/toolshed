@@ -2,7 +2,7 @@
 
 ### Summary of endpoints
 ```
-GET /search
+GET /search *
 
 GET /posts *
 GET /posts/popular *
