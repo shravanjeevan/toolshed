@@ -4,12 +4,12 @@
 ```
 GET /search
 
-GET /posts
-GET /posts/popular
+GET /posts *
+GET /posts/popular *
 GET /posts/related
-POST /posts
+POST /posts *
 
-GET /posts/:post_id
+GET /posts/:post_id *
 PUT /posts/:post_id
 DELETE /posts/:post_id
 
@@ -17,10 +17,12 @@ GET /posts/post_id/comments
 POST /posts/:post_id/comments
 DELETE /posts/:post_id/comments/:comment_id
 
-GET /categories/popular
+GET /categories/popular *
 GET /categories
 GET /categories/:category_name
-GET /tags/popular
+GET /tools
+
+GET /tags/popular *
 
 POST /login
 POST /signup
@@ -301,9 +303,7 @@ POST /signup
 ```
 {
     [
-        "id":123,
         "authorId":1,
-        "date":"15 June 2020",
         "body":"Le texte, qui a reçu le soutien de 73 représentants républicains, doit maintenant être ",
         "postId":4125
     ]
@@ -367,7 +367,6 @@ POST /signup
         "title":"How to install zoom",
         "content":"PHA+SGV5IHRoaXMgPHN0cm9uZz5lZGl0b3I8L3N0cm9uZz4gcm9ja3M8L3A+"
         "authorId":1,
-        "createdOn": "15 July 2020"
     }
 ]
 ```

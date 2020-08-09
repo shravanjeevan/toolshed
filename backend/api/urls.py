@@ -15,7 +15,11 @@ urlpatterns = [
     path('posts/<int:pk>', views.Blogs.as_view()),
 
     path('categories/', views.AllCategories.as_view()),
-    path('categories/explore', views.ExploreCategories.as_view()),
+    path('categories/popular', views.ExploreCategories.as_view()),
+    path('categories/<str:category>', views.FilterCategories.as_view()),
+    path('categories/', views.ExploreCategories.as_view()),
+
+    path('tools/', views.Tools.as_view()),
 
     path('tags/popular/', views.PopularBlogTags.as_view()),
 
