@@ -185,7 +185,7 @@ class Search(APIView):
     def get(self, request):
         query = request.GET.get('query')
         print(query)
-        resp = es.search(body={"query": {"match": {"message": {"query": query}}}})
+        resp = es.search(body={"query": {"match": {"content": {"query": query}}}})
         print(resp)
 
         # {
