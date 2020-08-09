@@ -16,7 +16,7 @@ def createTools(apps, schema_editor):
     openLearning = Tool(name="Open Learning", category="MOOC Platform")
     openLearning.save()
 
-    webcms2 = Tool(name="WebCMS 3", category="Course Administration")
+    webcms2 = Tool(name="WebCMS 2", category="Course Administration")
     webcms2.save()
 
     slack = Tool(name="Slack", category="Communication")

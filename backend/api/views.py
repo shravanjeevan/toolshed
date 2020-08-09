@@ -7,6 +7,7 @@ import datetime
 from .models import BlogPost as BlogPostModel
 from .models import BlogPostTag
 from .models import User
+from .models import Tool
 from .serializers import BlogSerializer
 
 
@@ -125,14 +126,9 @@ class AllCategories(APIView):
     def get(self, request):
         with connection.cursor() as cursor:
             cursor.execute('SELECT distinct category from API_TOOL')
-            data = cursor.fetchall()
+            data = dictfetchall(cursor)
 
-        response_json = []
-        for i in data:
-            category_name = i[0]
-            response_json.append(category_name)
-
-        return Response(response_json, status=200)
+        return Response(data, status=200)
 
 # GET: categories/explore
 class ExploreCategories(APIView):
@@ -198,3 +194,24 @@ class Search(APIView):
         #     }
         # }
         return Response(data=request.GET.get('query'), status=200)
+
+
+class FilterCategories(APIView):
+    def get(self, request, category):
+        tools = Tool.objects.filter(category=category)
+        values = []
+        for idx, t in enumerate(tools):
+            value = {"id": t.id, "name": t.name, "category": t.category}
+            values.append(value)
+        return Response(status=200, data=values)
+
+
+class Tools(APIView):
+    def get(self, request):
+        tools = Tool.objects.all()
+
+        values = []
+        for idx, t in enumerate(tools):
+            value = {"id": t.id, "name": t.name, "category": t.category}
+            values.append(value)
+        return Response(status=200, data=values)
