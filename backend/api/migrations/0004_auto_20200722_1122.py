@@ -5,13 +5,14 @@ from ..models import BlogPost
 from ..models import UserInfo
 
 def add_blogposts(apps, schema_editor):
-    user = UserInfo(first_name='Data Migration First Name',
-                last_name='Data Migration Last Name')
-    user.save()
+    # user = User(first_name='Data Migration First Name',
+    #             last_name='Data Migration Last Name')
+    # user.save()
 
-    user = UserInfo(first_name='Pav',
-                last_name='R')
-    user.save()
+    # user = User(first_name='Pav',
+    #             last_name='R')
+    # user.save()
+    pass
 
 
 class Migration(migrations.Migration):

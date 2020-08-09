@@ -24,5 +24,9 @@ urlpatterns = [
 
     re_path(r'search/$', views.Search.as_view()),
 
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    path('api/auth/', include('knox.urls')),
+
+    path("auth/register/", views.RegistrationAPI.as_view())
 ]
