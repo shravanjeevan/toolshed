@@ -33,12 +33,17 @@ def article_index_payload_builder(blogpost_db_id, blogpost_data, author_first_na
 
 class Blogs(APIView):
     def get(self, request, pk):
-        blogs = BlogPostModel.objects.get(id=pk)
+        try:
+            blogs = BlogPostModel.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
 
         values = blogs.__dict__
         values["tags"] = []
         values["createdByDisplayName"] = blogs.createdBy.first_name + ' ' + blogs.createdBy.last_name
         values["type"] = "blog_post"
+        values["createdById"] = blogs.createdBy.id
+        del values["createdBy_id"]
 
         for tag in blogs.tags.all():
             values["tags"].append(tag.tag)
@@ -47,29 +52,47 @@ class Blogs(APIView):
 
         return Response(status=200, data=values)
 
+    def delete(self, request, pk):
+        try:
+            blog = BlogPostModel.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "The post you're trying to delete "
+                                                         "may have already been deleted. "
+                                                         "Can't find it here."})
+        blog.delete()
 
-    """
-    {
-        "title": "Pavan first blogpost",
-        "content": "Content for the blogpost blah blah blah blach",
-        "authorId": "1",
-        "tags": ["happiness", "joy"]
-    }
-    """
+        es.delete_by_query(index='knowledge_base', body=
+        {
+            "query": {
+                "match": {
+                    "id": pk,
+                }
+            }
+        })
+        return Response(status=200, data={"message": "Post deleted"})
 
 
     def blogmodelToDict(blogs):
         values = list(blogs.values())
 
-        for idx, blog in enumerate(blogs):
-            values[idx]["tags"] = []
-            values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
-            values[idx]["type"] = "blog_post"
-            print(blog.tags.all())
-            for tagId in blog.tags.all():
-                values[idx]["tags"].append(tagId.tag)
+    for idx, blog in enumerate(blogs):
+        values[idx]["tags"] = []
+        values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
+        values[idx]["type"] = "blog_post"
+        for tagId in blog.tags.all():
+            values[idx]["tags"].append(tagId.tag)
 
         return values
+
+
+"""
+ {
+     "title": "Pavan first blogpost",
+     "content": "Content for the blogpost blah blah blah blach",
+     "authorId": "1",
+     "tags": ["happiness", "joy"]
+ }
+"""
 
 
 class BlogsList(APIView):
@@ -82,6 +105,8 @@ class BlogsList(APIView):
             values[idx]["tags"] = []
             values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
             values[idx]["type"] = "blog_post"
+            values[idx]["createdById"] = blog.createdBy.id
+            del values[idx]["createdBy_id"]
 
             for tagId in blog.tags.all():
                 values[idx]["tags"].append(tagId.tag)
@@ -129,8 +154,19 @@ class BlogsList(APIView):
 class PopularBlogList(APIView):
     def get(self, request):
         blogs = BlogPostModel.objects.all().order_by('-likeCount')[:3]
-        serializer = BlogSerializer(blogs, many=True)
-        return Response(serializer.data)
+
+        values = list(blogs.values())
+
+        for idx, blog in enumerate(blogs):
+            values[idx]["tags"] = []
+            values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
+            values[idx]["type"] = "blog_post"
+            values[idx]["createdById"] = blog.createdBy.id
+            del values[idx]["createdBy_id"]
+
+            for tagId in blog.tags.all():
+                values[idx]["tags"].append(tagId.tag)
+        return Response(status=200, data=values)
 
 
     def dictfetchall(cursor):

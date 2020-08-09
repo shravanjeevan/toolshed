@@ -36,12 +36,12 @@ class PostTags extends Component {
         return  (
             <Fragment>
                 <div>
-                    <h3>Tags</h3>
+                    <h3 class="ml-1 mb-3">Tags</h3>
                 </div>
                     {
                         this.state.tags.map((item,index)=>{
                             // return <div key = {index} class = "tags" onClick = {this.fetchSearch.bind(this)}> {item} </div>  
-                            return <span class="mr-2 mb-2"><TagTab tagName={item}/></span>
+                            return <span class="mr-2 mb-2" key={index+item}><TagTab tagName={item}/></span>
                         })
                     } 
                     

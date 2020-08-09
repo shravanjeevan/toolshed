@@ -1,10 +1,3 @@
-/* body{
-    background-color: #f6f6f6;  
-  } */
-  
-#post-header{
-    margin-left: 26px;
-}
 
 #details{
     margin-top:  40px;
@@ -33,12 +26,12 @@
 }
 
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.404);
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.404);
     transition: 0.2s;
-    width: 90%;
+    width: 100%;
     border-radius: 12px;
-    margin: 8px 0px;
-    padding: 2px 16px;
+    margin: 12px 0px;
+    padding: 15px 16px;
 }
 
 .card:hover {
@@ -52,9 +45,7 @@
     clear:both;
 }
 
-#commentCard{
-    margin-top: 30px;
-}
+
 
 #commentContent {
     border-bottom-style:solid;
@@ -62,33 +53,23 @@
     border-color:rgba(128, 128, 128, 0.486);
 }
 
-#comment-section {
-    margin: 2px 25px;
-}
+
 
 #commentAuthor {
     text-align:center;
     vertical-align:middle;
 }
 
-.commentDate{
-    margin-left:20px;
-}
-
-.comment{
-    margin-top: 12px;
-}
-
 .commentPost{
     margin-left: 16px;
-    padding: 20px 32px;
+    padding: 24px 32px;
     font-size: 22px;
     text-align: center;
     background-color: #008CBA;
     color: white;
     border: none;
     position: relative;
-    bottom:27px;
+    bottom:35px;
 }
 
 .commentPost:hover {

@@ -182,9 +182,18 @@ index: knowledge_base
 curl -X GET "localhost:9200/tools/_doc/1?pretty"
 ```
 
+Retrieving Everything
+```bash
+curl -X GET "localhost:9200/knowledge_base/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} }
+}
+'
+```
+
 Querying
 ```bash
-curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
+curl -X GET "localhost:9200/knowledge_base/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": { "match_all": {} },
   "sort": [
