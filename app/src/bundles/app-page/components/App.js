@@ -26,9 +26,9 @@ class App extends React.Component {
                             <Route path="/search" exact component={ResultsPage}/>
                             <Route path="/posts/create" exact component={CreatePage}/>
                             <Route path="/blogs" exact component={BlogsPage}/>
+                            {/* <Route path="/categories/:slug" exact component={ToolsPage}/> This should go to the tools component, i.e. a list of tools */}
                             <Route path="/categories" exact component={CategoriesPage}/>
                             <Route path="/edit" exact component={EditPage}/>
-                            {/* <Route path="/categories/:slug" exact component={ToolsPage}/> This should go to the tools component, i.e. a list of tools */}
                             {/* <Route path="/tools" exact component={ToolsPage}/> */}
                             <Route>
                                 <Redirect to="/404"/>

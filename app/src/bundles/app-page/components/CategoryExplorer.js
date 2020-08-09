@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {Button} from 'react-bootstrap'
-import backend from '../../../bundles/apis/backend';
+import backend from '../../apis/backend';
 import axios from 'axios';
 
 class CategoryExplorer extends React.Component {
