@@ -87,7 +87,7 @@ class CreatePage extends Component {
         
         return ( 
             <div>
-                <h2 class='class=my-4 ml-5'> Edit Blog Post </h2>
+                <h2 class='my-3'>Create Blog Post</h2>
                 <hr />
                 <div>
                     <CreateTags update={this.updateTags} tags={this.state.tags}/>
