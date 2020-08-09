@@ -29,5 +29,6 @@ urlpatterns = [
 
     path('api/auth/', include('knox.urls')),
 
-    path("auth/register/", views.RegistrationAPI.as_view())
+    path("auth/register/", views.RegistrationAPI.as_view()),
+    path("auth/login/", views.loginAPI.as_view())
 ]

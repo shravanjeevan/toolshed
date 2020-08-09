@@ -12,7 +12,7 @@ from .models import BlogPost as BlogPostModel
 from .models import BlogPostTag
 from .models import UserInfo
 from .models import Tool
-from .serializers import BlogSerializer, CreateUserSerializer, UserSerializer
+from .serializers import BlogSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer
 
 es = Elasticsearch(["http://elastic:9200"])
 
@@ -251,6 +251,19 @@ class RegistrationAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
+        })
+
+class loginAPI(generics.GenericAPIView):
+    serializer_class = LoginUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+        
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
