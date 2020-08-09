@@ -23,16 +23,16 @@ class PostResult extends React.Component {
         // Knowledge Base Items defaults to only the date - this is the Knowledge Base subtitle
         let blogPostItemsToShow = (
             <div>
-                <span>{post.createdDate}</span>
+                <span>{post.createdOn}</span>
             </div>
         );
 
         // Blog Post Items includes other data points
-        if (post.isBlogPost) {
+        if (post) {
             blogPostItemsToShow = (
                 <div className="row">
                     <div className="col-sm text-muted">
-                        <span>{post.createdDate}</span>
+                        <span>{post.createdOn}</span>
                         <span>
                             {' '}
                             by{' '}
@@ -40,14 +40,14 @@ class PostResult extends React.Component {
                                 to="/user/:id"
                                 className="text-primary font-weight-normal"
                             >
-                                {post.author}
+                                {post.createdByDisplayName}
                             </Link>
                         </span>
                     </div>
                     <div className="col-sm text-right text-muted">
-                        <span className="">👍 {post.likes} likes</span>
+                        <span className="">👍 {post.likeCount} likes</span>
                         <span className="ml-3">
-                            💬 {post.comments} comments
+                            💬 X comments
                         </span>
                     </div>
                 </div>
@@ -66,7 +66,7 @@ class PostResult extends React.Component {
                                 {post.title}
                             </Link>
                             <div className="col-sm-4 text-right font-weight-light">
-                                {post.isBlogPost
+                                { post
                                     ? 'Blog Post'
                                     : 'Knowledge Base'}
                             </div>
@@ -81,7 +81,7 @@ class PostResult extends React.Component {
                     <hr />
                     <p className="card-text">
                         <Link to={linkToPost} className="text-decoration-none">
-                            <div>{post.body}</div>
+                            <div>{post.content}</div>
                         </Link>
                     </p>
                 </div>
