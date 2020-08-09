@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 import './PostResult.css';
 
@@ -19,20 +20,24 @@ class PostResult extends React.Component {
 
         let linkToPost = `/posts/${post.id}`;
 
+        let timeAgo = moment(post.createdOn).fromNow();
+        
+        //let daysAgo = formatDistance(parse(post.createdOn, 'dd/MM/yyyy HH:mm:ss', new Date()), Date.now());
+
         // Conditionally display blog post elements
         // Knowledge Base Items defaults to only the date - this is the Knowledge Base subtitle
         let blogPostItemsToShow = (
             <div>
-                <span>{post.createdOn}</span>
+                <span>{timeAgo}</span>
             </div>
         );
 
         // Blog Post Items includes other data points
-        if (post) {
+        if (post.type === 'blog_post') {
             blogPostItemsToShow = (
                 <div className="row">
                     <div className="col-sm text-muted">
-                        <span>{post.createdOn}</span>
+                        <span>{timeAgo}</span>
                         <span>
                             {' '}
                             by{' '}
@@ -66,7 +71,7 @@ class PostResult extends React.Component {
                                 {post.title}
                             </Link>
                             <div className="col-sm-4 text-right font-weight-light">
-                                { post
+                                { post.type === 'blog_post'
                                     ? 'Blog Post'
                                     : 'Knowledge Base'}
                             </div>
