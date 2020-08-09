@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import backend from '../../apis/backend';
 import PostResult from '../../common/components/PostResult';
@@ -7,7 +6,9 @@ import Searchterm from '../../common/components/SearchTerm';
 import Searchbar from '../../common/components/searchbar';
 
 class ResultsList extends React.Component {
-    state = { results: [] };
+    state = { 
+        results: []
+     };
 
     componentDidMount() {
         this.getResults();
@@ -15,7 +16,7 @@ class ResultsList extends React.Component {
 
     getResults = async () => {
         try {
-            let res = await backend.get('/search?query=Cloud');
+            let res = await backend.get(`/search?query=${this.props.params.query}`);
             let { data } = res;
             this.setState({ results: data });
             console.log(this.state.results);
@@ -27,7 +28,7 @@ class ResultsList extends React.Component {
     render() {
         var searchitem = [
             {
-                searchterm: "Video Conferencing",
+                searchterm: this.props.params.query,
                 filters: ["posted within last 5 days"],
             }
         ];

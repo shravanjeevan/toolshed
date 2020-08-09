@@ -10,7 +10,7 @@ class PostResult extends React.Component {
 
         // List of tags
         let tagsToShow = post.tags.map((tag) => {
-            let path = `/search?tag=${tag}`;
+            let path = `/search?query=${tag}`;
             return (
                 <Link to={path} className="mr-2 badge badge-secondary">
                     {tag}
