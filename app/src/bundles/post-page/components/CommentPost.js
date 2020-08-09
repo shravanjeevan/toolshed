@@ -16,38 +16,19 @@ class CommentPost extends Component {
         })
     }
     
-    post(){
-        var api = 'http://localhost:3000/comment.json'
-        
-        axios.post(api, this.state.input)
-        .then((response)=>{
-            console.log(response)
-        })
+    commit(){
+        this.props.post(this.state.input)
         
         this.setState({
             input:''
         })
     }
     
-    componentDidMount(){
-        this.getData();
-    }
-    
-    getData=()=>{
-        var api = 'http://localhost:3000/comment.json'
-        axios.get(api)
-        .then((response)=>{this.setState({
-            comment:response.data.comment,
-         })
-        })
-        .catch((error)=>{console.log(error)})
-    }
-    
     render() {
         return (
             <Fragment>
                 <textarea rows="3" class = "commentInput" value={this.state.input} onChange={this.show.bind(this)} />
-                <button class="commentPost" onClick = {this.post.bind(this)}> Post </button>
+                <button class="commentPost" onClick = {this.commit.bind(this)}> Post </button>
             </Fragment>
         );
     }

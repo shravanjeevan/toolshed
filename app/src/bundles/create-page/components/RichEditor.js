@@ -21,8 +21,8 @@ class RichEditor extends Component {
   
   draft=()=>{
     const html = atob(this.props.content)
-    console.log('html')
-    console.log(html)
+    // console.log('html')
+    // console.log(html)
     const contentBlock = htmlToDraft(html);
     if (contentBlock) {
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
