@@ -61,6 +61,7 @@ class BlogsList(APIView):
             values[idx]["tags"] = []
             values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
             values[idx]["type"] = "blog_post"
+            print(blog.tags.all())
             for tagId in blog.tags.all():
                 values[idx]["tags"].append(tagId.tag)
 
@@ -96,10 +97,7 @@ class BlogsList(APIView):
         return Response(status=200)
 
 def add_tags(blogpostModel, tags):
-    existing_tags = BlogPostTag.objects.all()
     for i in tags:
-        if existing_tags.filter(tag=i).exists():
-            continue
         tag = BlogPostTag(tag=i)
         tag.save()
         blogpostModel.tags.add(tag)
@@ -182,6 +180,7 @@ class Search(APIView):
         query = request.GET.get('query')
         print(query)
         resp = es.search(body={"query": {"match": {"content": {"query": query}}}})
+        print(type(resp))
         print(resp)
 
         # {
