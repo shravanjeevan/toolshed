@@ -18,9 +18,9 @@ POST /posts/:post_id/comments
 DELETE /posts/:post_id/comments/:comment_id
 
 GET /categories/popular *
-GET /categories
-GET /categories/:category_name
-GET /tools
+GET /categories *
+GET /categories/:category_name *
+GET /tools *
 
 GET /tags/popular *
 
