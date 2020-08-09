@@ -8,8 +8,7 @@ from rest_framework.views import APIView
 from .models import BlogPost as BlogPostModel
 from .models import BlogPostTag
 from .models import Tool
-from .models import User
-from .serializers import BlogSerializer
+from .models import UserInfo
 
 es = Elasticsearch(["http://elastic:9200"])
 
@@ -119,7 +118,7 @@ class BlogsList(APIView):
             data = {'message': "You already have a blogpost with the same title. Please choose another title."}
             return Response(data=data, status=403)
         else:
-            user = User.objects.get(id=blog_data["authorId"])
+            user = UserInfo.objects.get(id=blog_data["authorId"])
 
             blogpost_db = BlogPostModel(title=blog_data["title"],
                                         content=blog_data["content"],
