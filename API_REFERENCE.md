@@ -2,7 +2,7 @@
 
 ### Summary of endpoints
 ```
-GET /search
+GET /search *
 
 GET /posts *
 GET /posts/popular *
@@ -11,16 +11,16 @@ POST /posts *
 
 GET /posts/:post_id *
 PUT /posts/:post_id
-DELETE /posts/:post_id
+DELETE /posts/:post_id *
 
 GET /posts/post_id/comments
 POST /posts/:post_id/comments
 DELETE /posts/:post_id/comments/:comment_id
 
 GET /categories/popular *
-GET /categories
-GET /categories/:category_name
-GET /tools
+GET /categories *
+GET /categories/:category_name *
+GET /tools *
 
 GET /tags/popular *
 
