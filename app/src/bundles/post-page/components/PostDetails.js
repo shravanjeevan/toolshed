@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 class PostDetails extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            type:this.props.type,
+        this.state = {
             likes:this.props.likes,
             liked:false,
             shared:false,

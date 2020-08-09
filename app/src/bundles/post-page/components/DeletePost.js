@@ -7,7 +7,7 @@ class DeletePost extends Component {
     }
     
     delete() {
-        
+        this.props.delete()
     }
     
     

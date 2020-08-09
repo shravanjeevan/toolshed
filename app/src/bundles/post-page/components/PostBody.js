@@ -10,6 +10,7 @@ class PostBody extends Component {
             <div
                 className="content"
                 dangerouslySetInnerHTML={{ __html: this.props.body}}
+                // dangerouslySetInnerHTML={{ __html: atob(this.props.body)}}
             />
         );
     }

@@ -16,16 +16,16 @@ class PublishPost extends Component {
                         <button 
                         type="button" 
                         class="btn btn-success ml-3" 
-                        onClick = {this.props.submit('publish')}> 
+                        onClick = {this.props.submit()}> 
                             PUBLISH 
                         </button>
                         
-                        <button 
+                        {/* <button 
                         type="button" 
                         class="btn btn-primary mx-3" 
-                        onClick = {this.props.submit('draft')}> 
+                        onClick = {this.props.submit()}> 
                             SAVE AS DRAFT 
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </div>

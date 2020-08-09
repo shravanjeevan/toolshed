@@ -5,20 +5,30 @@ import CreateTags from './CreateTags'
 import PublishPost from './PublishPost'
 import axios from 'axios';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+import backend from '../../../bundles/apis/backend';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 
 class CreatePage extends Component {
     constructor(props) {
         super(props);
         this.updateTags=this.updateTags.bind(this)
-        this.updateTitle=this.updateTitle.bind(this)
-        this.updateContent=this.updateContent.bind(this)
         this.publish=this.publish.bind(this)
         this.state = { 
+            editorState: EditorState.createEmpty(),
             tags:[],
-            title:'demo',
-            content:'PHA+SGV5IHRoaXMgPHN0cm9uZz5lZGl0b3I8L3N0cm9uZz4gcm9ja3M8L3A+',
+            title:'',
+            content:'',
         }
         
+    }
+    
+    componentDidMount(){
+        this.getData();
+    }
+    
+    handleTitle (e) {
+        this.setState({title:e.target.value})
     }
     
     updateTags(tags) {
@@ -27,26 +37,23 @@ class CreatePage extends Component {
         })
     }
     
-    updateTitle(title) {
-    
+    onEditorStateChange = (editorState) => {
         this.setState({
-            title:title
+          editorState: editorState
         })
+      }
+    
+    draft=()=>{
+        
     }
     
-    updateContent(content) {
-        this.setState({
-            content:content,
-        })
-    }
-    
-    publish(version){
+    publish(){
         let api = 'http://localhost:3000/blogs/edit'
         let data = {
             tags:this.state.tags,
             title:this.state.title,
-            content: btoa(draftToHtml(this.state.content)),
-            stage:version
+            // Object=>JSON=>HTML=>encode64
+            content: btoa(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))),
         }
         axios.put(api, data)
         .then((response)=>{
@@ -55,37 +62,42 @@ class CreatePage extends Component {
         .catch((error)=>{console.log(error)})
     }
     
-    componentDidMount(){
-        this.getData();
-    }
     
-    getData=()=>{
-        var api = 'http://localhost:3000/draft.json'
-        axios.get(api)
-        .then((response)=>{this.setState({
-            tags:response.data.tags,
-            title:response.data.title,
-            content:response.data.content
-         })
-        })
-        .catch((error)=>{console.log(error)})
+    getData = async () => {
+        try {
+            let res = await backend.get('http://localhost:3000/draft.json');
+            let { data } = res;
+            const html = atob(data.data.content)
+            const contentBlock = htmlToDraft(html);
+            if (contentBlock) {
+              const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+              const editorState = EditorState.createWithContent(contentState);
+              this.setState ({
+                editorState:editorState
+              });
+            }
+            this.setState({
+                tags:data.data.tags,
+                title:data.data.title,
+             })
+            console.log(this.state.title);
+        } catch(e) {
+            console.log(e);
+        }
     }
     
     render() { 
         
         return ( 
             <div>
-                <h2 class='my-3'>Create Blog Post</h2>
+                <h2 class='class=my-4 ml-5'> Edit Blog Post </h2>
                 <hr />
                 <div>
                     <CreateTags update={this.updateTags} tags={this.state.tags}/>
-                    <CreateTitle update={this.updateTitle} title={this.state.title}/>
-                    <CreateContent update={this.updateContent} content={this.state.content}/>
+                    <CreateTitle title={this.state.title} handleTitle={this.handleTitle.bind(this)}/>
+                    <CreateContent onEditorStateChange={this.onEditorStateChange.bind(this)} editorState={this.state.editorState} />
                     <PublishPost submit={this.publish}/>
                 </div>
-                
-                {console.log(this.state.title)}
-                {/* {this.state.title} */}
             </div>
         );
     }

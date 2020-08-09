@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import PostDetails from './PostDetails'
 import DeletePost from './DeletePost'
+import { Link } from 'react-router-dom';
 
 class PostHeader extends Component {
     constructor(props) {
@@ -13,7 +14,6 @@ class PostHeader extends Component {
     render() {
         let details = this.props.type === "BlogPost" ? <PostDetails 
                                                         title = {this.props.title}
-                                                        type = {this.props.type}
                                                         name = {this.props.name}
                                                         date = {this.props.date}
                                                         likes = {this.props.likes}
@@ -31,7 +31,7 @@ class PostHeader extends Component {
                 
                 <div class='ml-4 mt-3'>
                     <button type="button" class="btn btn-danger btn-sm"> <DeletePost deletePost={this.props.deletePost} /> </button>
-                    <button type="button" class="btn btn-secondary btn-sm ml-1"> Edit </button>
+                    <Link to="/edit"> <button type="button" class="btn btn-secondary btn-sm ml-1"> Edit </button> </Link>
                 </div>
                 
             </div>

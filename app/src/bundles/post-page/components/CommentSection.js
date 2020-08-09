@@ -48,7 +48,7 @@ class CommentSection extends Component {
             <div >
                 <h3 class='ml-4'> Comments | {this.props.commentCount} </h3>
                 <div class='ml-4'> <CommentPost post={this.post.bind(this)} /> </div>
-                <div > <CommentCard comments={this.state.comments} /> </div>
+                <div > <CommentCard comments={this.state.comments} postId={this.state.postId}/> </div>
             </div>
         </Fragment>
         );

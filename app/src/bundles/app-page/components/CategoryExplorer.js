@@ -15,7 +15,7 @@ class CategoryExplorer extends React.Component {
 
     getCategories = async () => {
         try {
-            let res = await backend.get('/categories/popular');
+            let res = await backend.get('/posts/edit');
             let { data } = res;
             this.setState({ categories: data });
             console.log(this.state.categories);
