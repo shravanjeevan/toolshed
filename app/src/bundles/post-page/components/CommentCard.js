@@ -5,17 +5,27 @@ import backend from '../../../bundles/apis/backend';
 class CommentCard extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showModal:false,
+            id:0,
+        }
     }
     
     
-    delete = async (postId,commentId) => {
+    delete = async (commentId) => {
         try {
-            let res = await backend.delete('/posts/:'+postId+'/comments/:'+commentId);
+            let res = await backend.delete('/posts/:'+this.props.postId+'/comments/:'+commentId);
             let { data } = res;
             console.log(data);
         } catch(e) {
             console.log(e);
         }
+    }
+    
+    open() {
+        this.setState({
+            showModal:true
+        })
     }
     
     render() { 
@@ -44,7 +54,7 @@ class CommentCard extends Component {
                                             <button type="button" class="rounded float-right btn btn-link btn-sm"> 
                                                 <span 
                                                 data-toggle="modal" 
-                                                data-target="#commentModal" 
+                                                data-target={"#commentModal"}
                                                 data-commentId={item.id}> 
                                                     &times; 
                                                 </span>
@@ -56,7 +66,7 @@ class CommentCard extends Component {
                         )  
                     })
                 } 
-                <div class="modal fade" id="commentModal" role="dialog" aria-labelledby="DeleteComment" aria-hidden="true">
+                <div class="modal fade" id={"commentModal"} role="dialog" aria-labelledby="DeleteComment" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                     
@@ -72,7 +82,7 @@ class CommentCard extends Component {
                         type="button" 
                         class="btn btn-danger" 
                         data-dismiss="modal"
-                        // onClick={this.delete.bind(this, item.id, this.props.postId)}
+                        // onClick={this.delete.bind(this, item.id)}
                         >
                             Delete
                         </button>
@@ -81,6 +91,9 @@ class CommentCard extends Component {
                     </div>
                   </div>
                 </div>
+                
+                
+
                     
             </Fragment>
         );

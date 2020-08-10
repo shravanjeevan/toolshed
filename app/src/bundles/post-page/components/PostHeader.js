@@ -12,7 +12,7 @@ class PostHeader extends Component {
 
     
     render() {
-        let details = this.props.type === "BlogPost" ? <PostDetails 
+        let details = this.props.type === "blog_post" ? <PostDetails 
                                                         title = {this.props.title}
                                                         name = {this.props.name}
                                                         date = {this.props.date}

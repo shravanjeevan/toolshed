@@ -40,9 +40,6 @@ class CreatePage extends Component {
         // this.props.update(convertToRaw(this.state.editorState.getCurrentContent()))
       }
     
-    draft=()=>{
-        
-    }
     
     publish(){
         let api = 'http://localhost:3000/blogs/edit'

@@ -16,7 +16,7 @@ class PublishPost extends Component {
                         <button 
                         type="button" 
                         class="btn btn-success ml-3" 
-                        onClick = {this.props.submit()}> 
+                        onClick = {this.props.publish}> 
                             PUBLISH 
                         </button>
                         

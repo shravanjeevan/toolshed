@@ -91,7 +91,7 @@ class PostDetails extends Component {
                           width="60"
                           height="60"
                           className="profileIcon"
-                          alt="profile image"
+                          alt="Profile Image"
                         />
                     </div>
                 </div>
