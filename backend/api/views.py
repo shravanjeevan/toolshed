@@ -4,12 +4,15 @@ from django.db import connection
 from elasticsearch import Elasticsearch
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import viewsets, permissions, generics
+
+from knox.models import AuthToken
 
 from .models import BlogPost as BlogPostModel
 from .models import BlogPostTag
 from .models import Tool
-from .models import User
-from .serializers import BlogSerializer
+from .models import UserInfo
+from .serializers import BlogSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer
 
 es = Elasticsearch(["http://elastic:9200"])
 
@@ -119,7 +122,7 @@ class BlogsList(APIView):
             data = {'message': "You already have a blogpost with the same title. Please choose another title."}
             return Response(data=data, status=403)
         else:
-            user = User.objects.get(id=blog_data["authorId"])
+            user = UserInfo.objects.get(id=blog_data["authorId"])
 
             blogpost_db = BlogPostModel(title=blog_data["title"],
                                         content=blog_data["content"],
@@ -275,3 +278,38 @@ class Tools(APIView):
             value = {"id": t.id, "name": t.name, "category": t.category}
             values.append(value)
         return Response(status=200, data=values)
+
+
+class RegistrationAPI(generics.GenericAPIView):
+    serializer_class = CreateUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
+        })
+
+
+class LoginAPI(generics.GenericAPIView):
+    serializer_class = LoginUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
+        })
+
+
+class UserAPI(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
