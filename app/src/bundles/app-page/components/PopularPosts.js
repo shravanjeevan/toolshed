@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import PostResult from '../../common/components/PostResult';
 import backend from '../../apis/backend';
@@ -28,16 +27,16 @@ class PopularPosts extends React.Component {
         let { posts } = this.state;
         let postsToShow;
 
-        if (posts) {
+        if (posts && posts.length > 0) {
             postsToShow = posts.map((post) => {
                 return (
-                    <div className="my-4">
+                    <div key={post.id} className="my-4">
                         <PostResult post={post} />
                     </div>
                 );
             });
         } else {
-            postsToShow = <div>NO POSTS ON SUNDAY</div>;
+            postsToShow = <div className="alert alert-light">No popular posts found.</div>;
         }
 
         return (

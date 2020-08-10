@@ -1,6 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class User(models.Model):
+class UserInfo(models.Model):
     first_name = models.CharField(max_length=256, null=True, blank=True)
     last_name = models.CharField(max_length=256, null=True, blank=True)
     display_name = models.CharField(max_length=256, null=True, blank=True)
@@ -17,7 +18,7 @@ class BlogPost(models.Model):
     likeCount = models.IntegerField(null=True, blank=True)
     createdOn = models.DateTimeField(auto_now=True, null=True, blank=True)
     createdBy = models.ForeignKey(
-        'User',
+        User, related_name="posts",
         on_delete=models.DO_NOTHING
     )
     lastUpdated = models.DateTimeField(auto_now=True, null=True, blank=True)
@@ -32,7 +33,7 @@ class BlogPostComment(models.Model):
     content = models.CharField(max_length=5000, null=True, blank=True)
     created_on = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(
-        'User',
+        User, related_name="comments",
         on_delete=models.DO_NOTHING
     )
 

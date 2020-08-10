@@ -17,7 +17,6 @@ urlpatterns = [
     path('categories/', views.AllCategories.as_view()),
     path('categories/popular', views.ExploreCategories.as_view()),
     path('categories/<str:category>', views.FilterCategories.as_view()),
-    path('categories/', views.ExploreCategories.as_view()),
 
     path('tools/', views.Tools.as_view()),
 
@@ -25,5 +24,11 @@ urlpatterns = [
 
     re_path(r'search/$', views.Search.as_view()),
 
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    path('api/auth/', include('knox.urls')),
+
+    path("auth/register/", views.RegistrationAPI.as_view()),
+    path("auth/login/", views.LoginAPI.as_view()),
+    path("auth/user/", views.UserAPI.as_view())
 ]
