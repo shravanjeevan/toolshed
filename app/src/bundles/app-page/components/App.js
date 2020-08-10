@@ -12,6 +12,8 @@ import Navbar1 from '../../common/components/navbar';
 import ScrollToTop from '../../common/components/ScrollToTop';
 import ErrorPage from '../../common/components/ErrorPage';
 import ToolsPage from '../../tools/components/tools';
+import Breadcrumbs from '../../common/components/breadcrumbs'
+import Login from '../../accounts/components/login'
 
 class App extends React.Component {
     render() {
@@ -20,19 +22,24 @@ class App extends React.Component {
                 <BrowserRouter>
                     <ScrollToTop>
                         <Route path="/" component={Navbar1}/>
+                        <Route path="/" component={Breadcrumbs}/>
                         {/* This makes sure the navbar is always on display */}
                         <Switch>
                             <Route path="/" exact component={AppPage}/>
                             <Route path="/posts/create" exact component={CreatePage}/>
                             <Route path="/posts/:slug" exact component={Post}/>
-                            <Route path="/search" exact component={ResultsPage} key={window.location.pathname}/>
+                            <Route path="/search" exact component={ResultsPage}/>
                             <Route path="/blogs" exact component={BlogsPage}/>
                             <Route path="/categories" exact component={CategoriesPage}/>
                             <Route path="/edit" exact component={EditPage}/>
                             <Route path="/categories/:slug" exact component={ToolsPage}/> {/* This should go to the tools component, i.e. a list of tools */}
                             <Route path="/tools" exact component={ToolsPage}/>
+                            <Route path="/login" exact component={Login}/>
+                            <Route path="/signup" exact component={Login}/>
+                            <Route>
+                                <Redirect to="/404"/>
+                            </Route>
                             <Route path="/404" component={ErrorPage}/>
-                            <Redirect to="/404"/>
                         </Switch>
                     </ScrollToTop>
                 </BrowserRouter> 

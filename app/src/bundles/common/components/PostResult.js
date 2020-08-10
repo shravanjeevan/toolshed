@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 
 import './PostResult.css';
 
@@ -10,9 +9,9 @@ class PostResult extends React.Component {
 
         // List of tags
         let tagsToShow = post.tags.map((tag) => {
-            let path = `/search?query=${tag}`;
+            let path = `/search?tag=${tag}`;
             return (
-                <Link key={tag} to={path} className="mr-2 badge badge-secondary">
+                <Link to={path} className="mr-2 badge badge-secondary">
                     {tag}
                 </Link>
             );
@@ -20,24 +19,20 @@ class PostResult extends React.Component {
 
         let linkToPost = `/posts/${post.id}`;
 
-        let timeAgo = moment(post.createdOn).fromNow();
-        
-        //let daysAgo = formatDistance(parse(post.createdOn, 'dd/MM/yyyy HH:mm:ss', new Date()), Date.now());
-
         // Conditionally display blog post elements
         // Knowledge Base Items defaults to only the date - this is the Knowledge Base subtitle
         let blogPostItemsToShow = (
             <div>
-                <span>{timeAgo}</span>
+                <span>{post.createdDate}</span>
             </div>
         );
 
         // Blog Post Items includes other data points
-        if (post.type === 'blog_post') {
+        if (post.isBlogPost) {
             blogPostItemsToShow = (
                 <div className="row">
                     <div className="col-sm text-muted">
-                        <span>{timeAgo}</span>
+                        <span>{post.createdDate}</span>
                         <span>
                             {' '}
                             by{' '}
@@ -45,14 +40,14 @@ class PostResult extends React.Component {
                                 to="/user/:id"
                                 className="text-primary font-weight-normal"
                             >
-                                {post.createdByDisplayName}
+                                {post.author}
                             </Link>
                         </span>
                     </div>
                     <div className="col-sm text-right text-muted">
-                        <span className="">👍 {post.likeCount} likes</span>
+                        <span className="">👍 {post.likes} likes</span>
                         <span className="ml-3">
-                            💬 X comments
+                            💬 {post.comments} comments
                         </span>
                     </div>
                 </div>
@@ -71,7 +66,7 @@ class PostResult extends React.Component {
                                 {post.title}
                             </Link>
                             <div className="col-sm-4 text-right font-weight-light">
-                                { post.type === 'blog_post'
+                                {post.isBlogPost
                                     ? 'Blog Post'
                                     : 'Knowledge Base'}
                             </div>
@@ -86,7 +81,7 @@ class PostResult extends React.Component {
                     <hr />
                     <p className="card-text">
                         <Link to={linkToPost} className="text-decoration-none">
-                            <div>{post.content}</div>
+                            <div>{post.body}</div>
                         </Link>
                     </p>
                 </div>

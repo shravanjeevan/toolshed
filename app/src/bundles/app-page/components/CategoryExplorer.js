@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {Button} from 'react-bootstrap'
-import backend from '../../apis/backend';
+import backend from '../../../bundles/apis/backend';
 import axios from 'axios';
 
 class CategoryExplorer extends React.Component {
@@ -41,20 +41,13 @@ class CategoryExplorer extends React.Component {
     render() {
         let { categories }  = this.state;
 
-        let categoriesToShow;
-
-        if (categories && categories.length > 0) {
-            categoriesToShow = categories.map((category) => {
-                return (
-                    <Link key={category.category} className="btn btn-primary p-3 mr-4 mb-4 rounded-pill" type="button" to={`/categories/${category.category}`}>
-                        {category.category} ({category.publishedCount})
-                    </Link>
-                );
-            });
-        } else {
-            categoriesToShow = <div className="alert alert-light">No categories found.</div>;
-        }
-        
+        var categoriesToShow = categories.map((category) => {
+            return (
+                <Link className="btn btn-primary p-3 mr-4 mb-4 rounded-pill" type="button" to={`/categories/${category.category}`}>
+                    {category.category} ({category.publishedCount})
+                </Link>
+            );
+        });
 
         return (
             <div className="container">
