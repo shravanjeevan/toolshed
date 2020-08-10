@@ -5,6 +5,7 @@ import PostResult from '../../common/components/PostResult';
 import Searchterm from '../../common/components/SearchTerm';
 import Searchbar from '../../common/components/searchbar';
 
+
 class ResultsList extends React.Component {
     state = { 
         results: [],
@@ -34,15 +35,18 @@ class ResultsList extends React.Component {
         }
         this.setState({ isLoading: false });
     }
-
     render() {
+        const expression = /.*=/
+        var info = window.location.href.replace(expression, '');
+        info = info.replace(/%20/g, ' ')
+        var params = info.split("+")
         var searchitem = [
             {
-                searchterm: this.props.params.query,
-                filters: ["posted within last 5 days"],
+                searchterm: params.slice(0,1),
+                filters: params.slice(1),
             }
-        ];
-
+        ]
+        
         let { results } = this.state;
         let postsToShow;
 
@@ -60,7 +64,6 @@ class ResultsList extends React.Component {
         } else if (results && results.length === 0) {
             postsToShow = <div className="alert alert-light">No results found for "{this.props.params.query}". Try another search term.</div>;
         }
-
 
         var searchToShow = searchitem.map((term)=>{
             return (
