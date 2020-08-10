@@ -2,17 +2,16 @@ import datetime
 
 from django.db import connection
 from elasticsearch import Elasticsearch
+from knox.models import AuthToken
+from rest_framework import permissions, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import viewsets, permissions, generics
-
-from knox.models import AuthToken
 
 from .models import BlogPost as BlogPostModel
 from .models import BlogPostTag
 from .models import Tool
-from .models import UserInfo
-from .serializers import BlogSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer
+from django.contrib.auth.models import User
+from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer
 
 es = Elasticsearch(["http://elastic:9200"])
 
@@ -122,7 +121,7 @@ class BlogsList(APIView):
             data = {'message': "You already have a blogpost with the same title. Please choose another title."}
             return Response(data=data, status=403)
         else:
-            user = UserInfo.objects.get(id=blog_data["authorId"])
+            user = User.objects.get(id=blog_data["authorId"])
 
             blogpost_db = BlogPostModel(title=blog_data["title"],
                                         content=blog_data["content"],
