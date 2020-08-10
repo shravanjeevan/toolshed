@@ -17,7 +17,6 @@ urlpatterns = [
     path('categories/', views.AllCategories.as_view()),
     path('categories/popular', views.ExploreCategories.as_view()),
     path('categories/<str:category>', views.FilterCategories.as_view()),
-    path('categories/', views.ExploreCategories.as_view()),
 
     path('tools/', views.Tools.as_view()),
 
