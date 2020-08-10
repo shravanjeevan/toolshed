@@ -7,14 +7,23 @@ import Searchbar from '../../common/components/searchbar';
 
 class ResultsList extends React.Component {
     state = { 
-        results: []
+        results: [],
+        isLoading: false
      };
 
     componentDidMount() {
         this.getResults();
     }
 
+    // This checks if the search query params are meangingfully different, and only get results if different
+    componentDidUpdate(prevProps) {
+        if (this.props.params.query !== prevProps.params.query) {
+            this.getResults();
+        }
+    }
+
     getResults = async () => {
+        this.setState({ isLoading: true });
         try {
             let res = await backend.get(`/search?query=${this.props.params.query}`);
             let { data } = res;
@@ -23,6 +32,7 @@ class ResultsList extends React.Component {
         } catch(e) {
             console.log(e);
         }
+        this.setState({ isLoading: false });
     }
 
     render() {
@@ -36,7 +46,10 @@ class ResultsList extends React.Component {
         let { results } = this.state;
         let postsToShow;
 
-        if (results) {
+
+        if (this.state.isLoading) {
+            postsToShow = <div className="alert alert-light">Fetching results...</div>;
+        } else if (results && results.length > 0) {
             postsToShow = results.map((post) => {
                 return (
                     <div className="my-4">
@@ -44,8 +57,8 @@ class ResultsList extends React.Component {
                     </div>
                 );
             });
-        } else {
-            postsToShow = <div>No results found.</div>;
+        } else if (results && results.length === 0) {
+            postsToShow = <div className="alert alert-light">No results found for "{this.props.params.query}". Try another search term.</div>;
         }
 
 
