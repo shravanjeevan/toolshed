@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import BlogPost as BlogPostModel
+from .models import KnowledgeBaseItem
+from .models import KnowledgeBaseTag
 from .models import BlogPostTag
 from .models import Tool
 from django.contrib.auth.models import User
@@ -16,12 +18,12 @@ from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializ
 es = Elasticsearch(["http://elastic:9200"])
 
 
-def article_index_payload_builder(blogpost_db_id, blogpost_data, author_first_name, created_date):
+def article_index_payload_builder(blogpost_db_id, blogpost_data, author_first_name, created_date, type):
     data = {
         "id": blogpost_db_id,
         "title": blogpost_data["title"],
         "content": blogpost_data["content"],
-        "type": "blog",
+        "type": type,
         "author": author_first_name,
         "createdDate": created_date,
         "tags": blogpost_data["tags"],
@@ -85,11 +87,23 @@ def blogmodelToDict(blogs):
 
 
 """
+ Blogpost Item
  {
      "title": "Pavan first blogpost",
      "content": "Content for the blogpost blah blah blah blach",
      "authorId": "1",
-     "tags": ["happiness", "joy"]
+     "tags": ["happiness", "joy"],
+     "type": "blog_post"
+ }
+
+ Knowledge Base
+  {
+     "title": "Pavan first knowledge base item",
+     "content": "Content for the blogpost blah blah blah blach",
+     "authorId": "2",
+     "tags": ["happiness", "first", "knowledge"],
+     "type": "knowledge_base",
+     "toolId": "7"
  }
 """
 
@@ -113,18 +127,42 @@ class BlogsList(APIView):
         return Response(status=200, data=values)
 
     def post(self, request):
-        blog_data = request.data
+        request_data = request.data
 
-        print(blog_data)
-        if does_blog_post_exist(blog_data["authorId"], blog_data["title"]):
+        print(request_data)
+
+        if request_data["type"] == 'knowledge_base' :
+            if KnowledgeBaseItem.objects.filter(title__iexact=request_data["title"]):
+                return Response(status=200, data={"message": "You already have a knowledge base item with the same title. Please choose another title."})
+
+            user = User.objects.get(id=request_data["authorId"])
+
+            # if not user.is_staff:
+            #     return Response(status=403, data={'message':'You are not authorized to create a knowledge base item'})
+
+            tool = Tool.objects.get(id=request_data["toolId"])
+            knowledge_base_item = KnowledgeBaseItem(title=request_data["title"],
+                                                    content=request_data["content"],
+                                                    tool_id=tool)
+            knowledge_base_item.save()
+            add_tags_knowledge_base(knowledge_base_item, request_data["tags"])
+
+            knowledge_base_es = article_index_payload_builder(knowledge_base_item.id, request_data, user.first_name,
+                                                       str(datetime.datetime), "knowledge_base")
+
+            es.index(index='knowledge_base', body=knowledge_base_es)
+            return Response(status=200, data={"message": "Successfully add a new knowledge base item"})
+
+
+        if does_blog_post_exist(request_data["authorId"], request_data["title"]):
 
             data = {'message': "You already have a blogpost with the same title. Please choose another title."}
             return Response(data=data, status=403)
         else:
-            user = User.objects.get(id=blog_data["authorId"])
+            user = User.objects.get(id=request_data["authorId"])
 
-            blogpost_db = BlogPostModel(title=blog_data["title"],
-                                        content=blog_data["content"],
+            blogpost_db = BlogPostModel(title=request_data["title"],
+                                        content=request_data["content"],
                                         createdBy=user,
                                         likeCount=0,
                                         visibility="visible")
@@ -132,18 +170,23 @@ class BlogsList(APIView):
             blogpost_db.save()
 
             # Save tags
-
-            add_tags(blogpost_db, blog_data["tags"])
+            add_tags_blogpost(blogpost_db, request_data["tags"])
 
             # Index in elasticsearch
-            blogpost_es = article_index_payload_builder(blogpost_db.id, blog_data, user.first_name,
-                                                        str(datetime.datetime))
+            blogpost_es = article_index_payload_builder(blogpost_db.id, request_data, user.first_name,
+                                                        str(datetime.datetime), "blog")
             es.index(index='knowledge_base', body=blogpost_es)
-
         return Response(status=200, data={"message": "Successfully add a new blog post"})
 
 
-def add_tags(blogpostModel, tags):
+def add_tags_knowledge_base(knowledge_base_model, tags):
+    for i in tags:
+        tag = KnowledgeBaseTag(tag=i)
+        tag.save()
+        knowledge_base_model.tags.add(tag)
+
+
+def add_tags_blogpost(blogpostModel, tags):
     for i in tags:
         tag = BlogPostTag(tag=i)
         tag.save()
