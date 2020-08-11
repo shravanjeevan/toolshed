@@ -2,16 +2,21 @@
 
 from django.db import migrations
 from django.contrib.auth.models import User
+import datetime
+import pytz
 
 def createUsers(apps, schema_editor):
     '''Creates default users'''
+
+    tz_AU = pytz.timezone('Australia/Sydney')
 
     userA_data = {
         'username': 'morty',
         'password': 'AdminPassword',
         'email': 'morty@cse.unsw.edu.au',
         'first_name': 'Mortada',
-        'last_name': 'Al-Banna'
+        'last_name': 'Al-Banna',
+        'last_login': datetime.datetime.now(tz_AU)
     }
 
     userB_data = {
@@ -19,7 +24,8 @@ def createUsers(apps, schema_editor):
         'password': 'AdminPassword',
         'email': 'boualem@cse.unsw.edu.au',
         'first_name': 'Boualem',
-        'last_name': 'Bentallah'
+        'last_name': 'Bentallah',
+        'last_login': datetime.datetime.now(tz_AU)
     }
 
     userC_data = {
@@ -27,7 +33,8 @@ def createUsers(apps, schema_editor):
         'password': 'AdminPassword',
         'email': 'jdoe@cse.unsw.edu.au',
         'first_name': 'John',
-        'last_name': 'Doe'
+        'last_name': 'Doe',
+        'last_login': datetime.datetime.now(tz_AU)
     }
 
     userA = User.objects.create_user(**userA_data)
@@ -43,7 +50,7 @@ def createUsers(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0010_auto_20200809_0216'),
+        ('api', '0011_auto_20200810_1228'),
     ]
 
     operations = [

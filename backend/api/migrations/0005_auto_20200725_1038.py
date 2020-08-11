@@ -22,7 +22,7 @@ def createTools(apps, schema_editor):
     slack = Tool(name="Slack", category="Communication")
     slack.save()
 
-    teams = Tool(name="teams", category="Course Administration")
+    teams = Tool(name="Teams", category="Course Administration")
     teams.save()
 
 
