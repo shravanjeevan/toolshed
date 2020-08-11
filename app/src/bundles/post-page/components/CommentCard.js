@@ -48,7 +48,7 @@ class CommentCard extends Component {
                                         </div>
                                         {/* author */}
                                         <div class="col-7 mt-3" id="commentContent">
-                                            <Link to="/user/:id" class="text-primary"> {item.author} </Link>
+                                            <Link to="/users/:id" class="text-primary"> {item.author} </Link>
                                             {/* date */}
                                             <span class="text-secondary small mt-1"> {moment(item.createdOn).fromNow()} </span>
                                             {/* delete button */}

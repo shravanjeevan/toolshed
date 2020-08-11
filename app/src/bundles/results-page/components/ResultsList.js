@@ -71,21 +71,22 @@ class ResultsList extends React.Component {
             );
         }
 
-        var searchToShow = searchitem.map((term) => {
-            return (
-                <div className="my-4">
-                    <Searchterm term={term} />
-                </div>
-            );
-        });
+        // Removed as it doesn't grab filters properly
+        // var searchToShow = searchitem.map((term) => {
+        //     return (
+        //         <div className="my-4">
+        //             <Searchterm term={term} />
+        //         </div>
+        //     );
+        // });
 
         return (
             <div className="container">
                 <h2>Results</h2>
                 <div className="mt-4">
-                    Showing results for "{this.props.params.query}". {results.length} posts found.
+                    Showing results for "<i>{this.props.params.query}</i>".   {results.length} posts found.
                 </div>
-                <div className="mt-4">{searchToShow}</div>
+                {/* <div className="mt-4">{searchToShow}</div> Removed as it isn't compatible with filters*/}
                 <div className="mt-4">{postsToShow}</div>
             </div>
         );
