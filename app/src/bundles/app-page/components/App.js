@@ -13,6 +13,7 @@ import { loadUser } from '../../actions/auth';
 import AppPage from './AppPage';
 import Post from '../../post-page/components/Post';
 import ResultsPage from '../../results-page/components/ResultsPage';
+import CreatePage from '../../create-page/components/CreatePage';
 import EditPage from '../../create-page/components/EditPage';
 import CategoriesPage from '../../categories/components/categories';
 import BlogsPage from '../../blogs/components/BlogsPage';
@@ -39,15 +40,14 @@ class App extends React.Component {
                             <Route path="/" component={Breadcrumbs}/>
                             <Switch>
                                 <PrivateRoute path="/" exact component={AppPage}/>
-                                <Route path="/posts/create" exact component={EditPage}/>
-                                <Route path="/posts/edit/:id" exact component={EditPage}/>
+                                <Route path="/posts/create" exact component={CreatePage}/>
                                 <Route path="/posts/:slug" exact component={Post}/>
                                 <Route path="/search" exact component={ResultsPage} key={window.location.pathname}/>
                                 <Route path="/blogs" exact component={BlogsPage}/>
                                 <Route path="/categories" exact component={CategoriesPage}/>
                                 <Route path="/edit" exact component={EditPage}/>
-                                <Route path="/categories/:slug" exact component={ToolsPage}/> {/* This should go to the tools component, i.e. a list of tools */}
-                                <Route path="/tools" exact component={ToolsPage}/>
+                                <Route path="/categories/All%20Tools" exact component={ToolsPage}/>
+                                <Route path="/categories/:slug" exact component={ToolsPage}/> {/* This should go to the tools component, i.e. a list of tools */}                                
                                 <Route path="/register" component={RegisterForm}/>
                                 <Route path="/login" component={LoginForm}/>
                                 <Route path="/404" component={ErrorPage}/>

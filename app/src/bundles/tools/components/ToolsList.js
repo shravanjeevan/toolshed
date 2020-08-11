@@ -58,7 +58,7 @@ class ToolsList extends React.Component {
 
         return (
             <div className="container">
-                <h2>Videoconferencing Tools</h2>
+                <h2>{name.toString().replace(/%20/g, ' ')}</h2>
                 <div className="mt-4">{postsToShow}</div>
             </div>
         );

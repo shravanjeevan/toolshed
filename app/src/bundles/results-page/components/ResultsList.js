@@ -36,10 +36,13 @@ class ResultsList extends React.Component {
     }
 
     render() {
+        var info = window.location.href.replace(/.*=/, '');
+        info = info.replace(/%20/g, ' ')
+        var params = info.split("+")
         var searchitem = [
             {
-                searchterm: this.props.params.query,
-                filters: ["posted within last 5 days"],
+                searchterm: params.slice(0,1),
+                filters: params.slice(1),
             }
         ];
 
@@ -74,7 +77,7 @@ class ResultsList extends React.Component {
             <div className="container">
                 <h2>Results</h2>
                 <Searchbar />
-                <div className="mt-4">{searchToShow}</div>
+                <div className="mt-4">Results for: {searchToShow}</div>
                 <div className="mt-4">{postsToShow}</div>
             </div>
         );

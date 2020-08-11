@@ -3,7 +3,13 @@ import React, { Component } from 'react';
 class DeletePost extends Component {
     constructor(props) {
         super(props);
+        this.state = {  }
     }
+    
+    delete() {
+        this.props.delete()
+    }
+    
     
     render() { 
         return (
@@ -26,7 +32,7 @@ class DeletePost extends Component {
                         type="button" 
                         class="btn btn-danger" 
                         data-dismiss="modal"
-                        onClick={this.props.deletePost}
+                        onClick={this.delete.bind(this)}
                         >
                             Delete
                         </button>

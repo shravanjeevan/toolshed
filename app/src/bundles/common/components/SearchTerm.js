@@ -12,9 +12,9 @@ class SearchResult extends React.Component {
         // List of filters
         let filterToShow = term.filters.map((filter) => {
             return (
-                <a href="#" className="mr-2 badge badge-secondary">
+                <button disabled className="mr-2 badge badge-secondary">
                     {filter}
-                </a>
+                </button>
             );
         });
 

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import backend from '../../../bundles/apis/backend';
-import moment from 'moment';
+import { browserHistory } from 'react-router';
 
 class CommentCard extends Component {
     constructor(props) {
@@ -50,7 +50,7 @@ class CommentCard extends Component {
                                         <div class="col-7 mt-3" id="commentContent">
                                             <Link to="/user/:id" class="text-primary"> {item.author} </Link>
                                             {/* date */}
-                                            <span class="text-secondary small mt-1"> {moment(item.createdOn).fromNow()} </span>
+                                            <span class="text-secondary small mt-1"> {item.createdOn} </span>
                                             {/* delete button */}
                                             <button type="button" class="rounded float-right btn btn-link btn-sm" onClick={this.open.bind(this,item.id)}> 
                                             &times; 
@@ -62,7 +62,8 @@ class CommentCard extends Component {
                         )  
                     })
                 } 
-                {/* <Prompt message="Are you sure you want to leave this page?"  when={true}/> */}
+                
+            <div> {console.log(window.location.pathname)}</div>
                 
                 <span 
                     id="test"

@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 
 class PostDetails extends Component {
     constructor(props) {
@@ -12,7 +11,6 @@ class PostDetails extends Component {
             flaged:false
         };
     }
-    
     
     // change it later 
     openProfile(){
@@ -43,8 +41,6 @@ class PostDetails extends Component {
     
     render() { 
         let like, share, flag;
-        let time = moment(this.props.date).format('YYYY-MM-DD HH:mm');
-        
         // like icons
         if (this.state.liked) {
             like = <span>
@@ -106,7 +102,7 @@ class PostDetails extends Component {
                         <Link to="/user/:id" class="text-primary">{this.props.name}</Link>
                     </u>
                     {/* date */}
-                    <div class = "my-1 small font-italic"> {time} </div>
+                    <div class = "my-1 small font-italic"> {this.props.date} </div>
                 </div>    
             </div>
                 
@@ -144,22 +140,10 @@ class PostDetails extends Component {
                   </div>
                   <div class="modal-body">
                     Link: 
-                    <input 
-                        type="text" 
-                        class='w-75 ml-3 pl-2' 
-                        value={window.location.href} 
-                        disabled
-                    />
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
-                    
-                    {/* <CopyToClipboard
-                    text={window.location.href}
-                    >
-                    <button key="copy">Copy</button>
-                </CopyToClipboard> */}
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={() => {navigator.clipboard.writeText(window.location.href)} }>COPY</button>
+                    <button type="button" class="btn btn-primary">COPY</button>
                   </div>
                 </div>
               </div>
