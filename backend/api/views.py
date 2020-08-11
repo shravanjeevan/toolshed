@@ -462,6 +462,7 @@ class CommentAPI(APIView):
             return Response(status=404, data={"message": "The comment you're trying to delete "
                                                          "may have already been deleted. "
                                                          "It cannot be found."})
+        # Perform delete
         comment.delete()
 
         return Response(status=200, data={"message": "Comment deleted."})
