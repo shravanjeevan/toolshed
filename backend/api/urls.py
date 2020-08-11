@@ -14,6 +14,11 @@ urlpatterns = [
     path('posts/popular/', views.PopularBlogList.as_view()),
     path('posts/<int:pk>', views.Blogs.as_view()),
 
+    # Post comments
+    path('posts/<int:pk>/comments/', views.CommentListAPI.as_view()),
+    path('posts/comments/', views.CommentAPI.as_view()),
+    path('posts/comments/<int:pk>', views.CommentAPI.as_view()),
+    
     path('categories/', views.AllCategories.as_view()),
     path('categories/popular', views.ExploreCategories.as_view()),
     path('categories/<str:category>', views.FilterCategories.as_view()),
@@ -26,9 +31,10 @@ urlpatterns = [
 
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
+    # Authentication endpoints    
     path('api/auth/', include('knox.urls')),
-
     path("auth/register/", views.RegistrationAPI.as_view()),
     path("auth/login/", views.LoginAPI.as_view()),
     path("auth/user/", views.UserAPI.as_view())
+
 ]

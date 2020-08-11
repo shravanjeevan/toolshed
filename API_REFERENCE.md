@@ -303,11 +303,9 @@ POST /signup
 **Sample Response:**
 ```
 {
-    [
         "authorId":1,
         "body":"Le texte, qui a reçu le soutien de 73 représentants républicains, doit maintenant être ",
         "postId":4125
-    ]
 }
 ```
 
