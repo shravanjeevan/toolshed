@@ -17,8 +17,9 @@ urlpatterns = [
     path('posts/<int:pk>', views.Blogs.as_view()),
 
     # knowledge base
-    path('posts/knowledge/<int:pk>', views.Blogs.as_view()),
-    path('posts/knowledge/popular/', views.PopularBlogList.as_view()),
+    # todo: (not yet implemented)
+    # path('posts/knowledge/<int:pk>', views.Blogs.as_view()),
+    # path('posts/knowledge/popular/', views.PopularBlogList.as_view()),
 
     path('categories/', views.AllCategories.as_view()),
     path('categories/popular', views.ExploreCategories.as_view()),
