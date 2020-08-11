@@ -10,14 +10,17 @@ class PostResult extends React.Component {
         let { post } = this.props;
 
         // List of tags
-        let tagsToShow = post.tags.map((tag) => {
-            let path = `/search?query=${tag}`;
-            return (
-                <span key={tag} className="mr-2 mb-1">
-                    <TagTab tagName={tag} />
-                </span>
-            );
-        });
+        let tagsToShow;
+        if (post.tags && post.tags.length > 0) {
+            tagsToShow = post.tags.map((tag) => {
+                let path = `/search?query=${tag}`;
+                return (
+                    <span key={tag} className="mr-2 mb-1">
+                        <TagTab tagName={tag} />
+                    </span>
+                );
+            });
+        }
 
         let linkToPost = `/posts/${post.id}`;
 
@@ -59,7 +62,7 @@ class PostResult extends React.Component {
         }
 
         function strip_html_tags(str) {
-            if (str === null || str === '') return false;
+            if (!str || str === null || str === '') return false;
             else str = str.toString();
             return str.replace(/<[^>]*>/g, '');
         }
