@@ -47,7 +47,7 @@ class NavBar1 extends Component {
                   />
               </Navbar.Brand>
             </Link>
-            <Navbar.Brand bsPrefix="topnav a" as={Link} to="/">The ToolShed {user ? `(logged in as ${user.email})` : ''}</Navbar.Brand>
+    <Navbar.Brand bsPrefix="topnav a" as={Link} to="/">The ToolShed {user ? `(logged in as ${user.email}: ${user.first_name} ${user.last_name})` : ''}</Navbar.Brand>
             <NavDropdown bsPrefix="topnav a" title="Knowledge Base" id="nav-dropdown">
                 <NavDropdown.Item className="topnav a" as={Link} to="/categories/All%20Tools">Tools</NavDropdown.Item>
                 <NavDropdown.Item className="topnav a" as={Link} to="/categories">Categories</NavDropdown.Item>
