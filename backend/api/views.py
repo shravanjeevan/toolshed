@@ -13,7 +13,9 @@ from .models import BlogPostTag
 from .models import KnowledgeBaseItem
 from .models import KnowledgeBaseTag
 from .models import Tool
-from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer
+from .models import BlogPostComment
+from django.contrib.auth.models import User
+from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, CommentSerializer
 
 es = Elasticsearch(["http://elastic:9200"])
 
@@ -390,6 +392,75 @@ class UserAPI(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
+class CommentListAPI(APIView):
+    def get(self, request, pk):
+        '''GET method of comments (returns all comments for given BlogPost ID)'''
+
+        # Grab list of comments for this BlogPost
+        try:
+            comments = BlogPostComment.objects.all().filter(blog_post_id__exact=pk)
+            values = list(comments.values())
+        except:
+           return Response(status=404, data={"message": "Error: BlogPost not found."})
+
+        # Double check that blogpost was found
+        if len(values) == 0:
+            return Response(status=404, data={"message": "Error: BlogPost not found."})
+
+        for idx, comment in enumerate(comments):
+            # Build response object
+            values[idx]["id"] = comment.id
+            values[idx]["author"] = comment.created_by.first_name + ' ' + comment.created_by.last_name
+            values[idx]["createdOn"] = comment.created_on
+            values[idx]["body"] = comment.content
+            
+            # Delete un-needed values
+            del values[idx]["created_by_id"]
+            del values[idx]["blog_post_id_id"]
+            del values[idx]["content"]
+            del values[idx]["created_on"]
+
+        return Response(status=200, data=values)
+
+class CommentAPI(APIView):
+    def post(self, request):
+        '''POST method for BlogPost comments'''
+
+        comment_data = request.data
+        
+        # Get user instance
+        try:
+            user = User.objects.get(id=comment_data["authorId"])
+        except:
+           return Response(status=400, data={"message": "Author not found."}) 
+
+        # Get blogpost instance
+        try:
+            blog_post = BlogPostModel.objects.get(id=comment_data["postId"])
+        except:
+            return Response(status=400, data={"message": "The blog post was not found."})
+
+        # Finally, create the actual comment
+        comment_db_item = BlogPostComment(content=comment_data["body"],
+                                        blog_post_id=blog_post,
+                                        created_by=user
+                                        )        
+        comment_db_item.save()
+
+        return Response(status=200, data={"message": "Successfully created a comment"})
+
+    def delete(self, request, pk):
+        '''DELETE method for comment'''
+
+        try:
+            comment = BlogPostComment.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "The comment you're trying to delete "
+                                                         "may have already been deleted. "
+                                                         "It cannot be found."})
+        comment.delete()
+
+        return Response(status=200, data={"message": "Comment deleted."})
 
 class PopularKnowledgeList(APIView):
     def get(self, request):

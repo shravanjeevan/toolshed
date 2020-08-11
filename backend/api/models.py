@@ -31,7 +31,7 @@ class BlogPostComment(models.Model):
         on_delete=models.DO_NOTHING
     )
     content = models.CharField(max_length=5000, null=True, blank=True)
-    created_on = models.DateTimeField(null=True, blank=True)
+    created_on = models.DateTimeField(auto_now=True, null=True, blank=True)
     created_by = models.ForeignKey(
         User, related_name="comments",
         on_delete=models.DO_NOTHING

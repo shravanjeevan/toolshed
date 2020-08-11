@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-from .models import BlogPost
+from .models import BlogPost, BlogPostComment
 
 class BlogSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -41,3 +41,14 @@ class LoginUserSerializer(serializers.Serializer):
             return user
         else:
             raise serializers.ValidationError("Credentials are invalid. Please try again.")
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogPostComment
+        fields = ('id',
+                'blog_post_id',
+                'content',
+                'created_on',
+                'created_by'
+                )
