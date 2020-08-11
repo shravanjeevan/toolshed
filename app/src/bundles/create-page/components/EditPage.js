@@ -7,24 +7,39 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import backend from '../../../bundles/apis/backend';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import { Prompt, Link } from 'react-router'
 
 class CreatePage extends Component {
     constructor(props) {
         super(props);
         this.updateTags=this.updateTags.bind(this)
         this.publish=this.publish.bind(this)
-        this.state = { 
-            editorState: EditorState.createEmpty(),
-            tags:[],
-            title:'',
-            content:'',
-            id:window.location.pathname.slice(12),
+        if (window.location.pathname != "/posts/:id/edit") {
+            this.state = { 
+                create:false,
+                editorState: EditorState.createEmpty(),
+                tags:[],
+                title:'',
+                content:'',
+                id:window.location.pathname.slice(12),
+            }
+            
+        } else {
+            this.state = { 
+                create:true,
+                editorState: EditorState.createEmpty(),
+                tags:[],
+                title:'',
+                content:'',
+            }
         }
         
     }
     
     componentDidMount(){
-        this.getData();
+        if (this.state.create == false) {
+            this.getData();
+        }
     }
     
     handleTitle (e) {
@@ -99,10 +114,17 @@ class CreatePage extends Component {
     }
     
     render() { 
+    
+        let head
+        if (this.state.create) {
+            head = 'Create'
+        } else {
+            head = 'Edit'
+        }
         
         return ( 
             <div>
-                <h2 class='class=my-4 ml-5'> Edit Blog Post </h2>
+                <h2 class='class=my-4 ml-5'> {head} Blog Post </h2>
                 <hr />
                 <div>
                     <CreateTags update={this.updateTags} tags={this.state.tags}/>
@@ -111,6 +133,11 @@ class CreatePage extends Component {
                     <PublishPost publish={this.publish}/>
                 </div>
             </div>
+            
+            <Prompt
+              message="Are you sure you want to leave?"
+            />
+            // <Link id='succs' to="/" />
         );
     }
 }

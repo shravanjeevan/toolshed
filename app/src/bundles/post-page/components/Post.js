@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import PostTags from './PostTags';
 import PostHeader from './PostHeader';
 import RelatedPostList from './RelatedPostList';
