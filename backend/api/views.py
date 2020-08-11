@@ -444,3 +444,24 @@ class KnowledgeBaseList(APIView):
         del values['_state']
 
         return Response(status=200, data=values)
+
+
+class LikeCounter(APIView):
+    def get(self, request, pk):
+        try:
+            blog = BlogPostModel.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
+
+        return Response(status=200,data={"title": blog.title, "likeCount": blog.likeCount})
+
+
+    def post(self, request, pk):
+        try:
+            blog = BlogPostModel.objects.get(id=pk)
+            blog.likeCount += 1
+            blog.save()
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
+
+        return Response(status=200,data={"title": blog.title, "likeCount": blog.likeCount})
