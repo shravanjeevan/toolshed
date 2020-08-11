@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'elasticsearch',
     'corsheaders',
+    'knox'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# REST framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}

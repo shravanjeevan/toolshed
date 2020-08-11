@@ -134,9 +134,9 @@ class CreatePage extends Component {
                 </div>
             </div>
             
-            <Prompt
-              message="Are you sure you want to leave?"
-            />
+            // <Prompt
+            //   message="Are you sure you want to leave?"
+            // />
             // <Link id='succs' to="/" />
         );
     }

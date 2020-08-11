@@ -12,7 +12,7 @@ class PostResult extends React.Component {
         let tagsToShow = post.tags.map((tag) => {
             let path = `/search?query=${tag}`;
             return (
-                <Link to={path} className="mr-2 badge badge-secondary">
+                <Link key={tag} to={path} className="mr-2 badge badge-secondary">
                     {tag}
                 </Link>
             );

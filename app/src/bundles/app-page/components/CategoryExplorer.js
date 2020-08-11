@@ -41,13 +41,20 @@ class CategoryExplorer extends React.Component {
     render() {
         let { categories }  = this.state;
 
-        var categoriesToShow = categories.map((category) => {
-            return (
-                <Link className="btn btn-primary p-3 mr-4 mb-4 rounded-pill" type="button" to={`/categories/${category.category}`}>
-                    {category.category} ({category.publishedCount})
-                </Link>
-            );
-        });
+        let categoriesToShow;
+
+        if (categories && categories.length > 0) {
+            categoriesToShow = categories.map((category) => {
+                return (
+                    <Link key={category.category} className="btn btn-primary p-3 mr-4 mb-4 rounded-pill" type="button" to={`/categories/${category.category}`}>
+                        {category.category} ({category.publishedCount})
+                    </Link>
+                );
+            });
+        } else {
+            categoriesToShow = <div className="alert alert-light">No categories found.</div>;
+        }
+        
 
         return (
             <div className="container">

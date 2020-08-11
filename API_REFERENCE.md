@@ -5,7 +5,8 @@
 GET /search *
 
 GET /posts *
-GET /posts/popular *
+GET /posts/popular?top=10
+GET /knowledge/popular?top=10
 GET /posts/related
 POST /posts *
 
