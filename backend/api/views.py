@@ -1,19 +1,18 @@
 import datetime
 
+from django.contrib.auth.models import User
 from django.db import connection
 from elasticsearch import Elasticsearch
 from knox.models import AuthToken
 from rest_framework import permissions, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from random import *
 
 from .models import BlogPost as BlogPostModel
+from .models import BlogPostTag
 from .models import KnowledgeBaseItem
 from .models import KnowledgeBaseTag
-from .models import BlogPostTag
 from .models import Tool
-from django.contrib.auth.models import User
 from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer
 
 es = Elasticsearch(["http://elastic:9200"])
@@ -86,6 +85,7 @@ def blogmodelToDict(blogs):
 
     return values
 
+
 def kbmodelToDict(kb_items):
     values = list(kb_items.values())
 
@@ -142,9 +142,10 @@ class BlogsList(APIView):
 
         print(request_data)
 
-        if "type" in request_data and request_data["type"] == 'knowledge_base' :
+        if "type" in request_data and request_data["type"] == 'knowledge_base':
             if KnowledgeBaseItem.objects.filter(title__iexact=request_data["title"]):
-                return Response(status=200, data={"message": "You already have a knowledge base item with the same title. Please choose another title."})
+                return Response(status=200, data={
+                    "message": "You already have a knowledge base item with the same title. Please choose another title."})
 
             user = User.objects.get(id=request_data["authorId"])
 
@@ -165,11 +166,10 @@ class BlogsList(APIView):
             add_tags_knowledge_base(knowledge_base_item, request_data["tags"])
 
             knowledge_base_es = article_index_payload_builder(knowledge_base_item.id, request_data, user.first_name,
-                                                       str(datetime.datetime), "knowledge_base")
+                                                              str(datetime.datetime), "knowledge_base")
 
             es.index(index='knowledge_base', body=knowledge_base_es)
             return Response(status=200, data={"message": "Successfully add a new knowledge base item"})
-
 
         if does_blog_post_exist(request_data["authorId"], request_data["title"]):
 
@@ -313,7 +313,6 @@ class Search(APIView):
         blog_result_id = []
         kb_result_id = []
 
-
         for res in resp["hits"]["hits"]:
             print(res["_source"]["type"])
             if "blog" in res["_source"]["type"]:
@@ -431,7 +430,7 @@ class KnowledgeBaseList(APIView):
         values = kb_items.__dict__
         values["tags"] = []
         values["type"] = "knowledge_base"
-        tool =Tool.objects.get(id=values["tool_id_id"])
+        tool = Tool.objects.get(id=values["tool_id_id"])
         values["toolCategory"] = tool.category
         values["toolName"] = tool.name
         values["toolId"] = values["tool_id_id"]
@@ -444,3 +443,23 @@ class KnowledgeBaseList(APIView):
         del values['_state']
 
         return Response(status=200, data=values)
+
+
+class LikeCounter(APIView):
+    def get(self, request, pk):
+        try:
+            blog = BlogPostModel.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
+
+        return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})
+
+    def post(self, request, pk):
+        try:
+            blog = BlogPostModel.objects.get(id=pk)
+            blog.likeCount += 1
+            blog.save()
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
+
+        return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})

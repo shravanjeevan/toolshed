@@ -40,5 +40,7 @@ urlpatterns = [
 
     path("auth/register/", views.RegistrationAPI.as_view()),
     path("auth/login/", views.LoginAPI.as_view()),
-    path("auth/user/", views.UserAPI.as_view())
+    path("auth/user/", views.UserAPI.as_view()),
+
+    path("like/<int:pk>", views.LikeCounter.as_view())
 ]
