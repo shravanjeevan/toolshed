@@ -27,7 +27,7 @@ class Breadcrumbs extends Component {
     });
     
     // Return a list of links
-    return (<Breadcrumb >{breadcrumb}</Breadcrumb>);
+    return (<Breadcrumb style={{'margin-top': '60px'}}>{breadcrumb}</Breadcrumb>);
   }
 
 

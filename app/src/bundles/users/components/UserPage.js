@@ -1,8 +1,15 @@
 import React from 'react';
 import './UserPage.css';
 
+// For accessing user data
+import { connect } from 'react-redux';
+
+import PopularPosts from '../../app-page/components/PopularPosts';
+
 class UserPage extends React.Component {
     render() {
+        const { user, isAuthenticated } = this.props.auth;
+
         console.log(this.props.params);
         return (
             <div class="container emp-profile">
@@ -18,7 +25,7 @@ class UserPage extends React.Component {
                         </div>
                         <div class="col-md-6">
                             <div class="profile-head">
-                                <h5>John Doe</h5>
+                                <h5>{user.username}</h5>
                                 <h6>User</h6>
                                 <ul
                                     class="nav nav-tabs"
@@ -68,7 +75,7 @@ class UserPage extends React.Component {
                                             <label>User Name</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <p>JaneDoe4Evr</p>
+                                            <p>{user.username}</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -76,7 +83,10 @@ class UserPage extends React.Component {
                                             <label>Full Name</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <p>John Doe</p>
+                                            <p>
+                                                {user.first_name}{' '}
+                                                {user.last_name}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -84,7 +94,7 @@ class UserPage extends React.Component {
                                             <label>Email</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <p>johndoe@example.com</p>
+                                            <p>{user.email}</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -99,10 +109,17 @@ class UserPage extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <PopularPosts />
+                    </div>
                 </form>
             </div>
         );
     }
 }
 
-export default UserPage;
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+});
+
+export default connect(mapStateToProps)(UserPage);

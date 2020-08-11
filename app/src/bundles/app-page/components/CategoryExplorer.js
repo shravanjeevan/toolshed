@@ -27,7 +27,8 @@ class CategoryExplorer extends React.Component {
         return (<div><h2>Popular Categories</h2></div>)
     }
     renderHomepage() {
-        return(<div><h2>Explore Categories <Link className="button" to="/categories"> All Categories </Link></h2> </div>)
+        return(<div><h2>Explore Categories</h2><Link class="font-weight-bold" to="/categories">View All Categories</Link>
+                </div>)
     }
     toRender() {
         if (window.location.pathname == '/') {

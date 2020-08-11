@@ -16,6 +16,7 @@ import ResultsPage from '../../results-page/components/ResultsPage';
 import EditPage from '../../create-page/components/EditPage';
 import CategoriesPage from '../../categories/components/categories';
 import BlogsPage from '../../blogs/components/BlogsPage';
+import KnowledgePage from '../../blogs/components/KnowledgePage';
 import Navbar1 from '../../common/components/navbar';
 import ScrollToTop from '../../common/components/ScrollToTop';
 import ErrorPage from '../../common/components/ErrorPage';
@@ -45,6 +46,7 @@ class App extends React.Component {
                                 <Route path="/posts/:slug" exact component={Post}/>
                                 <Route path="/search" exact component={ResultsPage} key={window.location.pathname}/>
                                 <Route path="/blogs" exact component={BlogsPage}/>
+                                <Route path="/knowledge" exact component={KnowledgePage}/>
                                 <Route path="/categories" exact component={CategoriesPage}/>
                                 <Route path="/edit" exact component={EditPage}/>
                                 <Route path="/categories/:slug" exact component={ToolsPage}/> {/* This should go to the tools component, i.e. a list of tools */}

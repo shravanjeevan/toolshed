@@ -10,24 +10,37 @@ import tlogo from './teams-logo.png';
 class ToolsList extends React.Component {
     state = {
         tools: [],
+        category: null
     };
 
     componentDidMount() {
+        if (!this.state.category) {
+            this.setState({ category: this.props.category });
+            this.getTools();
+        }
         this.getTools();
     }
+
+    componentDidUpdate(prevProps) {
+        if (this.state.category !== this.props.category) {
+            this.setState({ category: this.props.category });
+            this.getTools();
+        }
+    }
+
+    comp
 
     getTools = async () => {
         // Decide whether to fetch tools from all categories or a specific category depending on the URL slug
         let path =
             this.props.category === 'all'
-                ? `/tools`
+                ? `/tools/`
                 : `/categories/${this.props.category}`;
 
         try {
             let res = await backend.get(path);
             let { data } = res;
             this.setState({ tools: data });
-            console.log(this.state.posts);
         } catch (e) {
             console.log(e);
         }
