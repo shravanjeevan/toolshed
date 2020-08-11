@@ -22,18 +22,18 @@ class NavBar1 extends Component {
                   />
               </Navbar.Brand>
             </Link>
-            <Navbar.Brand bsPrefix="topnav a" href="/">The ToolShed</Navbar.Brand>
+            <Navbar.Brand bsPrefix="topnav a" as={Link} to="/">The ToolShed</Navbar.Brand>
             <NavDropdown bsPrefix="topnav a" title="Knowledge Base" id="nav-dropdown">
-                <NavDropdown.Item className="topnav a" href="/tools">Tools</NavDropdown.Item>
-                <NavDropdown.Item className="topnav a" href="/categories">Categories</NavDropdown.Item>
+                <NavDropdown.Item className="topnav a" as={Link} to="/tools">Tools</NavDropdown.Item>
+                <NavDropdown.Item className="topnav a" as={Link} to="/categories">Categories</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link bsPrefix="topnav a" href="/blogs">Blogs</Nav.Link>
+            <Nav.Link bsPrefix="topnav a" as={Link} to="/blogs">Blogs</Nav.Link>
           </Nav>
           <Nav className="justify-content-center" activeKey="/home">
             <SearchBar />
           </Nav>
           <Nav className="justify-content-end" activeKey="/home">
-            <Nav.Link bsPrefix="topnav a" href="/login">Sign Up/Login</Nav.Link>
+            <Nav.Link bsPrefix="topnav a" as={Link} to="/login">Sign Up/Login</Nav.Link>
           </Nav>
       </Navbar>
       </React.Fragment>
