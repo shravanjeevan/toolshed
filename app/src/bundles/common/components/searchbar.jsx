@@ -21,7 +21,11 @@ class SearchBar extends Component {
           });
     }
     torender(){
-        var searchPath = `/search?query=${this.state.query + "+" + this.state.filters.join("+")}`;
+        if (this.state.filters.length == 0){
+            var searchPath = `/search?query=${this.state.query}`;
+        } else {
+            var searchPath = `/search?query=${this.state.query + "+" + this.state.filters.join("+")}`;
+        }
         if(this.state.query == ''){
             return(<Link type="button" className="button" to={searchPath} style={{ pointerEvents: 'none' }}>
             Search
@@ -69,22 +73,22 @@ class SearchBar extends Component {
                             Filters
                         </button>
                         <div class="dropdown-menu">
-                            <a class="button" onClick={()=>this.addfilter("Knowledge Base Items")}>
+                            <button class="button" onClick={()=>this.addfilter("Knowledge Base Items")}>
                                 Knowledge Base Items
-                            </a>
-                            <a class="button" onClick={()=>this.addfilter("Blog Post Items")}>
+                            </button>
+                            <button class="button" onClick={()=>this.addfilter("Blog Post Items")}>
                                 Blog Post Items
-                            </a>
-                            <a class="button" onClick={()=>this.addfilter("New Posts")}>
+                            </button>
+                            <button class="button" onClick={()=>this.addfilter("New Posts")}>
                                 New Posts
-                            </a>
+                            </button>
                             <div
                                 role="separator"
                                 class="dropdown-divider"
                             ></div>
-                            <a class="button" onClick={()=>this.addfilter("Popular Posts")}>
+                            <button class="button" onClick={()=>this.addfilter("Popular Posts")}>
                                 Popular Posts
-                            </a>
+                            </button>
                         </div>
                     </div>
         </div>
