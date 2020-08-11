@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate
 
 from .models import BlogPost, BlogPostComment
 
+''' Serializers for Tool Shed '''
+
 class BlogSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(required=False, allow_blank=True, max_length=100)
