@@ -1,5 +1,5 @@
 /* Multi-line ellpsis for preview text https://stackoverflow.com/questions/33058004/applying-an-ellipsis-to-multiline-text */
-.post-text p {
+p.post-text {
     display: block;
     display: -webkit-box;
     
@@ -20,4 +20,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding-bottom: 2px;        /* Lines get cut-off with clamping, needs a bit of buffer */
+}
+
+.post-title, .post-content {
+    color: inherit;
 }

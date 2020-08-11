@@ -124,7 +124,8 @@ def kbmodelToDict(kb_items):
 
 class BlogsList(APIView):
     def get(self, request):
-
+        blogs = BlogPostModel.objects.all()
+        
         values = list(blogs.values())
 
         for idx, blog in enumerate(blogs):
