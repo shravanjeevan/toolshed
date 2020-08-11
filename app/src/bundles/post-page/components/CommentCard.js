@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, Prompt} from 'react-router-dom';
 import backend from '../../../bundles/apis/backend';
-import { browserHistory } from 'react-router';
 
 class CommentCard extends Component {
     constructor(props) {
@@ -62,8 +61,7 @@ class CommentCard extends Component {
                         )  
                     })
                 } 
-                
-            <div> {console.log(window.location.pathname)}</div>
+                {/* <Prompt message="Are you sure you want to leave this page?"  when={true}/> */}
                 
                 <span 
                     id="test"

@@ -18,7 +18,7 @@ class CreatePage extends Component {
             tags:[],
             title:'',
             content:'',
-            id:12,
+            id:window.location.pathname.slice(12),
         }
         
     }
@@ -97,28 +97,6 @@ class CreatePage extends Component {
             console.log(e);
         }
     }
-    
-    // getData=()=>{
-    //     var api = 'http://localhost:8000/posts/8';
-    //     axios.get(api)
-    //     .then((response)=>{
-    //         const html = atob(response.data.content)
-    //         const contentBlock = htmlToDraft(html);
-    //         if (contentBlock) {
-    //           const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-    //           const editorState = EditorState.createWithContent(contentState);
-    //           this.setState ({
-    //             editorState:editorState
-    //           });
-    //         }
-        
-    //     this.setState({
-    //         tags:response.data.tags,
-    //         title:response.data.title,
-    //      })
-    //     })
-    //     .catch((error)=>{console.log(error)})
-    // }
     
     render() { 
         

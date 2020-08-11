@@ -7,13 +7,14 @@ import RelatedPostList from './RelatedPostList';
 import CommentSection from './CommentSection';
 import PostBody from './PostBody';
 import backend from '../../../bundles/apis/backend';
+import { Link} from 'react-router-dom';
 import './Post.css';
 
 class Post extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            id:12,
+            id: window.location.pathname.slice(7),
             title:'',
             type:'',
             tags:[],
@@ -23,7 +24,7 @@ class Post extends Component {
             likeCount:0,
             commentCount:0,
             body:'',
-            
+            // Mockup icon
             icon:'https://cdn.impactinit.com/cdn/x/x@77a40152ac/smss52/smsimg30//pv/ingimagecontributors/ing_47129_18590.jpg',
         }
     }
@@ -32,25 +33,6 @@ class Post extends Component {
     componentDidMount(){
         this.getData();
     }
-    // getData=()=>{
-    //     var api = 'http://localhost:8000/posts/12';
-    //     axios.get(api)
-    //     .then((response)=>{this.setState({
-    //         id:response.data.id,
-    //         title:response.data.title,
-    //         type:response.data.type,
-    //         tags:response.data.tags,
-    //         createdOn:response.data.createdOn,
-    //         author:response.data.author,
-    //         likeCount:response.data.likeCount,
-    //         commentCount:response.data.commentCount,
-    //         body:response.data.content,
-            
-    //         icon:response.data.icon,
-    //      })
-    //     })
-    //     .catch((error)=>{console.log(error)})
-    // }
     
     getData = async () => {
         try {
@@ -76,28 +58,27 @@ class Post extends Component {
         }
     }
     
-    // HTTP update likes
-    updateLikes=(value)=>{
-        var api = '';
-        this.setState({likes:value})
-        // how to solve Asynchronous here ?
-        console.log(this.state.likes)
-        
-        axios.post(api, this.state.likes)
-        .then((response)=>{
-            console.log(response)
-        })
-        .catch((error)=>{console.log(error)})
+    // HTTP update likes?    
+    updateLikes = async (value) => {
+        try {
+            let data = {
+                likeCount:value
+            }
+            let res = await backend.put('/posts/'+this.state.id, data);
+            console.log(res);
+        } catch(e) {
+            console.log(e);
+        }
     }
     
-    // HTTP delete post
-    deletePost() {
-        let api = 'http://localhost:3000/posts/:'+this.state.id;
-        axios.delete(api,this.state.id)
-        .then((response)=>{
-            console.log(response)
-        })
-        .catch((error)=>{console.log(error)})
+    deletePost = async () => {
+        try {
+            let res = await backend.delete('/posts/'+this.state.id);
+            console.log(res);
+        } catch(e) {
+            console.log(e);
+        }
+        document.getElementById("redir").click()
     }
     
     render() { 
@@ -112,6 +93,7 @@ class Post extends Component {
                     date = {this.state.createdOn}
                     likes = {this.state.likeCount}
                     icon = {this.state.icon}
+                    postId = {this.state.id}
                     deletePost = {this.deletePost.bind(this)}
                     updateLikes = {this.updateLikes.bind(this)}
                     /> 
@@ -133,6 +115,8 @@ class Post extends Component {
                 <div>
                     <CommentSection commentCount = {this.state.commentCount} postId={this.state.id}/>
                 </div>
+                {/* refresh page after deleting post */}
+                <Link id='redir' to="/" />
         </div>
         );
     }

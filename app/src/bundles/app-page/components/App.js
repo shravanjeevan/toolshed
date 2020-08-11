@@ -24,12 +24,12 @@ class App extends React.Component {
                         <Switch>
                             <Route path="/" exact component={AppPage}/>
                             <Route path="/posts/create" exact component={CreatePage}/>
+                            <Route path="/posts/edit/:id" exact component={EditPage}/>
                             <Route path="/posts/:slug" exact component={Post}/>
                             <Route path="/search" exact component={ResultsPage}/>
                             <Route path="/blogs" exact component={BlogsPage}/>
                             {/* <Route path="/categories/:slug" exact component={ToolsPage}/> This should go to the tools component, i.e. a list of tools */}
                             <Route path="/categories" exact component={CategoriesPage}/>
-                            <Route path="/edit" exact component={EditPage}/>
                             <Route path="/categories/:slug" exact component={ToolsPage}/> {/* This should go to the tools component, i.e. a list of tools */}
                             <Route path="/tools" exact component={ToolsPage}/>
                             <Route>
