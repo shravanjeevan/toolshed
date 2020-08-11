@@ -37,6 +37,12 @@ class BlogPostComment(models.Model):
         on_delete=models.DO_NOTHING
     )
 
+class Tool(models.Model):
+    name = models.CharField(max_length=256, null=True, blank=True)
+    category = models.CharField(max_length=150, null=True, blank=True)
+
+class KnowledgeBaseTag(models.Model):
+    tag = models.CharField(max_length=50, null=True, blank=True)
 
 class KnowledgeBaseItem(models.Model):
     tool_id = models.ForeignKey(
@@ -46,14 +52,7 @@ class KnowledgeBaseItem(models.Model):
     content_type = models.CharField(max_length=30, null=True, blank=True)
     title = models.CharField(max_length=256, null=True, blank=True)
     content = models.CharField(max_length=10000, null=True, blank=True)
+    tags = models.ManyToManyField(KnowledgeBaseTag, related_name='knowledge_base_tag')
+    # this is a hacky way to do likes, we'll calculate it dynamically moving forward.
+    likeCount = models.IntegerField(null=True, blank=True)
 
-class Tool(models.Model):
-    name = models.CharField(max_length=256, null=True, blank=True)
-    category = models.CharField(max_length=150, null=True, blank=True)
-
-class KnowledgeBaseTag(models.Model):
-    tag = models.CharField(max_length=50, null=True, blank=True)
-    blog_post_id = models.ForeignKey(
-        'KnowledgeBaseItem',
-        on_delete=models.DO_NOTHING
-    )

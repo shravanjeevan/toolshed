@@ -7,6 +7,3 @@ curl -d "@2.json" -H "Content-Type: application/json" -X POST localhost:8000/pos
 curl -d "@3.json" -H "Content-Type: application/json" -X POST localhost:8000/posts/
 
 curl -d "@4.json" -H "Content-Type: application/json" -X POST localhost:8000/posts/
-
-
-

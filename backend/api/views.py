@@ -6,8 +6,11 @@ from knox.models import AuthToken
 from rest_framework import permissions, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from random import *
 
 from .models import BlogPost as BlogPostModel
+from .models import KnowledgeBaseItem
+from .models import KnowledgeBaseTag
 from .models import BlogPostTag
 from .models import Tool
 from .models import BlogPostComment
@@ -17,12 +20,12 @@ from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializ
 es = Elasticsearch(["http://elastic:9200"])
 
 
-def article_index_payload_builder(blogpost_db_id, blogpost_data, author_first_name, created_date):
+def article_index_payload_builder(blogpost_db_id, blogpost_data, author_first_name, created_date, type):
     data = {
         "id": blogpost_db_id,
         "title": blogpost_data["title"],
         "content": blogpost_data["content"],
-        "type": "blog",
+        "type": type,
         "author": author_first_name,
         "createdDate": created_date,
         "tags": blogpost_data["tags"],
@@ -84,20 +87,42 @@ def blogmodelToDict(blogs):
 
     return values
 
+def kbmodelToDict(kb_items):
+    values = list(kb_items.values())
+
+    for idx, blog in enumerate(kb_items):
+        values[idx]["tags"] = []
+        values[idx]["type"] = "knowledge_base"
+        for tagId in blog.tags.all():
+            values[idx]["tags"].append(tagId.tag)
+
+    return values
+
 
 """
+ Blogpost Item
  {
      "title": "Pavan first blogpost",
      "content": "Content for the blogpost blah blah blah blach",
      "authorId": "1",
-     "tags": ["happiness", "joy"]
+     "tags": ["happiness", "joy"],
+     "type": "blog_post"
+ }
+
+ Knowledge Base
+  {
+     "title": "Pavan first knowledge base item",
+     "content": "Content for the blogpost blah blah blah blach",
+     "authorId": "2",
+     "tags": ["happiness", "first", "knowledge"],
+     "type": "knowledge_base",
+     "toolId": "7"
  }
 """
 
 
 class BlogsList(APIView):
     def get(self, request):
-        blogs = BlogPostModel.objects.all()
 
         values = list(blogs.values())
 
@@ -114,18 +139,48 @@ class BlogsList(APIView):
         return Response(status=200, data=values)
 
     def post(self, request):
-        blog_data = request.data
+        request_data = request.data
 
-        print(blog_data)
-        if does_blog_post_exist(blog_data["authorId"], blog_data["title"]):
+        print(request_data)
+
+        if "type" in request_data and request_data["type"] == 'knowledge_base' :
+            if KnowledgeBaseItem.objects.filter(title__iexact=request_data["title"]):
+                return Response(status=200, data={"message": "You already have a knowledge base item with the same title. Please choose another title."})
+
+            user = User.objects.get(id=request_data["authorId"])
+
+            # if not user.is_staff:
+            #     return Response(status=403, data={'message':'You are not authorized to create a knowledge base item'})
+
+            if "likeCount" in request_data:
+                likeCount = request_data["likeCount"]
+            else:
+                likeCount = 0
+
+            tool = Tool.objects.get(id=request_data["toolId"])
+            knowledge_base_item = KnowledgeBaseItem(title=request_data["title"],
+                                                    content=request_data["content"],
+                                                    tool_id=tool,
+                                                    likeCount=likeCount)
+            knowledge_base_item.save()
+            add_tags_knowledge_base(knowledge_base_item, request_data["tags"])
+
+            knowledge_base_es = article_index_payload_builder(knowledge_base_item.id, request_data, user.first_name,
+                                                       str(datetime.datetime), "knowledge_base")
+
+            es.index(index='knowledge_base', body=knowledge_base_es)
+            return Response(status=200, data={"message": "Successfully add a new knowledge base item"})
+
+
+        if does_blog_post_exist(request_data["authorId"], request_data["title"]):
 
             data = {'message': "You already have a blogpost with the same title. Please choose another title."}
             return Response(data=data, status=403)
         else:
-            user = User.objects.get(id=blog_data["authorId"])
+            user = User.objects.get(id=request_data["authorId"])
 
-            blogpost_db = BlogPostModel(title=blog_data["title"],
-                                        content=blog_data["content"],
+            blogpost_db = BlogPostModel(title=request_data["title"],
+                                        content=request_data["content"],
                                         createdBy=user,
                                         likeCount=0,
                                         visibility="visible")
@@ -133,18 +188,23 @@ class BlogsList(APIView):
             blogpost_db.save()
 
             # Save tags
-
-            add_tags(blogpost_db, blog_data["tags"])
+            add_tags_blogpost(blogpost_db, request_data["tags"])
 
             # Index in elasticsearch
-            blogpost_es = article_index_payload_builder(blogpost_db.id, blog_data, user.first_name,
-                                                        str(datetime.datetime))
+            blogpost_es = article_index_payload_builder(blogpost_db.id, request_data, user.first_name,
+                                                        str(datetime.datetime), "blog_post")
             es.index(index='knowledge_base', body=blogpost_es)
-
         return Response(status=200, data={"message": "Successfully add a new blog post"})
 
 
-def add_tags(blogpostModel, tags):
+def add_tags_knowledge_base(knowledge_base_model, tags):
+    for i in tags:
+        tag = KnowledgeBaseTag(tag=i)
+        tag.save()
+        knowledge_base_model.tags.add(tag)
+
+
+def add_tags_blogpost(blogpostModel, tags):
     for i in tags:
         tag = BlogPostTag(tag=i)
         tag.save()
@@ -153,7 +213,11 @@ def add_tags(blogpostModel, tags):
 
 class PopularBlogList(APIView):
     def get(self, request):
-        blogs = BlogPostModel.objects.all().order_by('-likeCount')[:3]
+        top = request.GET.get('top')
+        if not top:
+            top = 10
+
+        blogs = BlogPostModel.objects.all().order_by('-likeCount')[:int(top)]
 
         values = list(blogs.values())
 
@@ -248,13 +312,27 @@ class Search(APIView):
             return Response(status=404, data={})
 
         blog_result_id = []
+        kb_result_id = []
+
 
         for res in resp["hits"]["hits"]:
-            id = res["_source"]["id"]
-            blog_result_id.append(id)
+            print(res["_source"]["type"])
+            if "blog" in res["_source"]["type"]:
+                id = res["_source"]["id"]
+                blog_result_id.append(id)
+            else:
+                id = res["_source"]["id"]
+                kb_result_id.append(id)
+
+        print(blog_result_id)
 
         blog_results = BlogPostModel.objects.filter(id__in=blog_result_id)
+        kb_results = KnowledgeBaseItem.objects.filter(id__in=kb_result_id)
+
         blog_results = blogmodelToDict(blog_results)
+        kb_results = kbmodelToDict(kb_results)
+
+        blog_results.append(kb_results)
 
         return Response(data=blog_results, status=200)
 
@@ -314,6 +392,7 @@ class UserAPI(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
+<<<<<<< HEAD
 class CommentListAPI(APIView):
     def get(self, request, pk):
         '''GET method of comments (returns all comments for given BlogPost ID)'''
@@ -384,3 +463,58 @@ class CommentAPI(APIView):
         comment.delete()
 
         return Response(status=200, data={"message": "Comment deleted."})
+=======
+
+class PopularKnowledgeList(APIView):
+    def get(self, request):
+        top = request.GET.get('top')
+        if not top:
+            top = 10
+
+        kb_items = KnowledgeBaseItem.objects.all().order_by('-likeCount')[:int(top)]
+        values = list(kb_items.values())
+
+        for idx, item in enumerate(kb_items):
+            values[idx]["tags"] = []
+            values[idx]["type"] = "knowledge_base"
+            tool = Tool.objects.filter(id=values[idx]["tool_id_id"])[0]
+            tool_name = tool.name
+            tool_category = tool.category
+
+            values[idx]["toolName"] = tool_name
+            values[idx]["toolId"] = values[idx]["tool_id_id"]
+            values[idx]["toolCategory"] = tool_category
+
+            del values[idx]["content_type"]
+            del values[idx]["tool_id_id"]
+
+            for tagId in item.tags.all():
+                values[idx]["tags"].append(tagId.tag)
+
+        return Response(status=200, data=values)
+
+
+class KnowledgeBaseList(APIView):
+    def get(self, request, pk):
+        try:
+            kb_items = KnowledgeBaseItem.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
+
+        values = kb_items.__dict__
+        values["tags"] = []
+        values["type"] = "knowledge_base"
+        tool =Tool.objects.get(id=values["tool_id_id"])
+        values["toolCategory"] = tool.category
+        values["toolName"] = tool.name
+        values["toolId"] = values["tool_id_id"]
+        del values["tool_id_id"]
+        del values["content_type"]
+
+        for tag in kb_items.tags.all():
+            values["tags"].append(tag.tag)
+
+        del values['_state']
+
+        return Response(status=200, data=values)
+>>>>>>> master
