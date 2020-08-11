@@ -392,7 +392,6 @@ class UserAPI(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
-<<<<<<< HEAD
 class CommentListAPI(APIView):
     def get(self, request, pk):
         '''GET method of comments (returns all comments for given BlogPost ID)'''
@@ -414,7 +413,6 @@ class CommentListAPI(APIView):
             values[idx]["author"] = comment.created_by.first_name + ' ' + comment.created_by.last_name
             values[idx]["createdOn"] = comment.created_on
             values[idx]["body"] = comment.content
-            
             
             # Delete un-needed values
             del values[idx]["created_by_id"]
@@ -463,7 +461,6 @@ class CommentAPI(APIView):
         comment.delete()
 
         return Response(status=200, data={"message": "Comment deleted."})
-=======
 
 class PopularKnowledgeList(APIView):
     def get(self, request):
@@ -517,4 +514,3 @@ class KnowledgeBaseList(APIView):
         del values['_state']
 
         return Response(status=200, data=values)
->>>>>>> master
