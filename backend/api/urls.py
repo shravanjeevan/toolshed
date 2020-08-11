@@ -9,10 +9,17 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('', include(router.urls)),
 
-    # posts
+    # common
     path('posts/', views.BlogsList.as_view()),
+
+    # posts
     path('posts/popular/', views.PopularBlogList.as_view()),
     path('posts/<int:pk>', views.Blogs.as_view()),
+
+    # knowledge base
+    # todo: (not yet implemented)
+    # path('posts/knowledge/<int:pk>', views.Blogs.as_view()),
+    # path('posts/knowledge/popular/', views.PopularBlogList.as_view()),
 
     path('categories/', views.AllCategories.as_view()),
     path('categories/popular', views.ExploreCategories.as_view()),

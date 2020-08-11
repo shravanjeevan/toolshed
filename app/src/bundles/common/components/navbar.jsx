@@ -47,12 +47,12 @@ class NavBar1 extends Component {
                   />
               </Navbar.Brand>
             </Link>
-    <Navbar.Brand bsPrefix="topnav a" href="/">The ToolShed {user ? `(logged in as ${user.email})` : ''}</Navbar.Brand>
+            <Navbar.Brand bsPrefix="topnav a" as={Link} to="/">The ToolShed {user ? `(logged in as ${user.email})` : ''}</Navbar.Brand>
             <NavDropdown bsPrefix="topnav a" title="Knowledge Base" id="nav-dropdown">
-                <NavDropdown.Item className="topnav a" href="/tools">Tools</NavDropdown.Item>
-                <NavDropdown.Item className="topnav a" href="/categories">Categories</NavDropdown.Item>
+                <NavDropdown.Item className="topnav a" as={Link} to="/tools">Tools</NavDropdown.Item>
+                <NavDropdown.Item className="topnav a" as={Link} to="/categories">Categories</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link bsPrefix="topnav a" href="/blogs">Blogs</Nav.Link>
+            <Nav.Link bsPrefix="topnav a" as={Link} to="/blogs">Blogs</Nav.Link>
           </Nav>
           <Nav className="justify-content-center" activeKey="/home">
             <SearchBar />

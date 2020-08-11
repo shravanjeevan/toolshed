@@ -6,23 +6,25 @@ import PostHeader from './PostHeader';
 import RelatedPostList from './RelatedPostList';
 import CommentSection from './CommentSection';
 import PostBody from './PostBody';
+import backend from '../../../bundles/apis/backend';
 import './Post.css';
 
 class Post extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            id:-1,
+            id:12,
             title:'',
             type:'',
             tags:[],
             createdOn:'',
             author:'',
+            authorId:0,
             likeCount:0,
             commentCount:0,
             body:'',
             
-            icon:'',
+            icon:'https://cdn.impactinit.com/cdn/x/x@77a40152ac/smss52/smsimg30//pv/ingimagecontributors/ing_47129_18590.jpg',
         }
     }
     
@@ -30,24 +32,48 @@ class Post extends Component {
     componentDidMount(){
         this.getData();
     }
-    getData=()=>{
-        var api = 'http://localhost:3000/test.json';
-        axios.get(api)
-        .then((response)=>{this.setState({
-            id:response.data.id,
-            title:response.data.title,
-            type:response.data.type,
-            tags:response.data.tags,
-            createdOn:response.data.createdOn,
-            author:response.data.author,
-            likeCount:response.data.likeCount,
-            commentCount:response.data.commentCount,
-            body:response.data.body,
+    // getData=()=>{
+    //     var api = 'http://localhost:8000/posts/12';
+    //     axios.get(api)
+    //     .then((response)=>{this.setState({
+    //         id:response.data.id,
+    //         title:response.data.title,
+    //         type:response.data.type,
+    //         tags:response.data.tags,
+    //         createdOn:response.data.createdOn,
+    //         author:response.data.author,
+    //         likeCount:response.data.likeCount,
+    //         commentCount:response.data.commentCount,
+    //         body:response.data.content,
             
-            icon:response.data.icon,
-         })
-        })
-        .catch((error)=>{console.log(error)})
+    //         icon:response.data.icon,
+    //      })
+    //     })
+    //     .catch((error)=>{console.log(error)})
+    // }
+    
+    getData = async () => {
+        try {
+            let res = await backend.get('/posts/'+this.state.id);
+            let { data } = res;
+            this.setState({
+                tags:data.tags,
+                title:data.title,
+                id:data.id,
+                title:data.title,
+                type:data.type,
+                tags:data.tags,
+                createdOn:data.createdOn,
+                author:data.createdByDisplayName,
+                likeCount:data.likeCount,
+                commentCount:data.commentCount,
+                body:data.content,
+                authorId:data.createdById
+             })
+            console.log(data);
+        } catch(e) {
+            console.log(e);
+        }
     }
     
     // HTTP update likes
@@ -96,8 +122,9 @@ class Post extends Component {
                         {' '}
                         <PostBody body={this.state.body} />{' '}
                     </div>
+                    {/* tags and related */}
                     <div className="col-3" id="aside">
-                        <PostTags />
+                        <PostTags tags={this.state.tags}/>
                         <br />
                         <RelatedPostList />
                     </div>

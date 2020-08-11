@@ -21,6 +21,7 @@ import Navbar1 from '../../common/components/navbar';
 import ScrollToTop from '../../common/components/ScrollToTop';
 import ErrorPage from '../../common/components/ErrorPage';
 import ToolsPage from '../../tools/components/tools';
+import Breadcrumbs from '../../common/components/breadcrumbs';
 
 class App extends React.Component {
     componentDidMount() {
@@ -36,6 +37,7 @@ class App extends React.Component {
                             {/* <Route path="/" component={Navbar1}/> */}
                             <Navbar1 />
                             {/* This makes sure the navbar is always on display */}
+                            <Route path="/" component={Breadcrumbs}/>
                             <Switch>
                                 <PrivateRoute path="/" exact component={AppPage}/>
                                 <Route path="/posts/create" exact component={CreatePage}/>
