@@ -103,7 +103,7 @@ class PostDetails extends Component {
                 <div class="col-6 mt-2">
                     {'Published by '}
                     <u onClick = {this.openProfile.bind(this)}>
-                        <Link to="/user/:id" class="text-primary">{this.props.name}</Link>
+                        <Link to="/users/:id" class="text-primary">{this.props.name}</Link>
                     </u>
                     {/* date */}
                     <div class = "my-1 small font-italic"> {time} </div>

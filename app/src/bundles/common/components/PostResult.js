@@ -43,7 +43,7 @@ class PostResult extends React.Component {
                             {' '}
                             by{' '}
                             <Link
-                                to="/user/:id"
+                                to="/users/:id"
                                 className="text-primary font-weight-normal"
                             >
                                 {post.createdByDisplayName}
