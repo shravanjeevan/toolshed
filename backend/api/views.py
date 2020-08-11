@@ -86,6 +86,17 @@ def blogmodelToDict(blogs):
 
     return values
 
+def kbmodelToDict(kb_items):
+    values = list(kb_items.values())
+
+    for idx, blog in enumerate(kb_items):
+        values[idx]["tags"] = []
+        values[idx]["type"] = "knowledge_base"
+        for tagId in blog.tags.all():
+            values[idx]["tags"].append(tagId.tag)
+
+    return values
+
 
 """
  Blogpost Item
@@ -180,7 +191,7 @@ class BlogsList(APIView):
 
             # Index in elasticsearch
             blogpost_es = article_index_payload_builder(blogpost_db.id, request_data, user.first_name,
-                                                        str(datetime.datetime), "blog")
+                                                        str(datetime.datetime), "blog_post")
             es.index(index='knowledge_base', body=blogpost_es)
         return Response(status=200, data={"message": "Successfully add a new blog post"})
 
@@ -300,14 +311,27 @@ class Search(APIView):
             return Response(status=404, data={})
 
         blog_result_id = []
-        # kb_result_id = []
+        kb_result_id = []
+
 
         for res in resp["hits"]["hits"]:
-            id = res["_source"]["id"]
-            blog_result_id.append(id)
+            print(res["_source"]["type"])
+            if "blog" in res["_source"]["type"]:
+                id = res["_source"]["id"]
+                blog_result_id.append(id)
+            else:
+                id = res["_source"]["id"]
+                kb_result_id.append(id)
+
+        print(blog_result_id)
 
         blog_results = BlogPostModel.objects.filter(id__in=blog_result_id)
+        kb_results = KnowledgeBaseItem.objects.filter(id__in=kb_result_id)
+
         blog_results = blogmodelToDict(blog_results)
+        kb_results = kbmodelToDict(kb_results)
+
+        blog_results.append(kb_results)
 
         return Response(data=blog_results, status=200)
 
