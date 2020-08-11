@@ -53,4 +53,6 @@ class KnowledgeBaseItem(models.Model):
     title = models.CharField(max_length=256, null=True, blank=True)
     content = models.CharField(max_length=10000, null=True, blank=True)
     tags = models.ManyToManyField(KnowledgeBaseTag, related_name='knowledge_base_tag')
+    # this is a hacky way to do likes, we'll calculate it dynamically moving forward.
+    likeCount = models.IntegerField(null=True, blank=True)
 

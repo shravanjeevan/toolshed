@@ -13,10 +13,14 @@ urlpatterns = [
     path('posts/', views.BlogsList.as_view()),
 
     # posts
+    # GET /posts/popular?top=10
     path('posts/popular/', views.PopularBlogList.as_view()),
     path('posts/<int:pk>', views.Blogs.as_view()),
 
+
     # knowledge base
+    # GET /knowledge/popular?top=10
+    path('knowledge/popular/', views.PopularKnowledgeList.as_view()),
     # todo: (not yet implemented)
     # path('posts/knowledge/<int:pk>', views.Blogs.as_view()),
     # path('posts/knowledge/popular/', views.PopularBlogList.as_view()),

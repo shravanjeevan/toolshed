@@ -6,6 +6,7 @@ from knox.models import AuthToken
 from rest_framework import permissions, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from random import *
 
 from .models import BlogPost as BlogPostModel
 from .models import KnowledgeBaseItem
@@ -110,7 +111,6 @@ def blogmodelToDict(blogs):
 
 class BlogsList(APIView):
     def get(self, request):
-        blogs = BlogPostModel.objects.all()
 
         values = list(blogs.values())
 
@@ -131,7 +131,7 @@ class BlogsList(APIView):
 
         print(request_data)
 
-        if request_data["type"] == 'knowledge_base' :
+        if "type" in request_data and request_data["type"] == 'knowledge_base' :
             if KnowledgeBaseItem.objects.filter(title__iexact=request_data["title"]):
                 return Response(status=200, data={"message": "You already have a knowledge base item with the same title. Please choose another title."})
 
@@ -140,10 +140,16 @@ class BlogsList(APIView):
             # if not user.is_staff:
             #     return Response(status=403, data={'message':'You are not authorized to create a knowledge base item'})
 
+            if "likeCount" in request_data:
+                likeCount = request_data["likeCount"]
+            else:
+                likeCount = 0
+
             tool = Tool.objects.get(id=request_data["toolId"])
             knowledge_base_item = KnowledgeBaseItem(title=request_data["title"],
                                                     content=request_data["content"],
-                                                    tool_id=tool)
+                                                    tool_id=tool,
+                                                    likeCount=likeCount)
             knowledge_base_item.save()
             add_tags_knowledge_base(knowledge_base_item, request_data["tags"])
 
@@ -195,7 +201,11 @@ def add_tags_blogpost(blogpostModel, tags):
 
 class PopularBlogList(APIView):
     def get(self, request):
-        blogs = BlogPostModel.objects.all().order_by('-likeCount')[:3]
+        top = request.GET.get('top')
+        if not top:
+            top = 10
+
+        blogs = BlogPostModel.objects.all().order_by('-likeCount')[:int(top)]
 
         values = list(blogs.values())
 
@@ -290,6 +300,7 @@ class Search(APIView):
             return Response(status=404, data={})
 
         blog_result_id = []
+        # kb_result_id = []
 
         for res in resp["hits"]["hits"]:
             id = res["_source"]["id"]
@@ -355,3 +366,33 @@ class UserAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class PopularKnowledgeList(APIView):
+    def get(self, request):
+        top = request.GET.get('top')
+        if not top:
+            top = 10
+
+        kb_items = KnowledgeBaseItem.objects.all().order_by('-likeCount')[:int(top)]
+        values = list(kb_items.values())
+
+        for idx, item in enumerate(kb_items):
+            values[idx]["tags"] = []
+            values[idx]["type"] = "knowledge_base"
+            tool = Tool.objects.filter(id=values[idx]["tool_id_id"])[0]
+            tool_name = tool.name
+            tool_category = tool.category
+
+            values[idx]["toolName"] = tool_name
+            values[idx]["toolId"] = values[idx]["tool_id_id"]
+            values[idx]["toolCategory"] = tool_category
+
+            del values[idx]["content_type"]
+            del values[idx]["tool_id_id"]
+
+            for tagId in item.tags.all():
+                values[idx]["tags"].append(tagId.tag)
+
+        return Response(status=200, data=values)
+
