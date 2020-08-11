@@ -169,7 +169,9 @@ class BlogsList(APIView):
                                                        str(datetime.datetime), "knowledge_base")
 
             es.index(index='knowledge_base', body=knowledge_base_es)
-            return Response(status=200, data={"message": "Successfully add a new knowledge base item"})
+            return Response(status=200, data={"message": "Successfully add a new knowledge base item"
+                                            "id": knowledge_base_item.id,
+                                            "type": "knowledge_base"})
 
 
         if does_blog_post_exist(request_data["authorId"], request_data["title"]):
@@ -194,7 +196,9 @@ class BlogsList(APIView):
             blogpost_es = article_index_payload_builder(blogpost_db.id, request_data, user.first_name,
                                                         str(datetime.datetime), "blog_post")
             es.index(index='knowledge_base', body=blogpost_es)
-        return Response(status=200, data={"message": "Successfully add a new blog post"})
+        return Response(status=200, data={"message": "Successfully add a new blog post",
+                                          "id": blogpost_db.id,
+                                          "type": "blog_post"})
 
 
 def add_tags_knowledge_base(knowledge_base_model, tags):
