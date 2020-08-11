@@ -452,7 +452,7 @@ class LikeCounter(APIView):
         except:
             return Response(status=404, data={"message": "Could't find your post."})
 
-        return Response(status=200, data={"title": blog.title, "likeCount": blog.likeCount})
+        return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})
 
     def post(self, request, pk):
         try:
@@ -462,4 +462,4 @@ class LikeCounter(APIView):
         except:
             return Response(status=404, data={"message": "Could't find your post."})
 
-        return Response(status=200, data={"title": blog.title, "likeCount": blog.likeCount})
+        return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})
