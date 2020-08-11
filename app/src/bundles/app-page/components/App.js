@@ -21,6 +21,7 @@ import ScrollToTop from '../../common/components/ScrollToTop';
 import ErrorPage from '../../common/components/ErrorPage';
 import ToolsPage from '../../tools/components/tools';
 import Breadcrumbs from '../../common/components/breadcrumbs';
+import UserPage from '../../users/components/UserPage';
 
 class App extends React.Component {
     componentDidMount() {
@@ -38,7 +39,7 @@ class App extends React.Component {
                             {/* This makes sure the navbar is always on display */}
                             <Route path="/" component={Breadcrumbs}/>
                             <Switch>
-                                <PrivateRoute path="/" exact component={AppPage}/>
+                                <Route path="/" exact component={AppPage}/>
                                 <Route path="/posts/create" exact component={EditPage}/>
                                 <Route path="/posts/edit/:id" exact component={EditPage}/>
                                 <Route path="/posts/:slug" exact component={Post}/>
@@ -48,6 +49,7 @@ class App extends React.Component {
                                 <Route path="/edit" exact component={EditPage}/>
                                 <Route path="/categories/All%20Tools" exact component={ToolsPage}/>
                                 <Route path="/categories/:slug" exact component={ToolsPage}/> {/* This should go to the tools component, i.e. a list of tools */}
+                                <Route path="/users/:slug" exact component={UserPage}/>
                                 <Route path="/tools" exact component={ToolsPage}/>
                                 <Route path="/register" component={RegisterForm}/>
                                 <Route path="/login" component={LoginForm}/>

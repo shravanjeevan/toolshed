@@ -84,10 +84,9 @@ class PostResult extends React.Component {
                         {blogPostItemsToShow}
                     </h6>
                     <hr />
-                    <p className="card-text">
+                    <p className="post-text card-text">
                         <Link to={linkToPost} className="text-decoration-none">
-                            {/* <div>{post.content}</div> */}
-                            <div dangerouslySetInnerHTML={{ __html: post.content}} />
+                            <div>{post.content}</div>
                         </Link>
                     </p>
                 </div>

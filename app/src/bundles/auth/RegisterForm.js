@@ -26,7 +26,7 @@ class RegisterForm extends Component {
             return <Redirect to="/" />;
         }
         return (
-            <div className="ui container">
+            <div className="ui container mb-5">
                 <h1 className="ui header mt-5">Register</h1>
                 <div className="ui segment">
                     <form
@@ -64,7 +64,7 @@ class RegisterForm extends Component {
                         <button className="ui primary button">Register</button>
                     </form>
                     <p style={{ marginTop: '1rem' }}>
-                        Already have an account? <Link to="/login">Login</Link>
+                        Already have an account? <Link to="/login"><strong>Login Here</strong></Link>
                     </p>
                 </div>
             </div>
