@@ -171,7 +171,7 @@ class BlogsList(APIView):
                                                               str(datetime.datetime), "knowledge_base")
 
             es.index(index='knowledge_base', body=knowledge_base_es)
-            return Response(status=200, data={"message": "Successfully add a new knowledge base item"
+            return Response(status=200, data={"message": "Successfully add a new knowledge base item",
                                             "id": knowledge_base_item.id,
                                             "type": "knowledge_base"})
 
@@ -462,6 +462,7 @@ class CommentAPI(APIView):
             return Response(status=404, data={"message": "The comment you're trying to delete "
                                                          "may have already been deleted. "
                                                          "It cannot be found."})
+        # Perform delete
         comment.delete()
 
         return Response(status=200, data={"message": "Comment deleted."})
