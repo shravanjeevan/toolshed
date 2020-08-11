@@ -420,3 +420,27 @@ class PopularKnowledgeList(APIView):
 
         return Response(status=200, data=values)
 
+
+class KnowledgeBaseList(APIView):
+    def get(self, request, pk):
+        try:
+            kb_items = KnowledgeBaseItem.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
+
+        values = kb_items.__dict__
+        values["tags"] = []
+        values["type"] = "knowledge_base"
+        tool =Tool.objects.get(id=values["tool_id_id"])
+        values["toolCategory"] = tool.category
+        values["toolName"] = tool.name
+        values["toolId"] = values["tool_id_id"]
+        del values["tool_id_id"]
+        del values["content_type"]
+
+        for tag in kb_items.tags.all():
+            values["tags"].append(tag.tag)
+
+        del values['_state']
+
+        return Response(status=200, data=values)
