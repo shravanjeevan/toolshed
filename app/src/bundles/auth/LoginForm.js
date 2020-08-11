@@ -35,7 +35,8 @@ class LoginForm extends Component {
             return <Redirect to="/" />;
         }
         return (
-            <div className="ui container">
+            <div className="ui container mt-5">
+                <h1 className="ui header">Login</h1>
                 <div className="ui segment">
                     <form
                         onSubmit={this.props.handleSubmit(this.onSubmit)}

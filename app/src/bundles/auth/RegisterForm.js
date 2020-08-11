@@ -27,6 +27,7 @@ class RegisterForm extends Component {
         }
         return (
             <div className="ui container">
+                <h1 className="ui header mt-5">Register</h1>
                 <div className="ui segment">
                     <form
                         onSubmit={this.props.handleSubmit(this.onSubmit)}
