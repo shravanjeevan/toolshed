@@ -6,13 +6,15 @@ import '../../common/components/PostResult.css';
 class PostResult extends React.Component {
     render() {
         let { post } = this.props;
+        var searchPath = `/search?query=${post.name}`;
 
         // List of tags
         let tagsToShow = post.Categories.map((tag) => {
+            let path = `/search?query=${tag}`;
             return (
-                <a href="#" className="mr-2 badge badge-secondary">
+                <Link key={tag} to={path} className="mr-2 badge badge-secondary">
                     {tag}
-                </a>
+                </Link>
             );
         });
 
@@ -28,7 +30,7 @@ class PostResult extends React.Component {
                     <h5 className="card-title">
                         <div className="row">
                             <Link
-                                to="/post"
+                                to={searchPath}
                                 className="title-text col-sm-8 text-decoration-none"
                             >
                                 {post.name}
@@ -52,7 +54,7 @@ class PostResult extends React.Component {
                     </h6>
                     <hr />
                     <p className="card-text">
-                        <Link to="/post" className="text-decoration-none">
+                        <Link to={searchPath} className="text-decoration-none">
                             <div>{post.description}</div>
                         </Link>
                     </p>
