@@ -16,7 +16,7 @@ DELETE /posts/:post_id *
 
 GET /posts/post_id/comments
 POST /posts/:post_id/comments
-DELETE /posts/:post_id/comments/:comment_id
+DELETE /posts/comments/:comment_id
 
 GET /categories/popular *
 GET /categories *
