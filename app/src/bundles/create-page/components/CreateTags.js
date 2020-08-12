@@ -36,14 +36,14 @@ class CreateTags extends Component {
     render() { 
         return ( 
             <div class="container"> 
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-1"> <h4> Tags </h4> </div>
                     
                     {/* add tags */}
                     <div class="col-5"> 
                         <input 
                         type="text" 
-                        class = "w-100"
+                        class = "w-100 editInput"
                         placeholder='Seperate tags with commas...' 
                         value={this.state.input} 
                         onChange={this.show.bind(this)} 

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import backend from '../../../bundles/apis/backend';
 
 class RelatedPostList extends Component {
     constructor(props) {
@@ -14,14 +14,17 @@ class RelatedPostList extends Component {
         this.getData();
     }
     
-    getData=()=>{
-        var api = 'http://localhost:3000/related.json';
-        axios.get(api)
-        .then((response)=>{this.setState({
-            related:response.data.related
-         })
-        })
-        .catch((error)=>{console.log(error)})
+    getData = async () => {
+        try {
+            let res = await backend.get('/posts/related');
+            let { data } = res;
+            this.setState({
+                related:data.related
+             })
+            console.log(data);
+        } catch(e) {
+            console.log(e);
+        }
     }
     
     render() { 

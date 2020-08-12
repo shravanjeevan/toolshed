@@ -38,10 +38,10 @@ class RichEditor extends Component {
     return (
       <div>
         {/* 3rd party library for rich text editor */}
-        <div class = "editors">
+        <div class = "editors ">
           <Editor
             editorState={editorState}
-            editorStyle={{ border: "1px solid #C0C0C0"}}
+            editorStyle={{ border: "1px solid #C0C0C0", padding: '14px',height:'350px', borderRadius: '2px', width:'1015px'}}
             wrapperClassName="wrapper-class"
             editorClassName="editor-class"
             toolbarClassName="toolbar-class"
@@ -65,13 +65,6 @@ class RichEditor extends Component {
           />
           
         </div>
-        
-        {/* <textarea
-          disabled
-          value = {tmp}
-        />
-        <pre><div dangerouslySetInnerHTML = {{__html:atob(tmp)}} ></div></pre>
-        <p>{atob(tmp)}</p> */}
         <br />
         
       </div>

@@ -97,6 +97,26 @@
     outline: none;
 }
 
+
+.editInput {
+    padding: 5px;
+    padding-left: 14px;
+    border-radius: 3px;
+    border:1px solid #C0C0C0;
+    resize: none;
+}
+
+.editInput:hover{
+    border:1px solid rgb(50, 177, 219);
+    background-color: white;
+}
+
+.editInput:focus {
+    border:1px solid rgb(50, 177, 219);
+    background-color: white;
+    outline: none;
+}
+
 .tags{
     margin: 6px 8px 5px 0px;
     padding: 3px;

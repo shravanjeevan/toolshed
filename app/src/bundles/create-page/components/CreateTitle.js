@@ -8,13 +8,13 @@ class CreateTitle extends Component {
     render() { 
         return ( 
             <div class="container"> 
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-1"> <h4> Title </h4> </div>
                     <div class="col-5"> 
                     <input 
                         type="text" 
                         placeholder='Enter your title...'
-                        class='w-100' 
+                        class='w-100 editInput' 
                         value={this.props.title} 
                         onChange={this.props.handleTitle} 
                     />

@@ -42,7 +42,9 @@ class App extends React.Component {
                             <Switch>
                                 <Route path="/" exact component={AppPage}/>
                                 <Route path="/posts/create" exact component={EditPage}/>
-                                <Route path="/posts/edit/:id" exact component={EditPage}/>
+                                <Route path="/posts/:id/edit" exact component={EditPage}/>
+                                <Route path="/knowledge/create" exact component={EditPage}/>
+                                <Route path="/knowledge/:id/edit" exact component={EditPage}/>
                                 <Route path="/posts/:slug" exact component={Post}/>
                                 <Route path="/search" exact component={ResultsPage} key={window.location.pathname}/>
                                 <Route path="/blogs" exact component={BlogsPage}/>

@@ -33,7 +33,7 @@ class PostHeader extends Component {
                 
                 <div class='ml-4 mt-3'>
                     <button type="button" class="btn btn-danger btn-sm"> <DeletePost deletePost={this.props.deletePost} /> </button>
-                    <Link to={"/posts/edit/"+this.props.postId}> <button type="button" class="btn btn-secondary btn-sm ml-1"> Edit </button> </Link>
+                    <Link to={`/posts/${this.props.postId}/edit/`}> <button type="button" class="btn btn-secondary btn-sm ml-1"> Edit </button> </Link>
                 </div>
                 
             </div>

@@ -9,6 +9,7 @@ import PopularPosts from '../../app-page/components/PopularPosts';
 class UserPage extends React.Component {
     render() {
         const { user, isAuthenticated } = this.props.auth;
+        console.log(user)
 
         console.log(this.props.params);
         return (

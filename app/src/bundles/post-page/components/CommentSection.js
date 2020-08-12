@@ -14,29 +14,19 @@ class CommentSection extends Component {
         this.getData();
     }
     
-    getData=()=>{
-        // change later
-        var api = 'http://localhost:3000/comment.json';
-        axios.get(api)
-        .then((response)=>{this.setState({
-            comments:response.data.reverse()
-         })
-        })
-        .catch((error)=>{console.log(error)})
+    // get comments underneath the post
+    getData = async () => {
+        try {
+            let res = await backend.get(`/posts/${this.props.postId}/comments`);
+            let { data } = res;
+            this.setState({
+                comments:data.reverse()
+             })
+            console.log(data);
+        } catch(e) {
+            console.log(e);
+        }
     }
-    
-    // getData = async () => {
-    //     try {
-    //         let res = await backend.get('/posts/:'+this.props.postId+'comments');
-    //         let { data } = res;
-    //         this.setState({
-    //             comments:data.reverse()
-    //          })
-    //         console.log(data);
-    //     } catch(e) {
-    //         console.log(e);
-    //     }
-    // }
     
     post = async (input) => {
         try {
@@ -45,7 +35,7 @@ class CommentSection extends Component {
                 body:input,
                 postId:this.props.postId
             }
-            let res = await backend.post('/posts/:'+ this.state.commentId +'/comments',data);
+            let res = await backend.post(`/posts/${this.props.postId}/comments`,data);
             console.log(res);
         } catch(e) {
             console.log(e);

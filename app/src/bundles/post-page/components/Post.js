@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { useParams } from 'react-router-dom';
 import PostTags from './PostTags';
 import PostHeader from './PostHeader';
 import RelatedPostList from './RelatedPostList';
@@ -7,13 +6,15 @@ import CommentSection from './CommentSection';
 import PostBody from './PostBody';
 import backend from '../../../bundles/apis/backend';
 import { Link} from 'react-router-dom';
+import { connect } from 'react-redux';
 import './Post.css';
 
 class Post extends Component {
     constructor(props) {
         super(props);
+        const { match:{params} } = this.props;
         this.state = { 
-            id: window.location.pathname.slice(7),
+            id: params.slug,
             title:'',
             type:'',
             tags:[],
@@ -83,6 +84,10 @@ class Post extends Component {
     }
     
     render() { 
+    
+        const { user } = this.props.auth;
+        // console.log(user.id)
+    
         let comment = this.state.type === 'blog_post' ? <div>
                                                         <CommentSection 
                                                         commentCount = {this.state.commentCount} 
@@ -106,6 +111,8 @@ class Post extends Component {
                     updateLikes = {this.updateLikes.bind(this)}
                     /> 
                 </div>
+                <div>{}</div>
+                
                 <hr />
                 {/* body section */}
                 <div className="row">
@@ -129,11 +136,11 @@ class Post extends Component {
         );
     }
 }
+
+
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+});
+
+export default connect(mapStateToProps)(Post);
  
-export default () => {
-    let { postId } = useParams();
-    console.log('viewing post: ' + postId);
-    return (
-        <Post />
-    )
-};

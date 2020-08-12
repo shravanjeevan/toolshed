@@ -14,7 +14,7 @@ class CommentCard extends Component {
     
     delete = async (commentId) => {
         try {
-            let res = await backend.delete('/posts/:'+this.props.postId+'/comments/:'+commentId);
+            let res = await backend.delete('/posts/comments/:'+commentId);
             let { data } = res;
             console.log(data);
         } catch(e) {

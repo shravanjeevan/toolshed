@@ -6,40 +6,70 @@ import PublishPost from './PublishPost'
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import backend from '../../../bundles/apis/backend';
+import ToolDropdowns from './ToolDropdowns';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Prompt, Link } from 'react-router'
 
 class CreatePage extends Component {
     constructor(props) {
         super(props);
+        const { match:{params} } = this.props;
         this.updateTags=this.updateTags.bind(this)
         this.publish=this.publish.bind(this)
-        if (window.location.pathname != "/posts/:id/edit") {
+        var path = window.location.pathname
+        if (path.match("edit") && path.match("posts"))  {
             this.state = { 
                 create:false,
+                knowledge:false,
                 editorState: EditorState.createEmpty(),
                 tags:[],
                 title:'',
                 content:'',
-                id:window.location.pathname.slice(12),
+                id:params.id,
             }
             
-        } else {
+        } else if (path.match("create")&&path.match("posts")) {
             this.state = { 
                 create:true,
+                knowledge:false,
                 editorState: EditorState.createEmpty(),
                 tags:[],
                 title:'',
                 content:'',
             }
+        } else if (path.match("create")&&path.match("knowledge")) {
+            this.state = { 
+                create:true,
+                knowledge:true,
+                editorState: EditorState.createEmpty(),
+                tags:[],
+                title:'',
+                content:'',
+                tools:[]  
+            }
+        } else if (path.match("edit") && path.match("knowledge")) {
+            this.state = { 
+                create:false,
+                knowledge:true,
+                editorState: EditorState.createEmpty(),
+                tags:[],
+                title:'',
+                content:'',
+                tools:[],
+                id:params.id,
+            }
         }
-        
     }
     
     componentDidMount(){
-        if (this.state.create == false) {
+        
+        if (this.state.create === false) {
             this.getData();
         }
+        if (this.state.knowledge === true) {
+            this.getTools();
+        }
+        
     }
     
     handleTitle (e) {
@@ -57,22 +87,6 @@ class CreatePage extends Component {
           editorState: editorState
         })
       }
-    
-    // publish(){
-    //     let api = 'http://localhost:8000/posts/'
-    //     let data = {
-    //         tags:this.state.tags,
-    //         title:this.state.title,
-    //         // Object=>JSON=>HTML=>encode64
-    //         content: btoa(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))),
-    //         authorId:1
-    //     }
-    //     axios.post(api, data)
-    //     .then((response)=>{
-    //         console.log(JSON.stringfy(response))
-    //     })
-    //     .catch((error)=>{console.log(error)})
-    // }
     
     publish = async () => {
         try {
@@ -92,7 +106,7 @@ class CreatePage extends Component {
     
     getData = async () => {
         try {
-            let res = await backend.get('/posts/'+this.state.id);
+            let res = await backend.get(`/posts/${this.state.id}`);
             let { data } = res;
             const html = data.content
             const contentBlock = htmlToDraft(html);
@@ -113,29 +127,52 @@ class CreatePage extends Component {
         }
     }
     
+    getTools = async () => {
+        try {
+            let res = await backend.get('/tools/');
+            let { data } = res;
+            this.setState({
+                tools: data
+             })
+            console.log(data);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+    
     render() { 
     
-        let head
+        let head, tail, tool
         if (this.state.create) {
             head = 'Create'
         } else {
             head = 'Edit'
         }
         
+        if (this.state.knowledge) {
+            tail = 'Knowlege Base'
+            tool = <ToolDropdowns tools={this.state.tools}/>
+        } else {
+            tail = 'Blog'
+        }
+        
         return ( 
             <div>
-                <h2 class='class=my-4 ml-5'> Edit Blog Post </h2>
+                <h2 class='class=my-4 ml-5'> {head} {tail} Post </h2>
                 <hr />
                 <div>
+                    {tool}
                     <CreateTags update={this.updateTags} tags={this.state.tags}/>
                     <CreateTitle title={this.state.title} handleTitle={this.handleTitle.bind(this)}/>
                     <CreateContent onEditorStateChange={this.onEditorStateChange.bind(this)} editorState={this.state.editorState} />
                     <PublishPost publish={this.publish}/>
                 </div>
+
                 
                 <Prompt
                   message="Are you sure you want to leave?"
                 />
+                
             </div>
             
             
