@@ -12,7 +12,12 @@ class PostHeader extends Component {
 
     
     render() {
-    
+        
+        const dele = this.props.userId == this.props.authorId ? <div class='ml-4 mt-3'>
+                    <button type="button" class="btn btn-danger btn-sm"> <DeletePost deletePost={this.props.deletePost} /> </button>
+                    <Link to={`/posts/${this.props.postId}/edit/`}> <button type="button" class="btn btn-secondary btn-sm ml-1"> Edit </button> </Link>
+                </div> : ''
+        
         return ( 
             <div class="ml-2">
                 <div class="ml-4">
@@ -30,11 +35,7 @@ class PostHeader extends Component {
                     updateLikes = {this.props.updateLikes}
                     /> 
                 </div> 
-                
-                <div class='ml-4 mt-3'>
-                    <button type="button" class="btn btn-danger btn-sm"> <DeletePost deletePost={this.props.deletePost} /> </button>
-                    <Link to={`/posts/${this.props.postId}/edit/`}> <button type="button" class="btn btn-secondary btn-sm ml-1"> Edit </button> </Link>
-                </div>
+                {dele}
                 
             </div>
         );

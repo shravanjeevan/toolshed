@@ -62,14 +62,14 @@
 
 .commentPost{
     margin-left: 16px;
-    padding: 24px 32px;
-    font-size: 22px;
+    padding: 20px 28px;
+    font-size: 16px;
     text-align: center;
     background-color: #008CBA;
     color: white;
     border: none;
     position: relative;
-    bottom:35px;
+    bottom:25px;
 }
 
 .commentPost:hover {

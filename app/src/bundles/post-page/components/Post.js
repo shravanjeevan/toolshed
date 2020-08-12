@@ -95,17 +95,19 @@ class Post extends Component {
     }
     
     render() { 
-    
+        let userId
         const { user , isAuthenticated } = this.props.auth;
         if (isAuthenticated) {
-            console.log(user.id)
+            userId = user.id
         }
         
     
         let comment = this.state.type === 'blog_post' ? <div>
-                                                        <CommentSection 
-                                                        commentCount = {this.state.commentCount} 
-                                                        postId={this.state.id}/>
+                                                            <CommentSection 
+                                                            commentCount = {this.state.commentCount} 
+                                                            postId={this.state.id}
+                                                            userId = {userId}
+                                                            />
                                                         </div> : ''
     
         return ( 
@@ -123,9 +125,10 @@ class Post extends Component {
                     postId = {this.state.id}
                     deletePost = {this.deletePost.bind(this)}
                     updateLikes = {this.updateLikes.bind(this)}
+                    userId = {userId}
+                    authorId = {this.state.authorId}
                     /> 
                 </div>
-                <div>{}</div>
                 
                 <hr />
                 {/* body section */}

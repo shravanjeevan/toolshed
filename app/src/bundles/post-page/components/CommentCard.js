@@ -26,7 +26,7 @@ class CommentCard extends Component {
         this.setState({
             id:itemId
         })
-        document.getElementById("test").click()
+        document.getElementById("del").click()
     }
     
     render() { 
@@ -53,9 +53,12 @@ class CommentCard extends Component {
                                             {/* date */}
                                             <span class="text-secondary small mt-1"> {moment(item.createdOn).fromNow()} </span>
                                             {/* delete button */}
-                                            <button type="button" class="rounded float-right btn btn-link btn-sm" onClick={this.open.bind(this,item.id)}> 
-                                            &times; 
-                                            </button>
+                                            {this.props.userId}
+                                            {item.id}
+                                            {(this.props.userId == item.id ?
+                                                (<button type="button" class="rounded float-right btn btn-link btn-sm" onClick={this.open.bind(this,item.id)}> 
+                                                &times; 
+                                                </button>):'null')}
                                             <p class="mt-3"> {item.body} </p>
                                         </div>
                                     </div>
@@ -63,10 +66,9 @@ class CommentCard extends Component {
                         )  
                     })
                 } 
-                {/* <Prompt message="Are you sure you want to leave this page?"  when={true}/> */}
                 
                 <span 
-                    id="test"
+                    id="del"
                     data-toggle="modal" 
                     data-target={"#commentModal"}> 
                 </span>
@@ -78,7 +80,7 @@ class CommentCard extends Component {
                     <div class="modal-content">
                     
                     <div class="modal-body">
-                        <h4 class="text-center text-dark"> Delete Comment {this.state.id} </h4>
+                        <h4 class="text-center text-dark"> Delete Comment </h4>
                         <p></p>
                         <p class="text-center text-dark">Are you sure you want to delete this comment?</p>
                       </div>
