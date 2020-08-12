@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include(router.urls)),
 
     # common
+    # GET, POST, PUT
     path('posts/', views.BlogsList.as_view()),
     path('tags/popular/', views.PopularBlogTags.as_view()),
 
