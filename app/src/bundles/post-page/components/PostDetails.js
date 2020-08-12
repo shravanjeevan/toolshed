@@ -14,12 +14,6 @@ class PostDetails extends Component {
     }
     
     
-    // change it later 
-    openProfile(){
-        this.setState({name:"Bran"})
-    }
-    
-    
     // change likes count
     likeit(){
     
@@ -42,8 +36,41 @@ class PostDetails extends Component {
     }
     
     render() { 
+        // interaction of like, share, flag
         let like, share, flag;
+        
+        // change date format
         let time = moment(this.props.date).format('YYYY-MM-DD HH:mm');
+        
+        // when the type is blog post we show likes and author, otherwise no
+        let likeSection = this.props.type === 'blog_post' ?  <div>
+                                                                <span class='text-secondary'>
+                                                                    {this.state.likes}
+                                                                </span> 
+                                                                Likes
+                                                                <> | </>
+                                                                <span 
+                                                                class= 'ml-2' 
+                                                                onClick = {this.likeit.bind(this)}> 
+                                                                    {like} 
+                                                                </span>
+                                                                <span class = "postInteract">Like this post</span>
+                                                            </div> : ''
+                                                            
+        // when the type is blog post we show profile icon, otherwise no                                                    
+        let profile = this.props.type === 'blog_post' ? <div class="col-1">
+                                                            <div class='ml-4'>
+                                                                <img
+                                                                  src={this.props.icon}
+                                                                  width="60"
+                                                                  height="60"
+                                                                  className="profileIcon"
+                                                                  alt="Profile Image"
+                                                                />
+                                                            </div>
+                                                        </div> : ''
+        // change margin to align                                   
+        let margin = this.props.type === 'blog_post' ? "col-6 mt-2" : "col-6 mt-2 ml-4"
         
         // like icons
         if (this.state.liked) {
@@ -59,6 +86,7 @@ class PostDetails extends Component {
                         </svg>
                     </span>
         }
+        
         // share icons
         share = <span>
                     <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-share" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -87,22 +115,14 @@ class PostDetails extends Component {
         return ( 
             <Fragment>
             <div class="row mt-3">
-                <div class="col-1">
-                    {/* profile icon */}
-                    <div class='ml-4'>
-                        <img
-                          src={this.props.icon}
-                          width="60"
-                          height="60"
-                          className="profileIcon"
-                          alt="Profile Image"
-                        />
-                    </div>
-                </div>
+                {/* profile icon */}
+                {profile}
                 
-                <div class="col-6 mt-2">
+                {/* change the margin of this part if it is knowledge base */}
+                <div class={margin}>
+                    {/* author name */}
                     {'Published by '}
-                    <u onClick = {this.openProfile.bind(this)}>
+                    <u>
                         <Link to="/user/:id" class="text-primary">{this.props.name}</Link>
                     </u>
                     {/* date */}
@@ -111,12 +131,9 @@ class PostDetails extends Component {
             </div>
                 
             <div class="ml-4 mt-3">    
-                <span> <span class='text-secondary'>{this.state.likes}</span> Likes </span> 
-                <> | </>
                 
                 {/* like interaction */}
-                <span class= 'ml-2' onClick = {this.likeit.bind(this)}> {like} </span>
-                <span class = "postInteract">Like this post</span>
+                {likeSection}
                 
                 {/* share interaction */}
                 <span>

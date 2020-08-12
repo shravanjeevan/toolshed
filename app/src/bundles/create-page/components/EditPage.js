@@ -132,11 +132,13 @@ class CreatePage extends Component {
                     <CreateContent onEditorStateChange={this.onEditorStateChange.bind(this)} editorState={this.state.editorState} />
                     <PublishPost publish={this.publish}/>
                 </div>
+                
+                <Prompt
+                  message="Are you sure you want to leave?"
+                />
             </div>
             
-            // <Prompt
-            //   message="Are you sure you want to leave?"
-            // />
+            
             // <Link id='succs' to="/" />
         );
     }

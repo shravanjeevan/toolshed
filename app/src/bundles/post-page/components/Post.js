@@ -57,19 +57,20 @@ class Post extends Component {
         }
     }
     
-    // HTTP update likes?    
-    updateLikes = async (value) => {
+    // HTTP update likes
+    updateLikes = async () => {
         try {
-            let data = {
-                likeCount:value
-            }
-            let res = await backend.put('/posts/'+this.state.id, data);
+            // let data = {
+            //     likeCount:value
+            // }
+            let res = await backend.post('/like/'+this.state.id);
             console.log(res);
         } catch(e) {
             console.log(e);
         }
     }
     
+    // delete post from the data base
     deletePost = async () => {
         try {
             let res = await backend.delete('/posts/'+this.state.id);
@@ -77,13 +78,21 @@ class Post extends Component {
         } catch(e) {
             console.log(e);
         }
+        // redirect to the home page
         document.getElementById("redir").click()
     }
     
     render() { 
+        let comment = this.state.type === 'blog_post' ? <div>
+                                                        <CommentSection 
+                                                        commentCount = {this.state.commentCount} 
+                                                        postId={this.state.id}/>
+                                                        </div> : ''
+    
         return ( 
             
             <div class='ml-3'>
+                {/* post header section */}
                 <div class="mt-2"> 
                     <PostHeader 
                     title = {this.state.title}
@@ -98,12 +107,13 @@ class Post extends Component {
                     /> 
                 </div>
                 <hr />
+                {/* body section */}
                 <div className="row">
                     <div className="col-8" id="html-part">
                         {' '}
                         <PostBody body={this.state.body} />{' '}
                     </div>
-                    {/* tags and related */}
+                    {/* tags and related posts*/}
                     <div className="col-3" id="aside">
                         <PostTags tags={this.state.tags}/>
                         <br />
@@ -111,9 +121,8 @@ class Post extends Component {
                     </div>
                 </div>
                 <hr />
-                <div>
-                    <CommentSection commentCount = {this.state.commentCount} postId={this.state.id}/>
-                </div>
+                {/* comment section, only when the post is a blog */}
+                {comment}
                 {/* refresh page after deleting post */}
                 <Link id='redir' to="/" />
         </div>
