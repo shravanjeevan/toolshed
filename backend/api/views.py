@@ -9,32 +9,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import BlogPost as BlogPostModel
+from .models import BlogPostComment
 from .models import BlogPostTag
 from .models import KnowledgeBaseItem
 from .models import KnowledgeBaseTag
 from .models import Tool
-from .models import BlogPostComment
-from django.contrib.auth.models import User
-from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, CommentSerializer
+from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer
 
-es = Elasticsearch(["http://elastic:9200"])
-
-
-def article_index_payload_builder(blogpost_db_id, blogpost_data, author_first_name, created_date, type):
-    data = {
-        "id": blogpost_db_id,
-        "title": blogpost_data["title"],
-        "content": blogpost_data["content"],
-        "type": type,
-        "author": author_first_name,
-        "createdDate": created_date,
-        "tags": blogpost_data["tags"],
-        "likeCount": 0
-    }
-    return data
+elasticsearch = Elasticsearch(["http://elastic:9200"])
 
 
 class Blogs(APIView):
+    ''' The API GET endpoint to retrieve a particular blogpost '''
     def get(self, request, pk):
         try:
             blogs = BlogPostModel.objects.get(id=pk)
@@ -55,6 +41,7 @@ class Blogs(APIView):
 
         return Response(status=200, data=values)
 
+    ''' The API DELETE endpoint to delete a particular blogpost '''
     def delete(self, request, pk):
         try:
             blog = BlogPostModel.objects.get(id=pk)
@@ -64,7 +51,7 @@ class Blogs(APIView):
                                                          "Can't find it here."})
         blog.delete()
 
-        es.delete_by_query(index='knowledge_base', body=
+        elasticsearch.delete_by_query(index='knowledge_base', body=
         {
             "query": {
                 "match": {
@@ -73,31 +60,6 @@ class Blogs(APIView):
             }
         })
         return Response(status=200, data={"message": "Post deleted"})
-
-
-def blogmodelToDict(blogs):
-    values = list(blogs.values())
-
-    for idx, blog in enumerate(blogs):
-        values[idx]["tags"] = []
-        values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
-        values[idx]["type"] = "blog_post"
-        for tagId in blog.tags.all():
-            values[idx]["tags"].append(tagId.tag)
-
-    return values
-
-
-def kbmodelToDict(kb_items):
-    values = list(kb_items.values())
-
-    for idx, blog in enumerate(kb_items):
-        values[idx]["tags"] = []
-        values[idx]["type"] = "knowledge_base"
-        for tagId in blog.tags.all():
-            values[idx]["tags"].append(tagId.tag)
-
-    return values
 
 
 """
@@ -123,9 +85,10 @@ def kbmodelToDict(kb_items):
 
 
 class BlogsList(APIView):
+    ''' The API GET endpoint to retrieve all blog posts '''
     def get(self, request):
         blogs = BlogPostModel.objects.all()
-        
+
         values = list(blogs.values())
 
         for idx, blog in enumerate(blogs):
@@ -140,11 +103,13 @@ class BlogsList(APIView):
 
         return Response(status=200, data=values)
 
+    ''' The API POST endpoint to create a blog post or a knowledge base item '''
     def post(self, request):
         request_data = request.data
 
         print(request_data)
 
+        ''' To check to differenciate between creating a knowledge base item or a blog post '''
         if "type" in request_data and request_data["type"] == 'knowledge_base':
             if KnowledgeBaseItem.objects.filter(title__iexact=request_data["title"]):
                 return Response(status=200, data={
@@ -165,16 +130,20 @@ class BlogsList(APIView):
                                                     content=request_data["content"],
                                                     tool_id=tool,
                                                     likeCount=likeCount)
+            # Saving a knowledge base item to the db
             knowledge_base_item.save()
+
+            # Save tags
             add_tags_knowledge_base(knowledge_base_item, request_data["tags"])
 
             knowledge_base_es = article_index_payload_builder(knowledge_base_item.id, request_data, user.first_name,
                                                               str(datetime.datetime), "knowledge_base")
 
-            es.index(index='knowledge_base', body=knowledge_base_es)
+            # Saving a knowledge base item to elasticsearch
+            elasticsearch.index(index='knowledge_base', body=knowledge_base_es)
             return Response(status=200, data={"message": "Successfully add a new knowledge base item",
-                                            "id": knowledge_base_item.id,
-                                            "type": "knowledge_base"})
+                                              "id": knowledge_base_item.id,
+                                              "type": "knowledge_base"})
 
         if does_blog_post_exist(request_data["authorId"], request_data["title"]):
 
@@ -189,20 +158,23 @@ class BlogsList(APIView):
                                         likeCount=0,
                                         visibility="visible")
 
+            # Saving a blogpost to the db
             blogpost_db.save()
 
             # Save tags
             add_tags_blogpost(blogpost_db, request_data["tags"])
 
-            # Index in elasticsearch
             blogpost_es = article_index_payload_builder(blogpost_db.id, request_data, user.first_name,
                                                         str(datetime.datetime), "blog_post")
-            es.index(index='knowledge_base', body=blogpost_es)
+
+            # Saving a blogpost to elasticsearch
+            elasticsearch.index(index='knowledge_base', body=blogpost_es)
         return Response(status=200, data={"message": "Successfully add a new blog post",
                                           "id": blogpost_db.id,
                                           "type": "blog_post"})
 
 
+''' Helper function to add tags to knowledge base items '''
 def add_tags_knowledge_base(knowledge_base_model, tags):
     for i in tags:
         tag = KnowledgeBaseTag(tag=i)
@@ -210,6 +182,7 @@ def add_tags_knowledge_base(knowledge_base_model, tags):
         knowledge_base_model.tags.add(tag)
 
 
+''' Helper function to add tags to blog posts '''
 def add_tags_blogpost(blogpostModel, tags):
     for i in tags:
         tag = BlogPostTag(tag=i)
@@ -218,6 +191,7 @@ def add_tags_blogpost(blogpostModel, tags):
 
 
 class PopularBlogList(APIView):
+    ''' The API GET endpoint to retrieve top x number of blog post items '''
     def get(self, request):
         top = request.GET.get('top')
         if not top:
@@ -239,6 +213,7 @@ class PopularBlogList(APIView):
         return Response(status=200, data=values)
 
 
+''' Helper function to format the data from the database '''
 def dictfetchall(cursor):
     "Return all rows from a cursor as a dict"
     columns = [col[0] for col in cursor.description]
@@ -249,6 +224,7 @@ def dictfetchall(cursor):
 
 
 class AllCategories(APIView):
+    # The API GET endpoint to retrieve all the top categories from the db
     def get(self, request):
         with connection.cursor() as cursor:
             cursor.execute('SELECT distinct category from API_TOOL')
@@ -258,6 +234,7 @@ class AllCategories(APIView):
 
 
 class ExploreCategories(APIView):
+    ''' The API GET endpoint to retrieve the top categories from the db '''
     def get(self, request):
         with connection.cursor() as cursor:
             cursor.execute('SELECT category, '
@@ -271,6 +248,7 @@ class ExploreCategories(APIView):
 
 
 class PopularBlogTags(APIView):
+    ''' The API GET endpoint to retrieve the top tags from the db '''
     def get(self, request):
         with connection.cursor() as cursor:
             cursor.execute('select tag, count(1) "tagCount" from '
@@ -284,6 +262,7 @@ class PopularBlogTags(APIView):
         return Response(data, status=200)
 
 
+''' A helper function to check if a blogpost already exists '''
 def does_blog_post_exist(author, title):
     with connection.cursor() as cursor:
         cursor.execute("SELECT COUNT(*) FROM api_blogpost WHERE api_blogpost.\"createdBy_id\" = %s AND title = %s",
@@ -297,13 +276,14 @@ def does_blog_post_exist(author, title):
 
 
 class Search(APIView):
+    ''' A REST endpoint which searches through elasticsearch based on the user's query. '''
     def get(self, request):
         query = request.GET.get('query')
 
         if not query:
             return Response(status=400, data={"message": "No search query provided"})
 
-        resp = es.search(body=
+        resp = elasticsearch.search(body=
         {
             "query": {
                 "multi_match": {
@@ -343,6 +323,7 @@ class Search(APIView):
 
 
 class FilterCategories(APIView):
+    ''' A REST endpoint which gets all tools by category '''
     def get(self, request, category):
         tools = Tool.objects.filter(category__iexact=category)
         values = []
@@ -353,6 +334,7 @@ class FilterCategories(APIView):
 
 
 class Tools(APIView):
+    ''' An endpoint to get all the tools in the db with their category '''
     def get(self, request):
         tools = Tool.objects.all()
 
@@ -366,6 +348,7 @@ class Tools(APIView):
 class RegistrationAPI(generics.GenericAPIView):
     serializer_class = CreateUserSerializer
 
+    ''' A REST endpoint to register a new user '''
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -379,6 +362,7 @@ class RegistrationAPI(generics.GenericAPIView):
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginUserSerializer
 
+    ''' A REST endpoint to login an existing '''
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -394,8 +378,10 @@ class UserAPI(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = UserSerializer
 
+    ''' A REST endpoint to retrieve details of the logged in user '''
     def get_object(self):
         return self.request.user
+
 
 class CommentListAPI(APIView):
     def get(self, request, pk):
@@ -406,7 +392,7 @@ class CommentListAPI(APIView):
             comments = BlogPostComment.objects.all().filter(blog_post_id__exact=pk)
             values = list(comments.values())
         except:
-           return Response(status=404, data={"message": "Error: BlogPost not found."})
+            return Response(status=404, data={"message": "Error: BlogPost not found."})
 
         # Double check that blogpost was found
         if len(values) == 0:
@@ -418,7 +404,7 @@ class CommentListAPI(APIView):
             values[idx]["author"] = comment.created_by.first_name + ' ' + comment.created_by.last_name
             values[idx]["createdOn"] = comment.created_on
             values[idx]["body"] = comment.content
-            
+
             # Delete un-needed values
             del values[idx]["created_by_id"]
             del values[idx]["blog_post_id_id"]
@@ -427,19 +413,20 @@ class CommentListAPI(APIView):
 
         return Response(status=200, data=values)
 
+
 class CommentAPI(APIView):
     def post(self, request):
         '''POST method for BlogPost comments'''
 
         comment_data = request.data
-        
+
         # Get user instance
         try:
             user = User.objects.get(id=comment_data["authorId"])
         except:
-           return Response(status=400, data={"message": "Author not found."}) 
+            return Response(status=400, data={"message": "Author not found."})
 
-        # Get blogpost instance
+            # Get blogpost instance
         try:
             blog_post = BlogPostModel.objects.get(id=comment_data["postId"])
         except:
@@ -447,9 +434,9 @@ class CommentAPI(APIView):
 
         # Finally, create the actual comment
         comment_db_item = BlogPostComment(content=comment_data["body"],
-                                        blog_post_id=blog_post,
-                                        created_by=user
-                                        )        
+                                          blog_post_id=blog_post,
+                                          created_by=user
+                                          )
         comment_db_item.save()
 
         return Response(status=200, data={"message": "Successfully created a comment"})
@@ -468,7 +455,9 @@ class CommentAPI(APIView):
 
         return Response(status=200, data={"message": "Comment deleted."})
 
+
 class PopularKnowledgeList(APIView):
+    ''' A REST endpoint to retrieve the most popular knowledge base items '''
     def get(self, request):
         top = request.GET.get('top')
         if not top:
@@ -498,6 +487,7 @@ class PopularKnowledgeList(APIView):
 
 
 class KnowledgeBaseList(APIView):
+    ''' A REST endpoint to retrieve a particular knowledge base item '''
     def get(self, request, pk):
         try:
             kb_items = KnowledgeBaseItem.objects.get(id=pk)
@@ -523,6 +513,7 @@ class KnowledgeBaseList(APIView):
 
 
 class LikeCounter(APIView):
+    ''' A REST endpoint to retrieve the likes on a post '''
     def get(self, request, pk):
         try:
             blog = BlogPostModel.objects.get(id=pk)
@@ -531,6 +522,7 @@ class LikeCounter(APIView):
 
         return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})
 
+    ''' A REST endpoint to add a like to a post '''
     def post(self, request, pk):
         try:
             blog = BlogPostModel.objects.get(id=pk)
@@ -540,3 +532,45 @@ class LikeCounter(APIView):
             return Response(status=404, data={"message": "Could't find your post."})
 
         return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})
+
+
+''' helper method to format the data for indexing '''
+def article_index_payload_builder(blogpost_db_id, blogpost_data, author_first_name, created_date, type):
+    data = {
+        "id": blogpost_db_id,
+        "title": blogpost_data["title"],
+        "content": blogpost_data["content"],
+        "type": type,
+        "author": author_first_name,
+        "createdDate": created_date,
+        "tags": blogpost_data["tags"],
+        "likeCount": 0
+    }
+    return data
+
+
+''' helper method to format data for returning to the user '''
+def blogmodelToDict(blogs):
+    values = list(blogs.values())
+
+    for idx, blog in enumerate(blogs):
+        values[idx]["tags"] = []
+        values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
+        values[idx]["type"] = "blog_post"
+        for tagId in blog.tags.all():
+            values[idx]["tags"].append(tagId.tag)
+
+    return values
+
+
+''' helper method to format data for returning to the user '''
+def kbmodelToDict(kb_items):
+    values = list(kb_items.values())
+
+    for idx, blog in enumerate(kb_items):
+        values[idx]["tags"] = []
+        values[idx]["type"] = "knowledge_base"
+        for tagId in blog.tags.all():
+            values[idx]["tags"].append(tagId.tag)
+
+    return values
