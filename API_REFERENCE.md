@@ -40,6 +40,20 @@ POST /signup
 
 **Query Parameters**: None
 
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `int` | Unique identifer of a post |
+| `title` | `string` | Title of related post |
+| `type` | `string` | Type of a post, including `knowledge_base_item` and `blog_post` |
+| `tags` | `array` | All tags of a related post |
+| `createdOn` | `string` | Date of a related post created |
+| `authorId` | `string` | id of a post author |
+| `authorDisplayName` | `string` | Name of a post author |
+| `likeCount` | `int` | like count of a related post |
+| `commentCount` | `int` | The number of comments of a related post |
+| `content` | `string` | Main content of a related post |
+
 **Sample Response**:
 ```
 [
@@ -80,6 +94,12 @@ POST /signup
 
 **Query Parameters**: None
 
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `category` | `string` | Category name |
+| `publishedcount` | `int` | The number of posts under the related category |
+
 **Sample Response**:
 ```
 [
@@ -107,6 +127,12 @@ POST /signup
 **Usage**: App main page's explore tags component.
 
 **Query Parameters**: None
+
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `tag` | `string` | Tag name |
+| `tagCount` | `int` | The number of posts under the related tag |
 
 **Sample Response**:
 ```
@@ -139,6 +165,12 @@ POST /signup
 **Query Parameters**:
 - limit | integer | optional | maximum number of categories to fetch
 
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `category` | `string` | Category name |
+| `publishedcount` | `int` | The number of posts under the related category |
+
 **Sample Response**:
 ```
 [
@@ -162,6 +194,13 @@ POST /signup
 
 **Query Parameters**:
 - limit | integer | optional | maximum number of tools to fetch
+
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `int` | Unique id of selected category |
+| `tool` | `tool` | Name of a tool |
+| `description` | `tool` | Descriptionof a tool |
 
 **Sample Response**:
 ```
@@ -210,6 +249,19 @@ POST /signup
 - TBC
 - tags? how does searching via tags work?
 
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `int` | Unique identifer of a post |
+| `title` | `string` | Title of related post |
+| `type` | `string` | Type of a post, including `knowledge_base_item` and `blog_post` |
+| `tags` | `array` | All tags of a related post |
+| `createdOn` | `string` | Date of a post created |
+| `authorId` | `string` | id of the post author |
+| `likeCount` | `int` | The number of likes of a related post |
+| `commentCount` | `int` | The number of comments of a related post |
+| `body` | `string` | Main content of a related post |
+
 **Sample Response**:
 ```
 [
@@ -248,6 +300,19 @@ POST /signup
 
 **Query Parameters**: None 
 
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `int` | Unique identifer of post |
+| `title` | `string` | Title of post |
+| `type` | `string` | Type of a post, including `knowledge_base_item` and `blog_post` |
+| `tags` | `array` | All tags of a related post |
+| `createdOn` | `string` | Date of the post created |
+| `author` | `string` | Name of the post author |
+| `likeCount` | `int` | The number of likes of the post |
+| `commentCount` | `int` | The number of comments of the post |
+| `body` | `string` | Main content of post |
+
 **Sample Response:**
 ```
 {
@@ -272,6 +337,14 @@ POST /signup
 **Usage**: Comments component underneath a blog post.
 
 **Query Parameters**: None
+
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `int` | Unique identifer of a comment |
+| `author` | `string` | Name of the comment author |
+| `createdOn` | `string` | Date of the comment created |
+| `body` | `string` | Main content of a comment |
 
 **Sample Response:**
 ```
@@ -300,6 +373,13 @@ POST /signup
 
 **Query Parameters**: None
 
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `authorId` | `int` | Unique identifer of a comment author |
+| `body` | `string` | Main content of a comment |
+| `postId` | `int` | Unique identifer of the related post |
+
 **Sample Response:**
 ```
 {
@@ -314,7 +394,7 @@ POST /signup
 
 **Description**: Delete a specific comment.
 
-**Usage**: 
+**Usage**: comment delete button
 
 **Query Parameters**: None
 
@@ -332,6 +412,13 @@ POST /signup
 
 **Query Parameters**: 
 - postid | string | required | the id of the post to fetch related posts for.
+
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `int` | Unique identifer of a post |
+| `title` | `string` | Title of related post |
+| `type` | `string` | Type of a post, including `knowledge_base_item` and `blog_post` |
 
 **Sample Response:**
 ```
@@ -357,6 +444,13 @@ POST /signup
 
 **Query Parameters**: None
 
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `tags` | `array` | Tags added of the created post |
+| `title` | `string` | Title of the created post |
+| `content` | `string` | Content of the created post |
+| `authorId` | `int` | Unique identifer of the author |
 
 **Sample Response:**
 ```
@@ -395,3 +489,13 @@ POST /signup
     "displayName": "Bob"
 }
 ```
+
+## Status Codes
+
+Returned status codes in the API:
+
+| Status Code | Description |
+| :--- | :--- |
+| 200 | `OK` |
+| 400 | `BAD REQUEST` |
+| 404 | `NOT FOUND` |
