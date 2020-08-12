@@ -76,6 +76,14 @@ class EditPage extends Component {
         
     }
     
+    // force to refresh page
+    componentWillUpdate(nextProps) { 
+        if (this.props.location !== nextProps.location){
+            window.location.reload(false);  
+        }
+    }
+    
+    
     handleTitle (e) {
         this.setState({title:e.target.value})
     }
@@ -85,6 +93,7 @@ class EditPage extends Component {
             tags:tags,
         })
     }
+    
     
     onEditorStateChange = (editorState) => {
         this.setState({
@@ -149,6 +158,7 @@ class EditPage extends Component {
             console.log(e);
         }
     }
+    
     
     render() { 
         const { user , isAuthenticated } = this.props.auth;
