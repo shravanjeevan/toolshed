@@ -16,16 +16,15 @@ class PostDetails extends Component {
     
     // change likes count
     likeit(){
-    
-        this.setState({liked:!this.state.liked})
         
         if (this.state.liked) {
-            this.setState({likes:this.state.likes-1})
+            
         } else {
-            this.setState({likes:this.state.likes+1})
+            this.setState({liked:true})
+            this.props.updateLikes(this.state.likes)
         }
         
-        this.props.updateLikes(this.state.likes)
+        
     }
     
     // change flag status
@@ -42,19 +41,39 @@ class PostDetails extends Component {
         // change date format
         let time = moment(this.props.date).format('YYYY-MM-DD HH:mm');
         
+        // like icons
+        if (this.state.liked) {
+            like = <span>
+                       <img
+                          src="https://i.dlpng.com/static/png/450220_preview.png"
+                          width="25"
+                          height="25"
+                          alt="likes"
+                        />
+                    </span>
+        } else {
+            like = <span>
+                        <img
+                          src="https://static.thenounproject.com/png/1085294-200.png"
+                          width="25"
+                          height="25"
+                          alt="likes"
+                        />
+                    </span>
+        }
+        
         // when the type is blog post we show likes and author, otherwise no
         let likeSection = this.props.type === 'blog_post' ?  <div>
-                                                                <span class='text-secondary'>
-                                                                    {this.state.likes}
-                                                                </span> 
-                                                                Likes
-                                                                <> | </>
                                                                 <span 
-                                                                class= 'ml-2' 
+                                                                class= 'mx-2' 
                                                                 onClick = {this.likeit.bind(this)}> 
                                                                     {like} 
                                                                 </span>
-                                                                <span class = "postInteract">Like this post</span>
+                                                                <span class='text-secondary'>
+                                                                    {this.props.likes}
+                                                                </span> 
+                                                                <> | </>
+                                                                {/* <span class = "postInteract">Like this post</span> */}
                                                             </div> : ''
                                                             
         // when the type is blog post we show profile icon, otherwise no                                                    
@@ -71,21 +90,6 @@ class PostDetails extends Component {
                                                         </div> : ''
         // change margin to align                                   
         let margin = this.props.type === 'blog_post' ? "col-6 mt-2" : "col-6 mt-2 ml-4"
-        
-        // like icons
-        if (this.state.liked) {
-            like = <span>
-                        <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                        </svg>
-                    </span>
-        } else {
-            like = <span>
-                        <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                        </svg>
-                    </span>
-        }
         
         // share icons
         share = <span>
@@ -130,15 +134,15 @@ class PostDetails extends Component {
                 </div>    
             </div>
                 
-            <div class="ml-4 mt-3">    
+            <div class="ml-4 mt-3 row">    
                 
                 {/* like interaction */}
-                {likeSection}
+                <span>{likeSection}</span>
                 
                 {/* share interaction */}
                 <span>
                     <span data-toggle="modal" data-target="#flagModal"> 
-                        <span> {share} </span>
+                        <span class="ml-3 mr-1"> {share} </span>
                         <span class = "postInteract">Share</span>
                     </span>
                 </span>
