@@ -423,6 +423,7 @@ class CommentListAPI(APIView):
             values[idx]["author"] = comment.created_by.first_name + ' ' + comment.created_by.last_name
             values[idx]["createdOn"] = comment.created_on
             values[idx]["body"] = comment.content
+            values[idx]["authorId"] = comment.created_by.id
             
             # Delete un-needed values
             del values[idx]["created_by_id"]
