@@ -390,7 +390,7 @@ POST /signup
 ```
 
 
-### **`DELETE /posts/:post_id/comments/:comment_id`**
+### **`DELETE /posts/comments/:comment_id`**
 
 **Description**: Delete a specific comment.
 
