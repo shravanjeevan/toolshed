@@ -28,6 +28,8 @@ GET /tags/popular *
 POST /login
 POST /signup
 
+GET /users/:user_id
+
 ```
 
 
@@ -482,11 +484,13 @@ POST /signup
 
 ### **`POST /signup`**
 
-### **`GET /user:user_id`**
+### **`GET /user/:user_id`**
 ```
 {
     "id": 123,
-    "displayName": "Bob"
+    "displayName": "Bob Smith",
+    "email": "bobs@cse.unsw.edu.au,
+    "username": "bob22"
 }
 ```
 
