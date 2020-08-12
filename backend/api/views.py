@@ -540,3 +540,23 @@ class LikeCounter(APIView):
             return Response(status=404, data={"message": "Could't find your post."})
 
         return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})
+
+
+class UserBlogs(APIView):
+    def get(self, request, pk):
+        blogs = BlogPostModel.objects.filter(id=pk)
+
+        values = list(blogs.values())
+
+        for idx, blog in enumerate(blogs):
+            values[idx]["tags"] = []
+            values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
+            values[idx]["type"] = "blog_post"
+            values[idx]["createdById"] = blog.createdBy.id
+            del values[idx]["createdBy_id"]
+
+            for tagId in blog.tags.all():
+                values[idx]["tags"].append(tagId.tag)
+
+        return Response(status=200, data=values)
+
