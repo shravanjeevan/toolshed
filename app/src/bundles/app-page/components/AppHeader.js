@@ -5,7 +5,7 @@ import SearchBar from '../../common/components/searchbar'
 class AppHeader extends React.Component {
     render() {
         return (
-            <div class="jumbotron bg-light">
+            <div class="jumbotron bg-light mt-5">
                 <h1 class="display-4 text-center">The Toolshed</h1>
                 <div class="lead text-center">
                     <p>

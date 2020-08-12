@@ -1,12 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
 import ToolsList from './ToolsList';
 
 class ToolsPage extends React.Component {
     render() {
         return (
             <div>
-                <ToolsList />
+                {/* To access the :slug in the URL, use props and pass down to child component */}
+                <ToolsList category={this.props.match.params.slug}/>
             </div>
         );
     }

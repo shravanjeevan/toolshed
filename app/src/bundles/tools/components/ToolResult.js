@@ -1,59 +1,53 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
-import '../../common/components/PostResult.css';
+import './ToolResult.css';
 
-class PostResult extends React.Component {
+class ToolResult extends React.Component {
     render() {
-        let { post } = this.props;
-
-        // List of tags
-        let tagsToShow = post.Categories.map((tag) => {
-            return (
-                <a href="#" className="mr-2 badge badge-secondary">
-                    {tag}
-                </a>
-            );
-        });
-
-        let blogPostItemsToShow = (
-            <div>
-                <span>{post.developer}</span>
-            </div>
-        );
+        let { tool } = this.props;
+        var searchPath = `/search?query=${tool.name}`;
 
         return (
-            <div className="card rounded">
+            <div className="post-card card rounded">
                 <div className="card-body">
                     <h5 className="card-title">
                         <div className="row">
                             <Link
-                                to="/post"
-                                className="title-text col-sm-8 text-decoration-none"
+                                to={searchPath}
+                                className="title-text col-sm-8 text-decoration-none tool-title"
                             >
-                                {post.name}
+                                {tool.name}
                             </Link>
                             <div className="col-sm-4 text-right font-weight-light">
-                            <img
-                                src={post.icon}
-                                width="60"
-                                height="60"
-                                className="d-inline-block align-top"
-                                alt={post.name}
+                                <img
+                                    src="https://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/pingus-icon-icon.png"
+                                    width="60"
+                                    height="60"
+                                    className="d-inline-block align-top"
+                                    alt={tool.name}
                                 />
                             </div>
                         </div>
                     </h5>
                     <h6 class="card-subtitle mb-3">
-                        <div className="text-muted">{tagsToShow}</div>
-                    </h6>
-                    <h6 class="card-subtitle font-weight-light">
-                        {blogPostItemsToShow}
+                        <div className="text-muted">{tool.category}</div>
                     </h6>
                     <hr />
-                    <p className="card-text">
-                        <Link to="/post" className="text-decoration-none">
-                            <div>{post.description}</div>
+                    <p className="card-text tool-text">
+                        <Link to={searchPath} className="text-decoration-none tool-content">
+                            <div>
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam, quis nostrud exercitation
+                                ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in
+                                reprehenderit in voluptate velit esse cillum
+                                dolore eu fugiat nulla pariatur. Excepteur sint
+                                occaecat cupidatat non proident, sunt in culpa
+                                qui officia deserunt mollit anim id est laborum.
+                            </div>
                         </Link>
                     </p>
                 </div>
@@ -62,4 +56,4 @@ class PostResult extends React.Component {
     }
 }
 
-export default PostResult;
+export default ToolResult;

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {Button} from 'react-bootstrap'
 import backend from '../../apis/backend';
-import axios from 'axios';
 
 class CategoryExplorer extends React.Component {
     state = {
@@ -29,7 +27,8 @@ class CategoryExplorer extends React.Component {
         return (<div><h2>Popular Categories</h2></div>)
     }
     renderHomepage() {
-        return(<div><h2>Explore Categories <Link className="button" to="/categories"> All Categories </Link></h2> </div>)
+        return(<div><h2>Explore Categories</h2><Link class="font-weight-bold" to="/categories">View All Categories</Link>
+                </div>)
     }
     toRender() {
         if (window.location.pathname == '/') {
@@ -46,8 +45,8 @@ class CategoryExplorer extends React.Component {
         if (categories && categories.length > 0) {
             categoriesToShow = categories.map((category) => {
                 return (
-                    <Link key={category.category} className="btn btn-primary p-3 mr-4 mb-4 rounded-pill" type="button" to={`/categories/${category.category}`}>
-                        {category.category} ({category.publishedCount})
+                    <Link key={category.category} className="btn btn-primary p-3 mr-4 mb-4 rounded-pill font-weight-bold" type="button" to={`/categories/${category.category}`}>
+                        {category.category}
                     </Link>
                 );
             });

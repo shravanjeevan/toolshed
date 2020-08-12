@@ -56,7 +56,7 @@ export const login = ({ username, password }) => async (dispatch) => {
 };
 
 // REGISTER USER ACTION
-export const register = ({ username, email, password }) => async (dispatch) => {
+export const register = ({ username, first_name, last_name, email, password }) => async (dispatch) => {
     // Headers
     const config = {
         headers: {
@@ -65,7 +65,7 @@ export const register = ({ username, email, password }) => async (dispatch) => {
     };
 
     // Request Body
-    const body = JSON.stringify({ username, email, password });
+    const body = JSON.stringify({ username, first_name, last_name, email, password });
 
     try {
         const res = await backend.post('/auth/register/', body, config);

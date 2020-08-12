@@ -1,5 +1,5 @@
 /* Multi-line ellpsis for preview text https://stackoverflow.com/questions/33058004/applying-an-ellipsis-to-multiline-text */
-p.post-text {
+p.tool-text {
     display: block;
     display: -webkit-box;
     
@@ -22,6 +22,6 @@ p.post-text {
     padding-bottom: 2px;        /* Lines get cut-off with clamping, needs a bit of buffer */
 }
 
-.post-title, .post-content {
+.tool-title, .tool-content {
     color: inherit;
 }

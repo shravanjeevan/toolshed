@@ -35,7 +35,8 @@ class LoginForm extends Component {
             return <Redirect to="/" />;
         }
         return (
-            <div className="ui container">
+            <div className="ui container mb-5">
+                <h1 className="ui header mt-5">Login</h1>
                 <div className="ui segment">
                     <form
                         onSubmit={this.props.handleSubmit(this.onSubmit)}
@@ -62,7 +63,7 @@ class LoginForm extends Component {
                     </form>
                     <p style={{ marginTop: '1rem' }}>
                         Don't have an account?{' '}
-                        <Link to="/register">Register</Link>
+                        <Link to="/register"><strong>Register Here</strong></Link>
                     </p>
                 </div>
             </div>

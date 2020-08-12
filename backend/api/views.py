@@ -1,20 +1,21 @@
 import datetime
 
+from django.contrib.auth.models import User
 from django.db import connection
 from elasticsearch import Elasticsearch
 from knox.models import AuthToken
 from rest_framework import permissions, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from random import *
 
 from .models import BlogPost as BlogPostModel
+from .models import BlogPostTag
 from .models import KnowledgeBaseItem
 from .models import KnowledgeBaseTag
-from .models import BlogPostTag
 from .models import Tool
+from .models import BlogPostComment
 from django.contrib.auth.models import User
-from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer
+from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, CommentSerializer
 
 es = Elasticsearch(["http://elastic:9200"])
 
@@ -86,6 +87,7 @@ def blogmodelToDict(blogs):
 
     return values
 
+
 def kbmodelToDict(kb_items):
     values = list(kb_items.values())
 
@@ -122,7 +124,8 @@ def kbmodelToDict(kb_items):
 
 class BlogsList(APIView):
     def get(self, request):
-
+        blogs = BlogPostModel.objects.all()
+        
         values = list(blogs.values())
 
         for idx, blog in enumerate(blogs):
@@ -142,9 +145,10 @@ class BlogsList(APIView):
 
         print(request_data)
 
-        if "type" in request_data and request_data["type"] == 'knowledge_base' :
+        if "type" in request_data and request_data["type"] == 'knowledge_base':
             if KnowledgeBaseItem.objects.filter(title__iexact=request_data["title"]):
-                return Response(status=200, data={"message": "You already have a knowledge base item with the same title. Please choose another title."})
+                return Response(status=200, data={
+                    "message": "You already have a knowledge base item with the same title. Please choose another title."})
 
             user = User.objects.get(id=request_data["authorId"])
 
@@ -165,11 +169,12 @@ class BlogsList(APIView):
             add_tags_knowledge_base(knowledge_base_item, request_data["tags"])
 
             knowledge_base_es = article_index_payload_builder(knowledge_base_item.id, request_data, user.first_name,
-                                                       str(datetime.datetime), "knowledge_base")
+                                                              str(datetime.datetime), "knowledge_base")
 
             es.index(index='knowledge_base', body=knowledge_base_es)
-            return Response(status=200, data={"message": "Successfully add a new knowledge base item"})
-
+            return Response(status=200, data={"message": "Successfully add a new knowledge base item",
+                                            "id": knowledge_base_item.id,
+                                            "type": "knowledge_base"})
 
         if does_blog_post_exist(request_data["authorId"], request_data["title"]):
 
@@ -193,7 +198,9 @@ class BlogsList(APIView):
             blogpost_es = article_index_payload_builder(blogpost_db.id, request_data, user.first_name,
                                                         str(datetime.datetime), "blog_post")
             es.index(index='knowledge_base', body=blogpost_es)
-        return Response(status=200, data={"message": "Successfully add a new blog post"})
+        return Response(status=200, data={"message": "Successfully add a new blog post",
+                                          "id": blogpost_db.id,
+                                          "type": "blog_post"})
 
 
 def add_tags_knowledge_base(knowledge_base_model, tags):
@@ -313,7 +320,6 @@ class Search(APIView):
         blog_result_id = []
         kb_result_id = []
 
-
         for res in resp["hits"]["hits"]:
             print(res["_source"]["type"])
             if "blog" in res["_source"]["type"]:
@@ -391,6 +397,76 @@ class UserAPI(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
+class CommentListAPI(APIView):
+    def get(self, request, pk):
+        '''GET method of comments (returns all comments for given BlogPost ID)'''
+
+        # Grab list of comments for this BlogPost
+        try:
+            comments = BlogPostComment.objects.all().filter(blog_post_id__exact=pk)
+            values = list(comments.values())
+        except:
+           return Response(status=404, data={"message": "Error: BlogPost not found."})
+
+        # Double check that blogpost was found
+        if len(values) == 0:
+            return Response(status=404, data={"message": "Error: BlogPost not found."})
+
+        for idx, comment in enumerate(comments):
+            # Build response object
+            values[idx]["id"] = comment.id
+            values[idx]["author"] = comment.created_by.first_name + ' ' + comment.created_by.last_name
+            values[idx]["createdOn"] = comment.created_on
+            values[idx]["body"] = comment.content
+            
+            # Delete un-needed values
+            del values[idx]["created_by_id"]
+            del values[idx]["blog_post_id_id"]
+            del values[idx]["content"]
+            del values[idx]["created_on"]
+
+        return Response(status=200, data=values)
+
+class CommentAPI(APIView):
+    def post(self, request):
+        '''POST method for BlogPost comments'''
+
+        comment_data = request.data
+        
+        # Get user instance
+        try:
+            user = User.objects.get(id=comment_data["authorId"])
+        except:
+           return Response(status=400, data={"message": "Author not found."}) 
+
+        # Get blogpost instance
+        try:
+            blog_post = BlogPostModel.objects.get(id=comment_data["postId"])
+        except:
+            return Response(status=400, data={"message": "The blog post was not found."})
+
+        # Finally, create the actual comment
+        comment_db_item = BlogPostComment(content=comment_data["body"],
+                                        blog_post_id=blog_post,
+                                        created_by=user
+                                        )        
+        comment_db_item.save()
+
+        return Response(status=200, data={"message": "Successfully created a comment"})
+
+    def delete(self, request, pk):
+        '''DELETE method for comment'''
+
+        try:
+            comment = BlogPostComment.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "The comment you're trying to delete "
+                                                         "may have already been deleted. "
+                                                         "It cannot be found."})
+        # Perform delete
+        comment.delete()
+
+        return Response(status=200, data={"message": "Comment deleted."})
 
 class PopularKnowledgeList(APIView):
     def get(self, request):
@@ -420,3 +496,47 @@ class PopularKnowledgeList(APIView):
 
         return Response(status=200, data=values)
 
+
+class KnowledgeBaseList(APIView):
+    def get(self, request, pk):
+        try:
+            kb_items = KnowledgeBaseItem.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
+
+        values = kb_items.__dict__
+        values["tags"] = []
+        values["type"] = "knowledge_base"
+        tool = Tool.objects.get(id=values["tool_id_id"])
+        values["toolCategory"] = tool.category
+        values["toolName"] = tool.name
+        values["toolId"] = values["tool_id_id"]
+        del values["tool_id_id"]
+        del values["content_type"]
+
+        for tag in kb_items.tags.all():
+            values["tags"].append(tag.tag)
+
+        del values['_state']
+
+        return Response(status=200, data=values)
+
+
+class LikeCounter(APIView):
+    def get(self, request, pk):
+        try:
+            blog = BlogPostModel.objects.get(id=pk)
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
+
+        return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})
+
+    def post(self, request, pk):
+        try:
+            blog = BlogPostModel.objects.get(id=pk)
+            blog.likeCount += 1
+            blog.save()
+        except:
+            return Response(status=404, data={"message": "Could't find your post."})
+
+        return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})

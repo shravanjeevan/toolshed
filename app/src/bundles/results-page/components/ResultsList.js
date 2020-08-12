@@ -6,10 +6,10 @@ import Searchterm from '../../common/components/SearchTerm';
 import Searchbar from '../../common/components/searchbar';
 
 class ResultsList extends React.Component {
-    state = { 
+    state = {
         results: [],
-        isLoading: false
-     };
+        isLoading: false,
+    };
 
     componentDidMount() {
         this.getResults();
@@ -25,30 +25,33 @@ class ResultsList extends React.Component {
     getResults = async () => {
         this.setState({ isLoading: true });
         try {
-            let res = await backend.get(`/search?query=${this.props.params.query}`);
+            let res = await backend.get(
+                `/search?query=${this.props.params.query}`
+            );
             let { data } = res;
             this.setState({ results: data });
             console.log(this.state.results);
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
         this.setState({ isLoading: false });
-    }
+    };
 
     render() {
         var searchitem = [
             {
                 searchterm: this.props.params.query,
-                filters: ["posted within last 5 days"],
-            }
+                filters: ['posted within last 5 days'],
+            },
         ];
 
         let { results } = this.state;
         let postsToShow;
 
-
         if (this.state.isLoading) {
-            postsToShow = <div className="alert alert-light">Fetching results...</div>;
+            postsToShow = (
+                <div className="alert alert-light">Fetching results...</div>
+            );
         } else if (results && results.length > 0) {
             postsToShow = results.map((post) => {
                 return (
@@ -58,23 +61,32 @@ class ResultsList extends React.Component {
                 );
             });
         } else if (results && results.length === 0) {
-            postsToShow = <div className="alert alert-light">No results found for "{this.props.params.query}". Try another search term.</div>;
+            postsToShow = (
+                <div className="alert alert-light">
+                    No results found for "{this.props.params.query}". Please try searching for something else:
+                    <br/>
+                    <br/>
+                    <Searchbar />
+                </div>
+            );
         }
 
-
-        var searchToShow = searchitem.map((term)=>{
-            return (
-                <div className="my-4">
-                    <Searchterm term = {term} />
-                </div>
-            )
-        })
+        // Removed as it doesn't grab filters properly
+        // var searchToShow = searchitem.map((term) => {
+        //     return (
+        //         <div className="my-4">
+        //             <Searchterm term={term} />
+        //         </div>
+        //     );
+        // });
 
         return (
             <div className="container">
                 <h2>Results</h2>
-                <Searchbar />
-                <div className="mt-4">{searchToShow}</div>
+                <div className="mt-4">
+                    Showing results for "<i>{this.props.params.query}</i>".   {results.length} posts found.
+                </div>
+                {/* <div className="mt-4">{searchToShow}</div> Removed as it isn't compatible with filters*/}
                 <div className="mt-4">{postsToShow}</div>
             </div>
         );
