@@ -299,6 +299,10 @@ def does_blog_post_exist(author, title):
 class Search(APIView):
     def get(self, request):
         query = request.GET.get('query')
+        top = request.GET.get('top')
+
+        if not top:
+            top = 15
 
         if not query:
             return Response(status=400, data={"message": "No search query provided"})
@@ -325,6 +329,7 @@ class Search(APIView):
             if "blog" in res["_source"]["type"]:
                 id = res["_source"]["id"]
                 blog_result_id.append(id)
+
             else:
                 id = res["_source"]["id"]
                 kb_result_id.append(id)
@@ -337,9 +342,9 @@ class Search(APIView):
         blog_results = blogmodelToDict(blog_results)
         kb_results = kbmodelToDict(kb_results)
 
-        blog_results.append(kb_results)
+        final = blog_results + kb_results
 
-        return Response(data=blog_results, status=200)
+        return Response(data=final[:int(top)], status=200)
 
 
 class FilterCategories(APIView):
