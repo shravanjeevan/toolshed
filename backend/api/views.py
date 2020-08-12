@@ -547,6 +547,22 @@ class LikeCounter(APIView):
 
         return Response(status=200, data={"id": blog.id, "title": blog.title, "likeCount": blog.likeCount})
 
+class UserDetails(APIView):
+    def get(self, request, pk):
+        '''GET method for retrieving user data'''
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM auth_user WHERE id = %s", [pk])
+                data = dictfetchall(cursor)[0]
+        except:
+            return Response(status=404, data={"message": "User not found!"})
+
+        display_name = data["first_name"] + " " + data["last_name"]
+        return Response(status=200, data={"id": data["id"], 
+                                         "display_name": display_name,
+                                         "email": data["email"],
+                                        "username": data["username"]})
 
 class UserBlogs(APIView):
     def get(self, request, pk):
