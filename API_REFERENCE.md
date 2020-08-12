@@ -28,6 +28,8 @@ GET /tags/popular *
 POST /login
 POST /signup
 
+GET /users/:user_id
+
 ```
 
 
@@ -343,6 +345,7 @@ POST /signup
 | :--- | :--- | :--- |
 | `id` | `int` | Unique identifer of a comment |
 | `author` | `string` | Name of the comment author |
+| `author` | `int` | Unique identife of the comment author |
 | `createdOn` | `string` | Date of the comment created |
 | `body` | `string` | Main content of a comment |
 
@@ -352,12 +355,14 @@ POST /signup
     {
         "id": 123,
         "author": "1234a",
+        "authorId":5,
         "createdOn": "20 July 2020",
         "body": "comment body..."
     },
     {
         "id": 125,
         "author": "1234a",
+        "authorId":5,
         "createdOn": "20 July 2020",
         "body": "comment body..."
     }
@@ -482,11 +487,13 @@ POST /signup
 
 ### **`POST /signup`**
 
-### **`GET /user:user_id`**
+### **`GET /user/:user_id`**
 ```
 {
     "id": 123,
-    "displayName": "Bob"
+    "displayName": "Bob Smith",
+    "email": "bobs@cse.unsw.edu.au,
+    "username": "bob22"
 }
 ```
 

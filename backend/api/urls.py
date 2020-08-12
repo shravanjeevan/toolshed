@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include(router.urls)),
 
     # common
+    # GET, POST, PUT
     path('posts/', views.BlogsList.as_view()),
     path('tags/popular/', views.PopularBlogTags.as_view()),
 
@@ -53,7 +54,11 @@ urlpatterns = [
     path("auth/register/", views.RegistrationAPI.as_view()),
     path("auth/login/", views.LoginAPI.as_view()),
     path("auth/user/", views.UserAPI.as_view()),
+    
+    # Get user data
+    path("users/<int:pk>", views.UserDetails.as_view()),
 
+    # Perform likes
     path("like/<int:pk>", views.LikeCounter.as_view())
   
 ]
