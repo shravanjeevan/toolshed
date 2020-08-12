@@ -13,6 +13,10 @@ class CommentSection extends Component {
         this.getData();
     }
     
+    update(){
+        this.getData();
+    }
+    
     // get comments underneath the post
     getData = async () => {
         try {
@@ -30,7 +34,7 @@ class CommentSection extends Component {
     post = async (input) => {
         try {
             let data = {
-                authorId:3,
+                authorId:this.props.userId,
                 body:input,
                 postId:this.props.postId
             }
@@ -50,7 +54,7 @@ class CommentSection extends Component {
             <div >
                 <h3 class='ml-4'> Comments | {this.props.commentCount} </h3>
                 <div class='ml-4'> <CommentPost post={this.post.bind(this)} /> </div>
-                <div > <CommentCard comments={this.state.comments} postId={this.props.postId} userId = {this.props.userId} /> </div>
+                <div > <CommentCard comments={this.state.comments} postId={this.props.postId} userId = {this.props.userId} update={this.update.bind(this)}/> </div>
             </div>
         </Fragment>
         );

@@ -14,12 +14,13 @@ class CommentCard extends Component {
     
     delete = async (commentId) => {
         try {
-            let res = await backend.delete('/posts/comments/:'+commentId);
+            let res = await backend.delete(`/posts/comments/${commentId}`);
             let { data } = res;
             console.log(data);
         } catch(e) {
             console.log(e);
         }
+        this.props.update();
     }
     
     open(itemId) {
@@ -53,12 +54,11 @@ class CommentCard extends Component {
                                             {/* date */}
                                             <span class="text-secondary small mt-1"> {moment(item.createdOn).fromNow()} </span>
                                             {/* delete button */}
-                                            {this.props.userId}
-                                            {item.id}
-                                            {(this.props.userId == item.id ?
+                                            {item.authorId}
+                                            {(this.props.userId == item.authorId ?
                                                 (<button type="button" class="rounded float-right btn btn-link btn-sm" onClick={this.open.bind(this,item.id)}> 
                                                 &times; 
-                                                </button>):'null')}
+                                                </button>):null)}
                                             <p class="mt-3"> {item.body} </p>
                                         </div>
                                     </div>
