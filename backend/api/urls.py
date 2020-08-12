@@ -17,6 +17,8 @@ urlpatterns = [
     # GET /posts/popular?top=10
     path('posts/popular/', views.PopularBlogList.as_view()),
     path('posts/<int:pk>', views.Blogs.as_view()),
+    path('posts/users/<int:pk>', views.UserBlogs.as_view()),
+
 
     # Post comments
     path('posts/<int:pk>/comments/', views.CommentListAPI.as_view()),
