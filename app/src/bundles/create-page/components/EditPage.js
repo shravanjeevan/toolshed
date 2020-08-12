@@ -8,9 +8,11 @@ import htmlToDraft from 'html-to-draftjs';
 import backend from '../../../bundles/apis/backend';
 import ToolDropdowns from './ToolDropdowns';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import { Prompt, Link } from 'react-router'
+import { Prompt } from 'react-router';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-class CreatePage extends Component {
+class EditPage extends Component {
     constructor(props) {
         super(props);
         const { match:{params} } = this.props;
@@ -36,6 +38,7 @@ class CreatePage extends Component {
                 tags:[],
                 title:'',
                 content:'',
+                id : -1,
             }
         } else if (path.match("create")&&path.match("knowledge")) {
             this.state = { 
@@ -45,7 +48,8 @@ class CreatePage extends Component {
                 tags:[],
                 title:'',
                 content:'',
-                tools:[]  
+                tools:[],
+                id : -1,
             }
         } else if (path.match("edit") && path.match("knowledge")) {
             this.state = { 
@@ -88,17 +92,23 @@ class CreatePage extends Component {
         })
       }
     
-    publish = async () => {
+    // publish this post
+    publish = async (e,userId) => {
+        // stop bubbling event
+        e.stopPropagation();
+        // send data using POST
         try {
             let data = {
                 tags:this.state.tags,
                 title:this.state.title,
                 // Object=>JSON=>HTML  (=x=>encode64)
                 content: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())),
-                authorId:1
+                authorId:userId
             }
             let res = await backend.post('/posts/',data);
             console.log(res);
+            this.setState({id:res.data.id})
+            document.getElementById("refre").click()
         } catch(e) {
             console.log(e);
         }
@@ -141,8 +151,13 @@ class CreatePage extends Component {
     }
     
     render() { 
+        const { user , isAuthenticated } = this.props.auth;
+        let userId
+        if (isAuthenticated) {
+            userId = user.id
+        } 
     
-        let head, tail, tool
+        let head, tail, url, tool
         if (this.state.create) {
             head = 'Create'
         } else {
@@ -152,8 +167,10 @@ class CreatePage extends Component {
         if (this.state.knowledge) {
             tail = 'Knowlege Base'
             tool = <ToolDropdowns tools={this.state.tools}/>
+            url = 'knowledge'
         } else {
             tail = 'Blog'
+            url='posts'
         }
         
         return ( 
@@ -161,11 +178,11 @@ class CreatePage extends Component {
                 <h2 class='class=my-4 ml-5'> {head} {tail} Post </h2>
                 <hr />
                 <div>
-                    {tool}
-                    <CreateTags update={this.updateTags} tags={this.state.tags}/>
                     <CreateTitle title={this.state.title} handleTitle={this.handleTitle.bind(this)}/>
+                    <CreateTags update={this.updateTags} tags={this.state.tags}/>
+                    {tool}
                     <CreateContent onEditorStateChange={this.onEditorStateChange.bind(this)} editorState={this.state.editorState} />
-                    <PublishPost publish={this.publish}/>
+                    <PublishPost publish={this.publish} userId={userId}/>
                 </div>
 
                 
@@ -173,12 +190,18 @@ class CreatePage extends Component {
                   message="Are you sure you want to leave?"
                 />
                 
+                <Link id='refre' to={`/${url}/${this.state.id}/`} />
+                
             </div>
             
             
-            // <Link id='succs' to="/" />
+            
         );
     }
 }
- 
-export default CreatePage;
+
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+});
+
+export default connect(mapStateToProps)(EditPage);

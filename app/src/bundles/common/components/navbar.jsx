@@ -154,7 +154,7 @@ class NavBar1 extends Component {
                                     {user && isAuthenticated ? (
                                         <Link
                                             class="dropdown-item"
-                                            to="/posts/create"
+                                            to="/knowledge/create"
                                         >
                                             Create Knowledge Item
                                         </Link>

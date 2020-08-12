@@ -30,6 +30,7 @@ class CommentCard extends Component {
     }
     
     render() { 
+    
         return ( 
             <Fragment>
                 {
@@ -40,7 +41,7 @@ class CommentCard extends Component {
                                         {/* icons */}
                                         <div class="col-1 mt-4 " id="commentAuthor">
                                             <img
-                                              src={item.icon}
+                                              src="https://cdn0.iconfinder.com/data/icons/social-media-network-4/48/male_avatar-512.png"
                                               width="45"
                                               height="45"
                                               alt="profile icon"

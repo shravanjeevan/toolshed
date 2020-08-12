@@ -50,7 +50,6 @@ class App extends React.Component {
                                 <Route path="/blogs" exact component={BlogsPage}/>
                                 <Route path="/knowledge" exact component={KnowledgePage}/>
                                 <Route path="/categories" exact component={CategoriesPage}/>
-                                <Route path="/edit" exact component={EditPage}/>
                                 <Route path="/categories/:slug" exact component={ToolsPage}/> {/* This should go to the tools component, i.e. a list of tools */}
                                 <Route path="/users/:slug" exact component={UserPage}/>
                                 <Route path="/register" component={RegisterForm}/>

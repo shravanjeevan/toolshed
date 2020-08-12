@@ -61,10 +61,21 @@ class Post extends Component {
     // HTTP update likes
     updateLikes = async () => {
         try {
-            // let data = {
-            //     likeCount:value
-            // }
             let res = await backend.post('/like/'+this.state.id);
+            console.log(res);
+        } catch(e) {
+            console.log(e);
+        }
+        this.getLikes();
+    }
+    
+    getLikes = async () => {
+        try {
+            let res = await backend.get('/like/'+this.state.id);
+            let { data } = res;
+            this.setState({
+                likeCount:data.likeCount,
+             })
             console.log(res);
         } catch(e) {
             console.log(e);
@@ -85,8 +96,11 @@ class Post extends Component {
     
     render() { 
     
-        const { user } = this.props.auth;
-        // console.log(user.id)
+        const { user , isAuthenticated } = this.props.auth;
+        if (isAuthenticated) {
+            console.log(user.id)
+        }
+        
     
         let comment = this.state.type === 'blog_post' ? <div>
                                                         <CommentSection 

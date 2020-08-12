@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import backend from '../../../bundles/apis/backend';
 import CommentPost from './CommentPost'
 import CommentCard from './CommentCard'
-import axios from 'axios';
 
 
 class CommentSection extends Component {
@@ -31,15 +30,18 @@ class CommentSection extends Component {
     post = async (input) => {
         try {
             let data = {
-                authorId:this.props.authorId,
+                authorId:3,
                 body:input,
                 postId:this.props.postId
             }
-            let res = await backend.post(`/posts/${this.props.postId}/comments`,data);
-            console.log(res);
+            console.log(data)
+            // let res = await backend.post(`/posts/${this.props.postId}/comments`,data);
+            let res = await backend.post('/posts/comments/',data);
+            console.log(res,data);
         } catch(e) {
             console.log(e);
         }
+        this.getData();
     }
 
     render() { 
