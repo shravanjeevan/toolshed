@@ -141,7 +141,9 @@ class EditPage extends Component {
     
     getData = async () => {
         try {
-            let res = await backend.get(`/posts/${this.state.id}`);
+            let res;
+            if (this.state.knowledge) {res = await backend.get(`/knowledge/${this.state.id}`)}
+            else {res = await backend.get(`/posts/${this.state.id}`)}
             let { data } = res;
             const html = data.content
             const contentBlock = htmlToDraft(html);
@@ -216,7 +218,6 @@ class EditPage extends Component {
                     <CreateContent onEditorStateChange={this.onEditorStateChange.bind(this)} editorState={this.state.editorState} />
                     <PublishPost publish={this.publish} userId={userId}/>
                 </div>
-
                 
                 <Prompt
                   message="Are you sure you want to leave?"

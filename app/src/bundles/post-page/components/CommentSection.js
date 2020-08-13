@@ -15,6 +15,7 @@ class CommentSection extends Component {
     
     update(){
         this.getData();
+        // window.location.reload(false)
     }
     
     // get comments underneath the post
@@ -52,7 +53,7 @@ class CommentSection extends Component {
         return ( 
         <Fragment>
             <div >
-                <h3 class='ml-4'> Comments | {this.props.commentCount} </h3>
+        <h3 class='ml-4'> Comments | {this.props.commentCount}</h3>
                 <div class='ml-4'> <CommentPost post={this.post.bind(this)} /> </div>
                 <div > <CommentCard comments={this.state.comments} postId={this.props.postId} userId = {this.props.userId} update={this.update.bind(this)}/> </div>
             </div>

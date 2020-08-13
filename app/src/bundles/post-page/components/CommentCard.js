@@ -54,7 +54,6 @@ class CommentCard extends Component {
                                             {/* date */}
                                             <span class="text-secondary small mt-1"> {moment(item.createdOn).fromNow()} </span>
                                             {/* delete button */}
-                                            {item.authorId}
                                             {(this.props.userId == item.authorId ?
                                                 (<button type="button" class="rounded float-right btn btn-link btn-sm" onClick={this.open.bind(this,item.id)}> 
                                                 &times; 
