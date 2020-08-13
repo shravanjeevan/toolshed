@@ -80,7 +80,7 @@ class RegisterForm extends Component {
                     <p style={{ marginTop: '1rem' }}>
                         Already have an account?{' '}
                         <Link to="/login">
-                            <strong>Login Here</strong>
+                            <strong className="ml-1">Login Here</strong>
                         </Link>
                     </p>
                 </div>

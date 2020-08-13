@@ -20,6 +20,13 @@ class NavBar1 extends Component {
         });
     };
 
+    showLogoutBar = () => {
+        this.props.logout();
+        if (document.querySelector('#logoutAlert')) {
+            document.querySelector('#logoutAlert').style.display = 'block';
+        }
+    };
+
     render() {
         const { user, isAuthenticated, token } = this.props.auth; // Access user login data
         console.log(isAuthenticated);
@@ -30,9 +37,8 @@ class NavBar1 extends Component {
             loginOrLogout = (
                 <div>
                     <button
-                        class="btn btn-outline-danger mr-3 my-sm-0"
-                        type="button"
-                        onClick={() => this.props.logout}
+                        class="btn btn-danger mr-3 my-sm-0"
+                        onClick={this.showLogoutBar}
                     >
                         Logout
                     </button>
@@ -44,7 +50,7 @@ class NavBar1 extends Component {
                     <Link class="btn btn-primary mr-3 my-sm-0" to="/register">
                         Sign Up
                     </Link>
-                    <Link class="btn btn-primary mr-2 my-sm-0" to="login">
+                    <Link class="btn btn-primary mr-2 my-sm-0" to="/login">
                         Login
                     </Link>
                 </div>
@@ -97,11 +103,6 @@ class NavBar1 extends Component {
                                     Tools
                                 </Link>
                             </li>
-                            <li class="nav-item active">
-                                <Link class="nav-link" to="/blogs">
-                                    Blogs
-                                </Link>
-                            </li>
                             <li class="nav-item active dropdown mr-2">
                                 <a
                                     class="nav-link dropdown-toggle"
@@ -121,10 +122,7 @@ class NavBar1 extends Component {
                                     <Link class="dropdown-item" to="/blogs">
                                         Browse Top Blogs
                                     </Link>
-                                    <Link
-                                        class="dropdown-item"
-                                        to="/knowledge"
-                                    >
+                                    <Link class="dropdown-item" to="/knowledge">
                                         Browse Top Knowledge Items
                                     </Link>
                                 </div>
@@ -198,7 +196,7 @@ class NavBar1 extends Component {
                                 <li class="nav-item active">
                                     <Link
                                         class="nav-link mr-4"
-                                        to={`/users/${user.username}`}
+                                        to={`/users/${user.id}`}
                                     >
                                         Profile
                                     </Link>
@@ -210,6 +208,22 @@ class NavBar1 extends Component {
                         </ul>
                     </div>
                 </nav>
+                <div
+                    id="logoutAlert"
+                    class="alert alert-info alert-dismissible fade show"
+                    role="alert"
+                    style={{ position: 'absolute', right: 50, top: 100, zIndex: 0, display: 'none' }}
+                >
+                    <strong>Sucessfully logged out!</strong>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="alert"
+                        aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
         );
     }

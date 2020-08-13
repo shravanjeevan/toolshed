@@ -5,16 +5,16 @@ import RelatedPostList from './RelatedPostList';
 import CommentSection from './CommentSection';
 import PostBody from './PostBody';
 import backend from '../../../bundles/apis/backend';
-import { Link} from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+
 import './Post.css';
 
 class Post extends Component {
     constructor(props) {
         super(props);
-        const { match:{params} } = this.props;
-        this.state = { 
-            id: params.slug,
+        this.state = {
+            id: null,
             title:'',
             type:'',
             tags:[],
@@ -33,11 +33,24 @@ class Post extends Component {
     componentDidMount(){
         this.getData();
     }
+
+    componentDidUpdate(prevProps) {
+        const {
+            match: { params },
+        } = this.props;
+        if (this.props.location.pathname !== prevProps.location.pathname) {
+            this.getData();
+        }
+    }
     
     getData = async () => {
+        const { match:{params} } = this.props;
+        let pathType = this.props.location.pathname.split('/')[1];      // either knowledge or posts
+
         try {
-            let res = await backend.get('/posts/'+this.state.id);
+            let res = await backend.get(`/${pathType}/${params.slug}`);
             let { data } = res;
+            
             this.setState({
                 tags:data.tags,
                 title:data.title,
@@ -48,13 +61,17 @@ class Post extends Component {
                 createdOn:data.createdOn,
                 author:data.createdByDisplayName,
                 likeCount:data.likeCount,
-                commentCount:data.commentCount,
                 body:data.content,
-                authorId:data.createdById
-             })
+                authorId:data.createdById,
+                toolName: data.toolName
+            });
             console.log(data);
         } catch(e) {
             console.log(e);
+            if (document.querySelector('#error')) {
+                document.querySelector('#error').click();
+            }
+            
         }
     }
     
@@ -94,17 +111,15 @@ class Post extends Component {
         document.getElementById("redir").click()
     }
     
-    render() { 
-        let userId
-        const { user , isAuthenticated } = this.props.auth;
+    render() {
+        let userId;
+        const { user, isAuthenticated } = this.props.auth;
         if (isAuthenticated) {
             userId = user.id
         }
-        
-    
+
         let comment = this.state.type === 'blog_post' ? <div>
-                                                            <CommentSection 
-                                                            commentCount = {this.state.commentCount} 
+                                                            <CommentSection
                                                             postId={this.state.id}
                                                             userId = {userId}
                                                             />
@@ -112,7 +127,7 @@ class Post extends Component {
     
         return ( 
             
-            <div class='ml-3'>
+            <div class='container' style={{ marginBottom: '100px', marginTop: '100px' }}>
                 {/* post header section */}
                 <div class="mt-2"> 
                     <PostHeader 
@@ -127,10 +142,11 @@ class Post extends Component {
                     updateLikes = {this.updateLikes.bind(this)}
                     userId = {userId}
                     authorId = {this.state.authorId}
+                    toolName = {this.state.toolName}
                     /> 
                 </div>
                 
-                <hr />
+                <hr className="mb-5"/>
                 {/* body section */}
                 <div className="row">
                     <div className="col-8" id="html-part">
@@ -141,14 +157,15 @@ class Post extends Component {
                     <div className="col-3" id="aside">
                         <PostTags tags={this.state.tags}/>
                         <br />
-                        <RelatedPostList />
+                        <RelatedPostList title={this.state.title} />
                     </div>
                 </div>
-                <hr />
+                <hr className="mb-3"/>
                 {/* comment section, only when the post is a blog */}
                 {comment}
                 {/* refresh page after deleting post */}
                 <Link id='redir' to="/" />
+                <Link id="error" to="/404" replace />
         </div>
         );
     }

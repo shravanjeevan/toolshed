@@ -53,7 +53,7 @@ class BlogsList extends React.Component {
                 <div>
                     <h2>
                         Top Blog Posts{' '}
-                        <Link className="button" to="posts/create">
+                        <Link className="ml-3 button" to="posts/create">
                             {' '}
                             Create Blog{' '}
                         </Link>

@@ -63,7 +63,7 @@ class LoginForm extends Component {
                     </form>
                     <p style={{ marginTop: '1rem' }}>
                         Don't have an account?{' '}
-                        <Link to="/register"><strong>Register Here</strong></Link>
+                        <Link to="/register"><strong className="ml-1">Register Here</strong></Link>
                     </p>
                 </div>
             </div>

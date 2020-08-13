@@ -23,7 +23,7 @@ class Breadcrumbs extends Component {
         var pathmod = path.replace('%20', ' ');
         
         // HTML structure for every link except the first
-        return (<Breadcrumb.Item><Link to={url}>{pathmod}</Link></Breadcrumb.Item>);
+        return (<Breadcrumb.Item><Link to={url} className="text-capitalize">{pathmod}</Link></Breadcrumb.Item>);
     });
     
     // Return a list of links

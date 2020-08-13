@@ -28,7 +28,7 @@ class Category extends React.Component {
 
         var categoriesToShow = sortedCategories.map((category) => {
             return (
-                <Link className="btn btn-primary p-3 mr-4 mb-4 rounded-pill font-weight-bold" type="button" to={`/categories/${category.category}`}>
+                <Link className="btn btn-info p-3 mr-4 mb-4 rounded-pill font-weight-bold" type="button" to={`/categories/${category.category}`}>
                     {category.category}
                 </Link>
             );

@@ -45,7 +45,7 @@ class CategoryExplorer extends React.Component {
         if (categories && categories.length > 0) {
             categoriesToShow = categories.map((category) => {
                 return (
-                    <Link key={category.category} className="btn btn-primary p-3 mr-4 mb-4 rounded-pill font-weight-bold" type="button" to={`/categories/${category.category}`}>
+                    <Link key={category.category} className="btn btn-info p-3 mr-4 mb-4 rounded-pill font-weight-bold" type="button" to={`/categories/${category.category}`}>
                         {category.category}
                     </Link>
                 );

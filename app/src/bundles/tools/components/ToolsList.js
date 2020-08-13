@@ -10,7 +10,7 @@ import tlogo from './teams-logo.png';
 class ToolsList extends React.Component {
     state = {
         tools: [],
-        category: null
+        category: null,
     };
 
     componentDidMount() {
@@ -28,7 +28,7 @@ class ToolsList extends React.Component {
         }
     }
 
-    comp
+    comp;
 
     getTools = async () => {
         // Decide whether to fetch tools from all categories or a specific category depending on the URL slug
@@ -40,7 +40,9 @@ class ToolsList extends React.Component {
         try {
             let res = await backend.get(path);
             let { data } = res;
-            this.setState({ tools: data });
+            let sortedTools = data.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+            this.setState({ tools: sortedTools });
         } catch (e) {
             console.log(e);
         }
@@ -91,7 +93,7 @@ class ToolsList extends React.Component {
         if (this.state.tools && this.state.tools.length > 0) {
             toolsToShow = this.state.tools.map((tool) => {
                 return (
-                    <div className="my-4">
+                    <div className="my-4 col-lg-6">
                         <ToolResult tool={tool} />
                     </div>
                 );
@@ -105,7 +107,7 @@ class ToolsList extends React.Component {
                         ? 'All Tools'
                         : this.props.category}
                 </h2>
-                <div className="mt-4">{toolsToShow}</div>
+                <div className="mt-4 row">{toolsToShow}</div>
             </div>
         );
     }

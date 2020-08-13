@@ -48,9 +48,9 @@
 
 
 #commentContent {
-    border-bottom-style:solid;
+    /* border-bottom-style:solid;
     border-width:1px;
-    border-color:rgba(128, 128, 128, 0.486);
+    border-color:rgba(128, 128, 128, 0.486); */
 }
 
 
@@ -81,7 +81,7 @@
     padding: 5px;
     border-radius: 3px;
     border:1px solid rgba(169, 170, 170, 0.397);
-    width: 30%;
+    width: 50%;
     background-color: rgba(169, 170, 170, 0.164);
     resize: none;
 }

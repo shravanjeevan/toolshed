@@ -21,7 +21,7 @@ class SearchBar extends Component {
     };
     torender() {
         var searchPath = `/search?query=${
-            this.state.query + '+' + this.state.filters.join('+')
+            this.state.query // + '+' + this.state.filters.join('+')    // had to comment this out due to the + and non-functional filters
         }`;
         if (this.state.query == '') {
             return (
@@ -59,7 +59,7 @@ class SearchBar extends Component {
         return (
             <React.Fragment>
                 <div
-                    class="input-group mx-auto"
+                    className="input-group mx-auto"
                     style={{
                         justifyContent: 'center',
                     }}
@@ -68,8 +68,9 @@ class SearchBar extends Component {
                         <FormControl
                             className="topnav input"
                             type="text"
-                            placeholder="Search..."
+                            placeholder="search..."
                             name="query"
+                            style={{ width: '300px' }}
                             value={this.state.query}
                             onChange={this.changeHandler}
                         />
@@ -86,38 +87,30 @@ class SearchBar extends Component {
                             Filters
                         </button>
                         <div class="dropdown-menu">
-                            <button
-                                class="button"
-                                onClick={() =>
-                                    this.addfilter('Knowledge Base Items')
-                                }
-                            >
-                                Knowledge Base Items
-                            </button>
-                            <button
-                                class="button"
-                                onClick={() =>
-                                    this.addfilter('Blog Post Items')
-                                }
-                            >
-                                Blog Post Items
-                            </button>
-                            <button
-                                class="button"
-                                onClick={() => this.addfilter('New Posts')}
-                            >
-                                New Posts
-                            </button>
-                            <div
-                                role="separator"
-                                class="dropdown-divider"
-                            ></div>
-                            <button
-                                class="button"
-                                onClick={() => this.addfilter('Popular Posts')}
-                            >
-                                Popular Posts
-                            </button>
+                            <div class="checkbox">
+                                <label>
+                                    <input className="mb-2" type="checkbox" value="" />
+                                    Blog Posts
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input className="mb-2" type="checkbox" value="" />
+                                    Knowledge Base
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input className="mb-2" type="checkbox" value="" />
+                                    New Items
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input className="mb-2" type="checkbox" value="" />
+                                    Videos
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
