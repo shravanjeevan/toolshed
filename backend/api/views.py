@@ -28,8 +28,7 @@ def article_index_payload_builder(blogpost_db_id, blogpost_data, author_first_na
         "type": type,
         "author": author_first_name,
         "createdDate": created_date,
-        "tags": blogpost_data["tags"],
-        "likeCount": 0
+        "tags": blogpost_data["tags"]
     }
     return data
 
@@ -73,6 +72,56 @@ class Blogs(APIView):
             }
         })
         return Response(status=200, data={"message": "Post deleted"})
+
+    def put(self, request, pk):
+
+        """
+         {
+            "title": "Pavan first blogpost",
+            "content": "Content for the blogpost blah blah blah blach",
+            "authorId": "1",
+            "tags": ["happiness", "joy"],
+            "type": "blog_post"
+        }
+        """
+
+        request_data = request.data
+        if not BlogPostModel.objects.filter(id=pk).exists():
+
+            data = {'message': "This blogpost does not exist"}
+            return Response(data=data, status=404)
+        else:
+            user = User.objects.get(id=request_data["authorId"])
+            blogpost_db = BlogPostModel.objects.get(id=pk)
+            blogpost_db.title = request_data["title"]
+            blogpost_db.content = request_data["content"]
+
+            add_tags_blogpost(blogpost_db, request_data["tags"])
+
+            blogpost_db.save()
+
+            # Delete the old index in elasticsearch and reindex
+            es.delete_by_query(index='knowledge_base', body=
+            {
+                "query": {
+                    "match": {
+                        "id": pk,
+                    }
+                }
+            })
+
+            # Re-index in elasticsearch
+            blogpost_es = article_index_payload_builder(blogpost_db.id, request_data, user.first_name,
+                                                        str(datetime.datetime), "blog_post")
+            es.index(index='knowledge_base', body=blogpost_es)
+
+        return Response(status=200, data={"message": "Successfully edited blogpost",
+                                          "id": blogpost_db.id,
+                                          "type": "blog_post"})
+
+
+
+
 
 
 def blogmodelToDict(blogs):
@@ -205,6 +254,8 @@ class BlogsList(APIView):
 
 def add_tags_knowledge_base(knowledge_base_model, tags):
     for i in tags:
+        if knowledge_base_model.tags.filter(id=knowledge_base_model.id).exists():
+            continue
         tag = KnowledgeBaseTag(tag=i)
         tag.save()
         knowledge_base_model.tags.add(tag)
@@ -212,6 +263,8 @@ def add_tags_knowledge_base(knowledge_base_model, tags):
 
 def add_tags_blogpost(blogpostModel, tags):
     for i in tags:
+        if blogpostModel.tags.filter(id=blogpostModel.id).exists():
+            continue
         tag = BlogPostTag(tag=i)
         tag.save()
         blogpostModel.tags.add(tag)
