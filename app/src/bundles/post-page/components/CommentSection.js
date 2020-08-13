@@ -14,8 +14,8 @@ class CommentSection extends Component {
     }
     
     update(){
-        this.getData();
-        // window.location.reload(false)
+        // this.getData();
+        window.location.reload(false)
     }
     
     // get comments underneath the post

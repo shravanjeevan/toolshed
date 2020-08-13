@@ -219,9 +219,9 @@ class EditPage extends Component {
                     <PublishPost publish={this.publish} userId={userId}/>
                 </div>
                 
-                <Prompt
+                {/* <Prompt
                   message="Are you sure you want to leave?"
-                />
+                /> */}
                 
                 <Link id='refre' to={`/${url}/${this.state.id}/`} />
                 
