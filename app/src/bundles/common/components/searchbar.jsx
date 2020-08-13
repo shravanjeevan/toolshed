@@ -21,7 +21,7 @@ class SearchBar extends Component {
     };
     torender() {
         var searchPath = `/search?query=${
-            this.state.query + '+' + this.state.filters.join('+')
+            this.state.query    // + '+' + this.state.filters.join('+')    // had to comment this out due to the + and non-functional filters
         }`;
         if (this.state.query == '') {
             return (

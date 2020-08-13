@@ -129,7 +129,7 @@ class PostDetails extends Component {
                     {/* author name */}
                     {'Published by '}
                     <u>
-                        <Link to="/user/:id" class="text-primary">{this.props.name}</Link>
+                        <Link to={`/users/${this.props.authorId}`} class="text-primary">{this.props.name}</Link>
                     </u>
                     {/* date */}
                     <div class = "my-1 small font-italic"> {time} </div>

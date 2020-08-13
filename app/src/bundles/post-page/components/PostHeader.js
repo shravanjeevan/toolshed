@@ -28,6 +28,7 @@ class PostHeader extends Component {
                     <PostDetails 
                     title = {this.props.title}
                     name = {this.props.name}
+                    authorId = {this.props.authorId}
                     date = {this.props.date}
                     likes = {this.props.likes}
                     icon = {this.props.icon}

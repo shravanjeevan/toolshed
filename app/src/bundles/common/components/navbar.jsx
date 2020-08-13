@@ -196,7 +196,7 @@ class NavBar1 extends Component {
                                 <li class="nav-item active">
                                     <Link
                                         class="nav-link mr-4"
-                                        to={`/users/${user.username}`}
+                                        to={`/users/${user.id}`}
                                     >
                                         Profile
                                     </Link>
