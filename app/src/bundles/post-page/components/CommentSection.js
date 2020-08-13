@@ -55,8 +55,7 @@ class CommentSection extends Component {
             <Fragment>
                 <div>
                     <h3 class="ml-4">
-                        {this.state.comments ? this.state.comments.length : 0}{' '}
-                        Comments
+                        Comments<span className="ml-2 mr-2">|</span>{this.state.comments ? this.state.comments.length : 0}
                     </h3>
                     <div class="ml-4">
                         {' '}

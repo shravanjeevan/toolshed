@@ -116,7 +116,9 @@ class PostDetails extends Component {
                     </div>
                 </div>
             ) : (
-                ''
+                <div className="margin ml-4">
+                    {this.props.toolName}
+                </div>
             );
 
         // share icons

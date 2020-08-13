@@ -49,8 +49,8 @@ class CommentCard extends Component {
                                             />
                                         </div>
                                         {/* author */}
-                                        <div class="col-7 mt-3" id="commentContent">
-                                            <Link to="/users/:id" class="text-primary"> {item.author} </Link>
+                                        <div class="col-7 mt-4" id="commentContent">
+                                            <Link to="/users/:id" class="text-primary mr-2"> {item.author} </Link>
                                             {/* date */}
                                             <span class="text-secondary small mt-1"> {moment(item.createdOn).fromNow()} </span>
                                             {/* delete button */}
@@ -58,7 +58,7 @@ class CommentCard extends Component {
                                                 (<button type="button" class="rounded float-right btn btn-link btn-sm" onClick={this.open.bind(this,item.id)}> 
                                                 &times; 
                                                 </button>):null)}
-                                            <p class="mt-3"> {item.body} </p>
+                                            <p class="mt-1"> {item.body} </p>
                                         </div>
                                     </div>
                                 </div>

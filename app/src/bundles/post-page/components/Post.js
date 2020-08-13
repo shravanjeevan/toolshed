@@ -62,7 +62,8 @@ class Post extends Component {
                 author:data.createdByDisplayName,
                 likeCount:data.likeCount,
                 body:data.content,
-                authorId:data.createdById
+                authorId:data.createdById,
+                toolName: data.toolName
             });
             console.log(data);
         } catch(e) {
@@ -126,7 +127,7 @@ class Post extends Component {
     
         return ( 
             
-            <div class='container mb-5'>
+            <div class='container' style={{ marginBottom: '100px', marginTop: '100px' }}>
                 {/* post header section */}
                 <div class="mt-2"> 
                     <PostHeader 
@@ -141,10 +142,11 @@ class Post extends Component {
                     updateLikes = {this.updateLikes.bind(this)}
                     userId = {userId}
                     authorId = {this.state.authorId}
+                    toolName = {this.state.toolName}
                     /> 
                 </div>
                 
-                <hr />
+                <hr className="mb-5"/>
                 {/* body section */}
                 <div className="row">
                     <div className="col-8" id="html-part">

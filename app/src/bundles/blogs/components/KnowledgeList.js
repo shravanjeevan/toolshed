@@ -50,7 +50,7 @@ class KnowledgeList extends React.Component {
                 <div>
                     <h2>
                         Top Knowledge Base Items{' '}
-                        <Link className="button" to="/knowledge/create/">
+                        <Link className="ml-3 button" to="/knowledge/create/">
                             {' '}
                             Create Knowledge Item{' '}
                         </Link>
