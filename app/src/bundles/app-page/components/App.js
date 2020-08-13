@@ -45,6 +45,7 @@ class App extends React.Component {
                                 <Route path="/posts/:id/edit" exact component={EditPage}/>
                                 <Route path="/knowledge/create" exact component={EditPage}/>
                                 <Route path="/knowledge/:id/edit" exact component={EditPage}/>
+                                <Route path="/knowledge/:slug" exact component={Post}/>
                                 <Route path="/posts/:slug" exact component={Post}/>
                                 <Route path="/search" exact component={ResultsPage} key={window.location.pathname}/>
                                 <Route path="/blogs" exact component={BlogsPage}/>

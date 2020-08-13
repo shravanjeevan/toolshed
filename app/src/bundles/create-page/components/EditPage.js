@@ -49,6 +49,7 @@ class EditPage extends Component {
                 title:'',
                 content:'',
                 tools:[],
+                toolId:1,
                 id : -1,
             }
         } else if (path.match("edit") && path.match("knowledge")) {
@@ -60,6 +61,7 @@ class EditPage extends Component {
                 title:'',
                 content:'',
                 tools:[],
+                toolId:1,
                 id:params.id,
             }
         }
@@ -107,14 +109,28 @@ class EditPage extends Component {
         e.stopPropagation();
         // send data using POST
         try {
-            let data = {
-                tags:this.state.tags,
-                title:this.state.title,
-                // Object=>JSON=>HTML  (=x=>encode64)
-                content: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())),
-                authorId:userId
+            let data, res;
+            if (!this.state.knowledge) {
+                data = {
+                    tags:this.state.tags,
+                    title:this.state.title,
+                    // Object=>JSON=>HTML  (=x=>encode64)
+                    content: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())),
+                    authorId:userId,
+                }
+            } else {
+                data = {
+                    tags:this.state.tags,
+                    title:this.state.title,
+                    // Object=>JSON=>HTML  (=x=>encode64)
+                    content: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())),
+                    authorId:userId,
+                    type:"knowledge_base",
+                    toolId:this.state.toolId,
+                }
             }
-            let res = await backend.post('/posts/',data);
+            if (this.state.create) {res = await backend.post('/posts/',data)}
+            else if (!this.state.create) {res = await backend.put(`/posts/${this.state.id}`,data);}
             console.log(res);
             this.setState({id:res.data.id})
             document.getElementById("refre").click()
@@ -159,6 +175,12 @@ class EditPage extends Component {
         }
     }
     
+    handleSelect(e){
+        this.setState({
+            toolId: e.target.value
+        })
+    }
+    
     
     render() { 
         const { user , isAuthenticated } = this.props.auth;
@@ -176,7 +198,7 @@ class EditPage extends Component {
         
         if (this.state.knowledge) {
             tail = 'Knowlege Base'
-            tool = <ToolDropdowns tools={this.state.tools}/>
+            tool = <ToolDropdowns tools={this.state.tools} handleSelect = {this.handleSelect.bind(this)}/>
             url = 'knowledge'
         } else {
             tail = 'Blog'

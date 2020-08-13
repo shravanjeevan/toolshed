@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import OnClaps from './onClaps.png'
+import OffClaps from './offClaps.png'
 
 class PostDetails extends Component {
     constructor(props) {
@@ -45,19 +47,19 @@ class PostDetails extends Component {
         if (this.state.liked) {
             like = <span>
                        <img
-                          src="https://i.dlpng.com/static/png/450220_preview.png"
+                          src= {OnClaps}
                           width="25"
                           height="25"
-                          alt="likes"
+                          alt="OnClaps"
                         />
                     </span>
         } else {
             like = <span>
                         <img
-                          src="https://static.thenounproject.com/png/1085294-200.png"
+                          src= {OffClaps}
                           width="25"
                           height="25"
-                          alt="likes"
+                          alt="OffClaps"
                         />
                     </span>
         }
