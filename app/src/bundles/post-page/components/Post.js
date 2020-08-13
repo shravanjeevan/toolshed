@@ -5,16 +5,16 @@ import RelatedPostList from './RelatedPostList';
 import CommentSection from './CommentSection';
 import PostBody from './PostBody';
 import backend from '../../../bundles/apis/backend';
-import { Link} from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+
 import './Post.css';
 
 class Post extends Component {
     constructor(props) {
         super(props);
-        const { match:{params} } = this.props;
-        this.state = { 
-            id: params.slug,
+        this.state = {
+            id: null,
             title:'',
             type:'',
             tags:[],
@@ -35,9 +35,12 @@ class Post extends Component {
     }
     
     getData = async () => {
+        const { match:{params} } = this.props;
+
         try {
-            let res = await backend.get('/posts/'+this.state.id);
+            let res = await backend.get('/posts/' + params.slug);
             let { data } = res;
+            
             this.setState({
                 tags:data.tags,
                 title:data.title,
@@ -48,13 +51,13 @@ class Post extends Component {
                 createdOn:data.createdOn,
                 author:data.createdByDisplayName,
                 likeCount:data.likeCount,
-                commentCount:data.commentCount,
                 body:data.content,
                 authorId:data.createdById
-             })
+            });
             console.log(data);
         } catch(e) {
             console.log(e);
+            document.querySelector('#error').click();
         }
     }
     
@@ -94,17 +97,15 @@ class Post extends Component {
         document.getElementById("redir").click()
     }
     
-    render() { 
-        let userId
-        const { user , isAuthenticated } = this.props.auth;
+    render() {
+        let userId;
+        const { user, isAuthenticated } = this.props.auth;
         if (isAuthenticated) {
             userId = user.id
         }
-        
-    
+
         let comment = this.state.type === 'blog_post' ? <div>
-                                                            <CommentSection 
-                                                            commentCount = {this.state.commentCount} 
+                                                            <CommentSection
                                                             postId={this.state.id}
                                                             userId = {userId}
                                                             />
@@ -144,11 +145,12 @@ class Post extends Component {
                         <RelatedPostList />
                     </div>
                 </div>
-                <hr />
+                <hr className="mb-3"/>
                 {/* comment section, only when the post is a blog */}
                 {comment}
                 {/* refresh page after deleting post */}
                 <Link id='redir' to="/" />
+                <Link id="error" to="/404" replace />
         </div>
         );
     }

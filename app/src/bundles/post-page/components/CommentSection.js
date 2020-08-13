@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import backend from '../../../bundles/apis/backend';
+
 import CommentPost from './CommentPost'
 import CommentCard from './CommentCard'
 
@@ -49,11 +50,11 @@ class CommentSection extends Component {
         this.getData();
     }
 
-    render() { 
+    render() {
         return ( 
         <Fragment>
             <div >
-        <h3 class='ml-4'> Comments | {this.props.commentCount}</h3>
+        <h3 class='ml-4'>{this.state.comments ? this.state.comments.length : 0 } Comments</h3>
                 <div class='ml-4'> <CommentPost post={this.post.bind(this)} /> </div>
                 <div > <CommentCard comments={this.state.comments} postId={this.props.postId} userId = {this.props.userId} update={this.update.bind(this)}/> </div>
             </div>

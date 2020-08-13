@@ -41,20 +41,21 @@ class App extends React.Component {
                             <Route path="/" component={Breadcrumbs}/>
                             <Switch>
                                 <Route path="/" exact component={AppPage}/>
-                                <Route path="/posts/create" exact component={EditPage}/>
-                                <Route path="/posts/:id/edit" exact component={EditPage}/>
-                                <Route path="/knowledge/create" exact component={EditPage}/>
-                                <Route path="/knowledge/:id/edit" exact component={EditPage}/>
+                                <PrivateRoute path="/posts/create" exact component={EditPage}/>
+                                <PrivateRoute path="/posts/:id/edit" exact component={EditPage}/>
+                                <PrivateRoute path="/knowledge/create" exact component={EditPage}/>
+                                <PrivateRoute path="/knowledge/:id/edit" exact component={EditPage}/>
                                 <Route path="/knowledge/:slug" exact component={Post}/>
+                                <Route path="/posts" exact component={BlogsPage}/>
                                 <Route path="/posts/:slug" exact component={Post}/>
                                 <Route path="/search" exact component={ResultsPage} key={window.location.pathname}/>
                                 <Route path="/blogs" exact component={BlogsPage}/>
                                 <Route path="/knowledge" exact component={KnowledgePage}/>
                                 <Route path="/categories" exact component={CategoriesPage}/>
                                 <Route path="/categories/:slug" exact component={ToolsPage}/> {/* This should go to the tools component, i.e. a list of tools */}
-                                <Route path="/users/:slug" exact component={UserPage}/>
-                                <Route path="/register" component={RegisterForm}/>
-                                <Route path="/login" component={LoginForm}/>
+                                <PrivateRoute path="/users/:slug" exact component={UserPage}/>
+                                <Route path="/register" exact component={RegisterForm}/>
+                                <Route path="/login" exact component={LoginForm}/>
                                 <Route path="/404" component={ErrorPage}/>
                                 <Redirect to="/404"/>
                             </Switch>

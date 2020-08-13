@@ -2,6 +2,8 @@ from django.urls import include, path, re_path
 from rest_framework import routers
 from . import views
 
+from knox.views import LogoutView
+
 router = routers.DefaultRouter()
 
 # Wire up our API using automatic URL routing.
@@ -55,6 +57,7 @@ urlpatterns = [
     path('api/auth/', include('knox.urls')),
     path("auth/register/", views.RegistrationAPI.as_view()),
     path("auth/login/", views.LoginAPI.as_view()),
+    path('auth/logout/', LogoutView.as_view(), name='knox_logout'),
     path("auth/user/", views.UserAPI.as_view()),
     
     # Get user data

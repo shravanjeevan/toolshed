@@ -22,7 +22,7 @@ class PostHeader extends Component {
             <div class="ml-2">
                 <div class="ml-4">
                     <h1 class="mt-2 text-dark"> {this.props.title} </h1>
-                    <h5 class="mt-1 text-secondary"> {this.props.type === 'blog_post'? 'Blog Post' : 'Knowleage Base'} </h5>
+                    <h5 class="mt-1 text-secondary"> {this.props.type === 'blog_post'? 'Blog Post' : 'Knowledge Base'} </h5>
                 </div>
                 <div class='mt-4'>
                     <PostDetails 
