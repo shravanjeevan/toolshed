@@ -97,11 +97,6 @@ class NavBar1 extends Component {
                                     Tools
                                 </Link>
                             </li>
-                            <li class="nav-item active">
-                                <Link class="nav-link" to="/blogs">
-                                    Blogs
-                                </Link>
-                            </li>
                             <li class="nav-item active dropdown mr-2">
                                 <a
                                     class="nav-link dropdown-toggle"
