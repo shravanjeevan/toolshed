@@ -7,11 +7,11 @@ class AppHeader extends React.Component {
         return (
             <div class="jumbotron bg-light mt-5">
                 <h1 class="display-4 text-center">The Toolshed</h1>
-                <div class="lead text-center">
-                    <p>
-                        Your one stop shop for finding information about online remote-learning tools.
+                <div class="lead container">
+                    <p className="text-center">
+                        Your one-stop shop for finding information about online remote-learning tools. With carefully curated resources and a diverse community of students and teachers, learn about any feature for any online learning tool faster than ever.
                     </p>
-                    <p>Have a question? Search away!</p>
+                    <p className="text-center">Have a question? Search away!</p>
                 </div>
                 <hr class="my-4" />
                 <SearchBar />

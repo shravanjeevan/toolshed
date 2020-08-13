@@ -68,7 +68,7 @@ class SearchBar extends Component {
                         <FormControl
                             className="topnav input"
                             type="text"
-                            placeholder="Search..."
+                            placeholder="search..."
                             name="query"
                             value={this.state.query}
                             onChange={this.changeHandler}

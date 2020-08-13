@@ -33,6 +33,15 @@ class Post extends Component {
     componentDidMount(){
         this.getData();
     }
+
+    componentDidUpdate(prevProps) {
+        const {
+            match: { params },
+        } = this.props;
+        if (params.slug !== prevProps.match.params.slug) {
+            this.getData();
+        }
+    }
     
     getData = async () => {
         const { match:{params} } = this.props;
@@ -57,7 +66,10 @@ class Post extends Component {
             console.log(data);
         } catch(e) {
             console.log(e);
-            document.querySelector('#error').click();
+            if (document.querySelector('#error')) {
+                document.querySelector('#error').click();
+            }
+            
         }
     }
     
@@ -113,7 +125,7 @@ class Post extends Component {
     
         return ( 
             
-            <div class='ml-3'>
+            <div class='container mb-5'>
                 {/* post header section */}
                 <div class="mt-2"> 
                     <PostHeader 
@@ -142,7 +154,7 @@ class Post extends Component {
                     <div className="col-3" id="aside">
                         <PostTags tags={this.state.tags}/>
                         <br />
-                        <RelatedPostList />
+                        <RelatedPostList title={this.state.title} />
                     </div>
                 </div>
                 <hr className="mb-3"/>
