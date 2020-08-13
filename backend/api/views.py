@@ -131,6 +131,7 @@ def blogmodelToDict(blogs):
         values[idx]["tags"] = []
         values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
         values[idx]["type"] = "blog_post"
+        values[idx]["commentCount"] = BlogPostComment.objects.filter(blog_post_id=blog.id).count()
         for tagId in blog.tags.all():
             values[idx]["tags"].append(tagId.tag)
 
@@ -285,6 +286,7 @@ class PopularBlogList(APIView):
             values[idx]["createdByDisplayName"] = blog.createdBy.first_name + ' ' + blog.createdBy.last_name
             values[idx]["type"] = "blog_post"
             values[idx]["createdById"] = blog.createdBy.id
+            values[idx]["commentCount"] = BlogPostComment.objects.filter(blog_post_id=blog.id).count()
             del values[idx]["createdBy_id"]
 
             for tagId in blog.tags.all():
