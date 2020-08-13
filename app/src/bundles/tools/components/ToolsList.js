@@ -40,7 +40,9 @@ class ToolsList extends React.Component {
         try {
             let res = await backend.get(path);
             let { data } = res;
-            this.setState({ tools: data });
+            let sortedTools = data.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+            this.setState({ tools: sortedTools });
         } catch (e) {
             console.log(e);
         }

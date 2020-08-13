@@ -38,16 +38,17 @@ class Post extends Component {
         const {
             match: { params },
         } = this.props;
-        if (params.slug !== prevProps.match.params.slug) {
+        if (this.props.location.pathname !== prevProps.location.pathname) {
             this.getData();
         }
     }
     
     getData = async () => {
         const { match:{params} } = this.props;
+        let pathType = this.props.location.pathname.split('/')[1];      // either knowledge or posts
 
         try {
-            let res = await backend.get('/posts/' + params.slug);
+            let res = await backend.get(`/${pathType}/${params.slug}`);
             let { data } = res;
             
             this.setState({

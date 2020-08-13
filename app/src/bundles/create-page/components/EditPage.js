@@ -199,7 +199,7 @@ class EditPage extends Component {
         }
         
         if (this.state.knowledge) {
-            tail = 'Knowlege Base'
+            tail = 'Knowledge Base'
             tool = <ToolDropdowns tools={this.state.tools} handleSelect = {this.handleSelect.bind(this)}/>
             url = 'knowledge'
         } else {

@@ -22,7 +22,7 @@ class PostResult extends React.Component {
             });
         }
 
-        let linkToPost = `/posts/${post.id}`;
+        let linkToPost = `/${post.type === 'blog_post' ? 'posts' : 'knowledge'}/${post.id}`;
 
         let timeAgo = moment(post.createdOn).fromNow();
 
@@ -32,7 +32,6 @@ class PostResult extends React.Component {
         // Knowledge Base Items defaults to only the date - this is the Knowledge Base subtitle
         let blogPostItemsToShow = (
             <div>
-                <span className="text-muted font-italic">{timeAgo}</span>
             </div>
         );
 
@@ -46,7 +45,7 @@ class PostResult extends React.Component {
                             {' '}
                             by{' '}
                             <Link
-                                to={`/users/${post.createdBy_id}`}
+                                to={`/users/${post.createdBy_id ? post.createdBy_id : post.createdById}`}
                                 className="text-primary font-weight-normal"
                             >
                                 {post.createdByDisplayName}
@@ -54,7 +53,7 @@ class PostResult extends React.Component {
                         </span>
                     </div>
                     <div className="col-sm text-right text-muted">
-                        <span className="">👍 {post.likeCount} likes</span>
+                        <span className="">👏 {post.likeCount} claps</span>
                         <span className="ml-3">💬 {post.commentCount} comments</span>
                     </div>
                 </div>

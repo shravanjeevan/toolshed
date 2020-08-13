@@ -48,7 +48,7 @@ class RelatedPostList extends Component {
                     <Link
                         className="card"
                         key={index + item}
-                        to={`/posts/${item.id}`}
+                        to={`/${item.type === 'blog_post' ? 'posts' : 'knowledge'}/${item.id}`}
                     >
                         {/* <div class="card-body"> */}
                         <h5> {item.title} </h5>

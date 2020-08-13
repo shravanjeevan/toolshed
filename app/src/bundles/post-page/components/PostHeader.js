@@ -32,6 +32,7 @@ class PostHeader extends Component {
                     date = {this.props.date}
                     likes = {this.props.likes}
                     icon = {this.props.icon}
+                    postId = {this.props.postId}
                     type = {this.props.type}
                     updateLikes = {this.props.updateLikes}
                     /> 
