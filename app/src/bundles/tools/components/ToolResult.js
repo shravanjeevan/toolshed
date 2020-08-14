@@ -1,3 +1,6 @@
+// A copy of Post Result tailored for a Tool display.
+// No "description" or "images" properties in the DB currently so defaulting to lorem
+
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 

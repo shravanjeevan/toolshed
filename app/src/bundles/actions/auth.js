@@ -1,3 +1,7 @@
+// Authorization action-creators
+// These are the Redux actions that solely handle the authentication flow, include register, login, logout, storing auth tokens in global react store.
+// Based on this resource: https://medium.com/technest/implement-user-auth-in-a-django-react-app-with-knox-fc56cdc9211c
+
 import backend from '../apis/backend';
 import { stopSubmit } from 'redux-form';
 

@@ -1,3 +1,5 @@
+// The create tags feature on the main create/edit page
+
 import React, { Component } from 'react';
 
 class CreateTags extends Component {

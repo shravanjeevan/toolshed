@@ -1,3 +1,5 @@
+// Redux action-creators that handles post CRUD
+
 import { tokenConfig } from './auth'; // added
 import backend from '../apis/backend';
 

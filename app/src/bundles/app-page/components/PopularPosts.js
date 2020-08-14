@@ -8,6 +8,7 @@ class PopularPosts extends React.Component {
         posts: [] 
     };
 
+    // Fetch popular posts when component has loaded
     componentDidMount() {
         this.getPopularPosts();
     }
@@ -28,6 +29,7 @@ class PopularPosts extends React.Component {
         let postsToShow;
 
         if (posts && posts.length > 0) {
+            // Loop through queried popular results and create a PostResult component for each one
             postsToShow = posts.map((post) => {
                 return (
                     <div key={post.id} className="my-4">

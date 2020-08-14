@@ -1,3 +1,5 @@
+// publish post button
+
 import React, { Component } from 'react';
 
 class PublishPost extends Component {

@@ -24,6 +24,7 @@ class CommentPost extends Component {
     }
 
     render() {
+        // Checks if user is authenticated and only show the comment post section if logged in
         const { isAuthenticated } = this.props.auth;
 
         let renderComment = isAuthenticated ? (
@@ -45,6 +46,7 @@ class CommentPost extends Component {
     }
 }
 
+// hook component up to redux store
 const mapStateToProps = (state) => ({
     auth: state.auth,
 });

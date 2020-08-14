@@ -1,3 +1,5 @@
+// List of results on the /search route
+
 import React from 'react';
 
 import backend from '../../apis/backend';
@@ -15,7 +17,7 @@ class ResultsList extends React.Component {
         this.getResults();
     }
 
-    // This checks if the search query params are meangingfully different, and only get results if different
+    // This checks if the search query params are meangingfully different, and only get results if different.
     componentDidUpdate(prevProps) {
         if (this.props.params.query !== prevProps.params.query) {
             this.getResults();
@@ -26,6 +28,7 @@ class ResultsList extends React.Component {
         this.setState({ isLoading: true });
         try {
             let res = await backend.get(
+                // can only handle the query right now, additional filters not yet implemented
                 `/search?query=${this.props.params.query}`
             );
             let { data } = res;
@@ -48,6 +51,7 @@ class ResultsList extends React.Component {
         let { results } = this.state;
         let postsToShow;
 
+        // Generate posts if there's anything queried, otherwise show loading / none found messages
         if (this.state.isLoading) {
             postsToShow = (
                 <div className="alert alert-light">Fetching results...</div>

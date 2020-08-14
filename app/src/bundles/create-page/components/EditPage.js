@@ -1,3 +1,5 @@
+// Main page to edit and create posts/knowledge items. One component that changes depending on whether it's edit/create and knowledge/blog post
+
 import React, {Component} from 'react';
 import CreateContent from './CreateContent'
 import CreateTitle from './CreateTitle'
@@ -19,6 +21,7 @@ class EditPage extends Component {
         this.updateTags=this.updateTags.bind(this)
         this.publish=this.publish.bind(this)
         var path = window.location.pathname
+        // Handle dynamic state based on current URL path
         if (path.match("edit") && path.match("posts"))  {
             this.state = { 
                 create:false,
@@ -85,11 +88,12 @@ class EditPage extends Component {
         }
     }
     
-    
+    // Store title value
     handleTitle (e) {
         this.setState({title:e.target.value})
     }
     
+    // Store tag values
     updateTags(tags) {
         this.setState({
             tags:tags,
@@ -139,6 +143,7 @@ class EditPage extends Component {
         }
     }
     
+    // Fetches data from different endpoints depending on if it's knowledge or blog post
     getData = async () => {
         try {
             let res;
@@ -164,6 +169,7 @@ class EditPage extends Component {
         }
     }
     
+    // Gets the full list of tools to be used for knowledge create
     getTools = async () => {
         try {
             let res = await backend.get('/tools/');
