@@ -465,7 +465,7 @@ GET /users/:user_id
     {
         "tags":["zoom","install","test"],
         "title":"How to install zoom",
-        "content":"PHA+SGV5IHRoaXMgPHN0cm9uZz5lZGl0b3I8L3N0cm9uZz4gcm9ja3M8L3A+"
+        "content":"This is an amazing website"
         "authorId":1,
     }
 ]
@@ -475,6 +475,30 @@ GET /users/:user_id
 ### **`PUT /posts/:post_id`**
 
 **Description**: Edit a blog post (or knowledge item).
+
+**Usage**: used for the route /posts/edit.
+
+**Query Parameters**: None
+
+**Parameters:**
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `tags` | `array` | Tags added of the created post |
+| `title` | `string` | Title of the created post |
+| `content` | `string` | Content of the created post |
+| `authorId` | `int` | Unique identifer of the author |
+
+**Sample Response:**
+```
+[
+    {
+        "tags":["zoom","install","test"],
+        "title":"How to install zoom",
+        "content":"This is an amazing website!!!"
+        "authorId":1,
+    }
+]
+```
 
 
 ### **`DELETE /posts/:post_id`**

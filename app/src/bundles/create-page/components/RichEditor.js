@@ -14,7 +14,7 @@ class RichEditor extends Component {
   }
 
   // code reference: https://blog.csdn.net/qq_20337865/article/details/84566229
-  // to preview pic locally as base64
+  // to preview pic locally as base64, and store it
   imageUploadCallBack = file => new Promise(
     (resolve, reject) => {
       var reader = new FileReader();
@@ -41,16 +41,19 @@ class RichEditor extends Component {
         <div class = "editors ">
           <Editor
             editorState={editorState}
+            // change the style of the richtext editor
             editorStyle={{ border: "1px solid #C0C0C0", padding: '14px',height:'350px', borderRadius: '2px', width:'1015px'}}
             wrapperClassName="wrapper-class"
             editorClassName="editor-class"
             toolbarClassName="toolbar-class"
+            // things in the tool bar
             toolbar={{
               options:['inline','blockType','fontSize','fontFamily','textAlign','list','colorPicker','image','link','embedded'],
               inline: { inDropdown: true },
               list: { inDropdown: true },
               textAlign: { inDropdown: true },
               colorPicker: { className: 'demo-option-custom', popupClassName: 'demo-popup-custom' },
+              // can upload image from local machine
               image: {
                 urlEnabled: true,
                 uploadEnabled: true,

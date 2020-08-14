@@ -14,7 +14,8 @@ class RelatedPostList extends Component {
     componentDidMount() {
         this.getData();
     }
-
+    
+    // try to get the data
     componentDidUpdate(prevProps) {
         if (prevProps.title !== this.props.title) {
             this.getData();
@@ -23,6 +24,7 @@ class RelatedPostList extends Component {
 
     getData = async () => {
         if (this.props && this.props.title !== '') {
+            // get the top 3 related posts
             try {
                 let res = await backend.get(
                     `/search?query=${this.props.title}&top=3`
@@ -45,6 +47,7 @@ class RelatedPostList extends Component {
         if (this.state.related && this.state.related.length > 0) {
             related = this.state.related.map((item, index) => {
                 return (
+                    // link to different part according to the post tape
                     <Link
                         className="card"
                         key={index + item}

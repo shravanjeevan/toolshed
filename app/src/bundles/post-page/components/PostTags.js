@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 
 import TagTab from '../../common/components/TagTab';
 
+// component to show the related tags of a post
+
 class PostTags extends Component {
 
     constructor(props) {

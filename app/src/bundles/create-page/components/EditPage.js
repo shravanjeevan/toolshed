@@ -22,6 +22,7 @@ class EditPage extends Component {
         this.publish=this.publish.bind(this)
         var path = window.location.pathname
         // Handle dynamic state based on current URL path
+        // edit post
         if (path.match("edit") && path.match("posts"))  {
             this.state = { 
                 create:false,
@@ -32,7 +33,7 @@ class EditPage extends Component {
                 content:'',
                 id:params.id,
             }
-            
+        // create post 
         } else if (path.match("create")&&path.match("posts")) {
             this.state = { 
                 create:true,
@@ -43,6 +44,7 @@ class EditPage extends Component {
                 content:'',
                 id : -1,
             }
+        // create knowledge
         } else if (path.match("create")&&path.match("knowledge")) {
             this.state = { 
                 create:true,
@@ -55,6 +57,7 @@ class EditPage extends Component {
                 toolId:1,
                 id : -1,
             }
+        // edit knowledge base item
         } else if (path.match("edit") && path.match("knowledge")) {
             this.state = { 
                 create:false,
@@ -71,7 +74,7 @@ class EditPage extends Component {
     }
     
     componentDidMount(){
-        
+        // get different data according to the current URL
         if (this.state.create === false) {
             this.getData();
         }
@@ -81,7 +84,7 @@ class EditPage extends Component {
         
     }
     
-    // force to refresh page
+    // force to refresh page if the url changed
     componentWillUpdate(nextProps) { 
         if (this.props.location.pathname !== nextProps.location.pathname){
             window.location.reload(false);  
@@ -100,7 +103,7 @@ class EditPage extends Component {
         })
     }
     
-    
+    // track the content changed 
     onEditorStateChange = (editorState) => {
         this.setState({
           editorState: editorState
@@ -133,7 +136,9 @@ class EditPage extends Component {
                     toolId:this.state.toolId,
                 }
             }
+            // if create
             if (this.state.create) {res = await backend.post('/posts/',data)}
+            // if edit
             else if (!this.state.create) {res = await backend.put(`/posts/${this.state.id}`,data);}
             console.log(res);
             this.setState({id:res.data.id})
@@ -183,6 +188,7 @@ class EditPage extends Component {
         }
     }
     
+    // track the tools choosed
     handleSelect(e){
         this.setState({
             toolId: e.target.value
@@ -196,7 +202,7 @@ class EditPage extends Component {
         if (isAuthenticated) {
             userId = user.id
         } 
-    
+        // change infomation according to url
         let head, tail, url, tool
         if (this.state.create) {
             head = 'Create'
@@ -204,6 +210,7 @@ class EditPage extends Component {
             head = 'Edit'
         }
         
+        // show tools only if it is knowledge base
         if (this.state.knowledge) {
             tail = 'Knowledge Base'
             tool = <ToolDropdowns tools={this.state.tools} handleSelect = {this.handleSelect.bind(this)}/>
