@@ -15,8 +15,10 @@ PUT /posts/:post_id
 DELETE /posts/:post_id *
 
 GET /posts/post_id/comments
-POST /posts/:post_id/comments
+POST /posts/comments
 DELETE /posts/comments/:comment_id
+
+GET like/post_id
 
 GET /categories/popular *
 GET /categories *
@@ -482,7 +484,7 @@ GET /users/:user_id
 
 
 ## Other stuff
-(*not sure how Django handles authentication*)
+
 ### **`POST /login`**
 
 ### **`POST /signup`**
