@@ -40,6 +40,7 @@ class App extends React.Component {
                             {/* This makes sure the navbar is always on display */}
                             <Route path="/" component={Breadcrumbs}/>
                             <Switch>
+                                {/* routes defined by PrivateRoute will perform an authentication check that will redirect to login page if user is not authenticated */}
                                 <Route path="/" exact component={AppPage}/>
                                 <PrivateRoute path="/posts/create" exact component={EditPage}/>
                                 <PrivateRoute path="/posts/:id/edit" exact component={EditPage}/>
@@ -59,7 +60,7 @@ class App extends React.Component {
                                 <Route path="/404" component={ErrorPage}/>
                                 <Redirect to="/404"/>
                             </Switch>
-                        </ScrollToTop>
+                        </ScrollToTop>      {/*  Any navigation to any route will force a scroll-to-top  */}
                     </BrowserRouter> 
                 </Provider>
             </div>

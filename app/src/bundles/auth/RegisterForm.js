@@ -1,3 +1,5 @@
+// // Register Form implemented via redux-forms according to https://medium.com/technest/implement-user-auth-in-a-django-react-app-with-knox-fc56cdc9211c
+
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -33,6 +35,7 @@ class RegisterForm extends Component {
                         onSubmit={this.props.handleSubmit(this.onSubmit)}
                         className="ui form"
                     >
+                        {/* The "validate" property allows for programmatic definitions of field validations */}
                         <Field
                             name="username"
                             type="text"
@@ -89,6 +92,7 @@ class RegisterForm extends Component {
     }
 }
 
+// Field validation functions to be used on field-level
 const required = (value) => (value ? undefined : 'Required');
 
 const minLength = (min) => (value) =>

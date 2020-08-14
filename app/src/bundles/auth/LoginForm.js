@@ -1,3 +1,5 @@
+// Login Form implemented via redux-forms according to https://medium.com/technest/implement-user-auth-in-a-django-react-app-with-knox-fc56cdc9211c
+
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -5,6 +7,7 @@ import { Field, reduxForm } from 'redux-form';
 import { login } from '../actions/auth';
 
 class LoginForm extends Component {
+    // show the error label should the input not pass validation
     renderField = ({ input, label, type, meta: { touched, error } }) => {
         return (
             <div className={`field ${touched && error ? 'error' : ''}`}>

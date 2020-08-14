@@ -1,3 +1,5 @@
+// General-use searchbar on the landing page and results page
+
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, FormControl, Container, Button } from 'react-bootstrap';

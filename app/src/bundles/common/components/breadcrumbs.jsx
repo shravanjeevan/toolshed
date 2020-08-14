@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb} from 'react-bootstrap'
 
 class Breadcrumbs extends Component {
-  
+  // Dynamically build the breadcrumbs based on the URL route
   generateBreadCrumb(pathname) {
     if (pathname == '/'){
       return(<div/>);

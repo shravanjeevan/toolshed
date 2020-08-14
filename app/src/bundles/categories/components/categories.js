@@ -1,3 +1,5 @@
+// The /categories/ explore page. Links to child categories will show list of tools
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 

@@ -7,6 +7,7 @@ class TagExplorer extends React.Component {
         tags: []
     };
 
+    // Only get popular tags when tags component has loaded
     componentDidMount() {
         this.getPopularTags();
     }
@@ -28,6 +29,7 @@ class TagExplorer extends React.Component {
         let tagsToShow;
 
         if (tags && tags.length > 0) {
+            // Loop through popular tags from the system and generate a TagTab component for each one
             tagsToShow = tags.map((tag) => {
                 return (
                     <span key={tag.tag} className="mr-4 mb-4">

@@ -1,3 +1,5 @@
+// Main reducers file to combine other reducers
+
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { LOGOUT_SUCCESS } from '../actions/types';

@@ -1,3 +1,5 @@
+// The create title feature on the main create/edit page
+
 import React, { Component } from 'react';
 
 class CreateTitle extends Component {

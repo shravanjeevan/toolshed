@@ -1,3 +1,4 @@
+// General purprose 404 page, to be redirected to via PrivateRoutes and specific API requests like CRUD and clapping
 import React from 'react';
 
 class PostResult extends React.Component {

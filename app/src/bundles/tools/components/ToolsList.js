@@ -90,6 +90,7 @@ class ToolsList extends React.Component {
 
         let toolsToShow = <div>No tools found.</div>;
 
+        // Generate a list of tools and represent as a list of ToolResult components
         if (this.state.tools && this.state.tools.length > 0) {
             toolsToShow = this.state.tools.map((tool) => {
                 return (

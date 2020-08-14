@@ -13,6 +13,7 @@ class CommentSection extends Component {
         this.getData();
     }
 
+    // When a comment is posted, force a component update to pull in new comments
     update() {
         this.getData();
         // window.location.reload(false)
@@ -33,6 +34,7 @@ class CommentSection extends Component {
         }
     };
 
+    // Create the comment
     post = async (input) => {
         try {
             let data = {

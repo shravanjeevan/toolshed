@@ -1,3 +1,5 @@
+// Navigation bar at the top
+
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';

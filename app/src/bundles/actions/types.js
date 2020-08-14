@@ -1,3 +1,5 @@
+// Definition of all actions to be used with Redux
+
 // export const GET_TODOS = 'GET_TODOS';
 // export const GET_TODO = 'GET_TODO';
 export const ADD_POST = 'ADD_POST';

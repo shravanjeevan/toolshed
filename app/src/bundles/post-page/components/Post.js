@@ -1,3 +1,5 @@
+// Main Post page
+
 import React, { Component } from 'react';
 import PostTags from './PostTags';
 import PostHeader from './PostHeader';
@@ -34,6 +36,7 @@ class Post extends Component {
         this.getData();
     }
 
+    // When navigating from one post page to another, this forces a reload with new data
     componentDidUpdate(prevProps) {
         const {
             match: { params },
@@ -86,6 +89,7 @@ class Post extends Component {
         this.getLikes();
     }
     
+    // Grab number of likes for a post
     getLikes = async () => {
         try {
             let res = await backend.get('/like/'+this.state.id);
@@ -128,7 +132,7 @@ class Post extends Component {
         return ( 
             
             <div class='container' style={{ marginBottom: '100px', marginTop: '100px' }}>
-                {/* post header section */}
+                {/* post header section. Pass in parent-level data down to children */}
                 <div class="mt-2"> 
                     <PostHeader 
                     title = {this.state.title}

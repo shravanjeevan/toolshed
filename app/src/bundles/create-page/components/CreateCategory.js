@@ -1,3 +1,5 @@
+// No longer used
+
 import React, { Component } from 'react';
 
 class CreateTags extends Component {

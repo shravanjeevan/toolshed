@@ -7,6 +7,7 @@ class CategoryExplorer extends React.Component {
         categories: []
     };
 
+    // Fetch categories only when component has completed loading
     componentDidMount() {
         this.getCategories();
     }
@@ -40,11 +41,12 @@ class CategoryExplorer extends React.Component {
     render() {
         let { categories }  = this.state;
 
+        // Conditional rendering of categories vs. no categories
         let categoriesToShow;
-
         if (categories && categories.length > 0) {
             categoriesToShow = categories.map((category) => {
                 return (
+                    // hard-coded category select button, not implemented as a separate component
                     <Link key={category.category} className="btn btn-info p-3 mr-4 mb-4 rounded-pill font-weight-bold" type="button" to={`/categories/${category.category}`}>
                         {category.category}
                     </Link>

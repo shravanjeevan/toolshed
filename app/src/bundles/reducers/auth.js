@@ -1,3 +1,5 @@
+// All reducers for authentication. Update the redux store's authentication-related data when certain actions are taken
+
 import {
     USER_LOADING,
     USER_LOADED,

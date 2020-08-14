@@ -1,3 +1,5 @@
+// The multi-use post result component to be used when displaying post results, popular posts, related posts, user posts, etc.
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -22,9 +24,11 @@ class PostResult extends React.Component {
             });
         }
 
+        // Dynamically update the destination route depending on type of post
         let linkToPost = `/${post.type === 'blog_post' ? 'posts' : 'knowledge'}/${post.id}`;
 
-        let timeAgo = moment(post.createdOn).fromNow();
+        // Format to n days ago, x minutes ago, etc.
+        let timeAgo = moment(post.createdOn).fromNow();     
 
         //let daysAgo = formatDistance(parse(post.createdOn, 'dd/MM/yyyy HH:mm:ss', new Date()), Date.now());
 
@@ -35,7 +39,7 @@ class PostResult extends React.Component {
             </div>
         );
 
-        // Blog Post Items includes other data points
+        // Blog Post Items includes other data points, this conditionally renders that additional info like author, date, claps, comments
         if (post.type === 'blog_post') {
             blogPostItemsToShow = (
                 <div className="row">
@@ -60,6 +64,7 @@ class PostResult extends React.Component {
             );
         }
 
+        // The 2 sentence preview shows HTML, this reduces to plain text
         function strip_html_tags(str) {
             if (!str || str === null || str === '') return false;
             else str = str.toString();

@@ -1,3 +1,5 @@
+// Reducers to handle CRUD on posts
+
 import _ from 'lodash';
 import {
     // GET_TODOS,

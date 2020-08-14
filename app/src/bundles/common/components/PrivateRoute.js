@@ -1,3 +1,5 @@
+// Automatically handle redirects to /login on unauthorized route. Checks Redux store for user auth info.
+
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
