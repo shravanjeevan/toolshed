@@ -8,13 +8,13 @@ class CommentPost extends Component {
             input: '',
         };
     }
-
+    // track the input value
     show(e) {
         this.setState({
             input: e.target.value,
         });
     }
-
+    // commit the comment
     commit() {
         this.props.post(this.state.input);
 
@@ -26,7 +26,7 @@ class CommentPost extends Component {
     render() {
         // Checks if user is authenticated and only show the comment post section if logged in
         const { isAuthenticated } = this.props.auth;
-
+        // if login we show this part, not show otherwise
         let renderComment = isAuthenticated ? (
             <Fragment>
                 <textarea
@@ -35,6 +35,7 @@ class CommentPost extends Component {
                     value={this.state.input}
                     onChange={this.show.bind(this)}
                 />
+                {/* post button */}
                 <button class="commentPost" onClick={this.commit.bind(this)}>
                     {' '}
                     Post{' '}

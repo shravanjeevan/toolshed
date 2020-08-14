@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import RichEditor from './RichEditor'
 
+// this is the section for conetent edit section
+
 class CreateContent extends Component {
     constructor(props) {
         super(props);

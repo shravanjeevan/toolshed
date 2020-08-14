@@ -91,7 +91,7 @@ class PostDetails extends Component {
             );
         // change margin to align
         let margin =
-            this.props.type === 'blog_post' ? 'col-6 mt-2' : 'col-6 mt-2 ml-4';
+            this.props.type === 'blog_post' ? 'col-6 mt-2' : 'col-6 mt-2';
 
         let showBlogItems =
             this.props.type === 'blog_post' ? (
@@ -213,7 +213,7 @@ class PostDetails extends Component {
                         <span>Flag</span>
                     </span>
                 </div>
-
+                {/* modal for flag  */}
                 <div
                     class="modal fade"
                     id="flagModal"

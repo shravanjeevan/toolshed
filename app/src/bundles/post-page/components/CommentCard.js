@@ -23,10 +23,12 @@ class CommentCard extends Component {
         this.props.update();
     }
     
+    // Open the modal for comment deleting 
     open(itemId) {
         this.setState({
             id:itemId
         })
+        // get the function id and active it
         document.getElementById("del").click()
     }
     
@@ -35,6 +37,7 @@ class CommentCard extends Component {
         return ( 
             <Fragment>
                 {
+                    // Iterate ecan comment under this post 
                     this.props.comments.map((item,index)=>{
                         return (
                         <div key = {index+item}>
@@ -65,7 +68,7 @@ class CommentCard extends Component {
                         )  
                     })
                 } 
-                
+                {/* modal to alert warning information */}
                 <span 
                     id="del"
                     data-toggle="modal" 
@@ -73,7 +76,7 @@ class CommentCard extends Component {
                 </span>
                 
                 
-                
+                {/* the modal information */}
                 <div class="modal fade" id={"commentModal"} role="dialog" aria-labelledby="DeleteComment" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -90,6 +93,7 @@ class CommentCard extends Component {
                         type="button" 
                         class="btn btn-danger" 
                         data-dismiss="modal"
+                        // delete function
                         onClick={this.delete.bind(this, this.state.id)}
                         >
                             Delete

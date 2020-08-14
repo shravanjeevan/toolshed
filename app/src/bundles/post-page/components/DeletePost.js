@@ -5,6 +5,7 @@ class DeletePost extends Component {
         super(props);
     }
     
+    // return the modal when you try to delete a post 
     render() { 
         return (
             <div>

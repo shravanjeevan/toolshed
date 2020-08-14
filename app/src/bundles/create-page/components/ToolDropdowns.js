@@ -1,3 +1,5 @@
+// dropdown list of tools
+
 import React, {Component} from 'react';
 
 class ToolDropdowns extends Component {
@@ -12,6 +14,7 @@ class ToolDropdowns extends Component {
                 <div class="col-4"> 
                     <select class="form-control w-75 h-75 h6 " onChange={this.props.handleSelect}>
                     {
+                        // iterating to show tools
                         this.props.tools.map((item, index) => {
                             return(
                                 <option 

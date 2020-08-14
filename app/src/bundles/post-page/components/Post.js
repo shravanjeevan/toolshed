@@ -12,6 +12,8 @@ import { connect } from 'react-redux';
 
 import './Post.css';
 
+// the main page for blog post and knowledge base items
+
 class Post extends Component {
     constructor(props) {
         super(props);
@@ -46,6 +48,7 @@ class Post extends Component {
         }
     }
     
+    // get the data from the database 
     getData = async () => {
         const { match:{params} } = this.props;
         let pathType = this.props.location.pathname.split('/')[1];      // either knowledge or posts
@@ -121,7 +124,7 @@ class Post extends Component {
         if (isAuthenticated) {
             userId = user.id
         }
-
+        // no need to show comment section for knowledge base item
         let comment = this.state.type === 'blog_post' ? <div>
                                                             <CommentSection
                                                             postId={this.state.id}
@@ -175,7 +178,7 @@ class Post extends Component {
     }
 }
 
-
+// hook component up to redux store
 const mapStateToProps = (state) => ({
     auth: state.auth,
 });
